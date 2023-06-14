@@ -1,4 +1,4 @@
-module Pieces
+module Piece
   WH = 'White'
   BL = 'Black'
 

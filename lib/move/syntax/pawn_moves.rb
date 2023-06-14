@@ -1,11 +1,8 @@
-require './lib/standards/pieces'
-
 module Move
   module Syntax
     module PawnMoves
       WH_MOVE = /^[a-h][3-8]$/
       BL_MOVE = /^[a-h][1-6]$/
-
 
       WH_CAPTURES = [
         /^axb[3-8]$/,
