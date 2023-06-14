@@ -2,10 +2,10 @@ module Pieces
   WH = 'White'
   BL = 'Black'
 
-  PA = 'Pawn'
-  RO = 'Rook'
-  KN = 'Knight'
-  BI = 'Bishop'
-  QU = 'Queen'
-  KI = 'King'
+  PA = 'P' # pawn
+  RO = 'R' # rook
+  KN = 'N' # knight
+  BI = 'B' # bishop
+  QU = 'Q' # queen
+  KI = 'K' # king
 end
