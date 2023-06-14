@@ -1,4 +1,7 @@
+require_relative './standards/pieces'
+
 class Player
+
   attr_reader :name, :color
 
   def initialize(name, color)

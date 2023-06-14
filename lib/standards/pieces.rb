@@ -1,4 +1,4 @@
-module ColorsAndPieces
+module Pieces
   WH = 'White'
   BL = 'Black'
 
