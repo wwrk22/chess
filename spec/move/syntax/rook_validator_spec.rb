@@ -10,9 +10,18 @@ RSpec.describe Move::Syntax::RookValidator do
 
     context "when move is not a capture" do
       context "when syntx is valid" do
-        it "returns the move" do 
-          move = { move: 'Ra5', color: Piece::WH }
-          expect(validator.validate(move)).to eq(move)
+        context "when starting file or rank is specified" do
+          it "returns the move" do 
+            move = { move: 'R8a5', color: Piece::BL }
+            expect(validator.validate(move)).to eq(move)
+          end
+        end
+
+        context "when starting file or rank is not specified" do
+          it "returns the move" do 
+            move = { move: 'Ra5', color: Piece::WH }
+            expect(validator.validate(move)).to eq(move)
+          end
         end
       end # context "when syntax is valid"
 
@@ -26,11 +35,20 @@ RSpec.describe Move::Syntax::RookValidator do
 
     context "when move is a capture" do
       context "when syntax is valid" do
-        it "returns the move" do
-          move = { move: 'Rxa5', color: Piece::WH }
-          expect(validator.validate(move)).to eq(move)
+        context "when starting file or rank is specified" do
+          it "returns the move" do
+            move = { move: 'Rdxa5', color: Piece::WH }
+            expect(validator.validate(move)).to eq(move)
+          end
         end
-      end
+
+        context "when starting file or rank is not specified" do
+          it "returns the move" do
+            move = { move: 'Rxa5', color: Piece::BL }
+            expect(validator.validate(move)).to eq(move)
+          end
+        end
+      end # context "when syntax is valid"
 
       context "when syntax is invalid" do
         it "returns nil" do
@@ -47,6 +65,6 @@ RSpec.describe Move::Syntax::RookValidator do
       end
     end
 
-  end # describe '#vaildate'
+  end # describe '#validate'
 
 end
