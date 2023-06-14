@@ -6,6 +6,7 @@ module Move
     class PawnValidator
 
       # Return true if move has valid syntax. Otherwise, return false.
+      # Raise ColorUnknownError if color is unknown.
       def validate(move)
         return validate_capture_move(move) if move[:move].include? 'x'
         return validate_non_capture_move(move)
@@ -18,8 +19,7 @@ module Move
       def validate_capture_move(move)
         return check_white_capture(move) if move[:color] == Piece::WH
         return check_black_capture(move) if move[:color] == Piece::BL
-        raise StandardError
-        #raise colorUnknownError
+        raise ColorUnknownError.new(move[:color])
       end
 
       # Compare move string against white pawn capture-move syntax regex.
@@ -45,8 +45,7 @@ module Move
       def validate_non_capture_move(move)
         return check_white_move(move) if move[:color] == Piece::WH
         return check_black_move(move) if move[:color] == Piece::BL
-        raise StandardError
-        #raise ColorUnknownError
+        raise ColorUnknownError.new(move[:color])
       end
 
       # Compare move string against white pawn move syntax regex.

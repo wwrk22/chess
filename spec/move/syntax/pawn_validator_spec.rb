@@ -1,5 +1,6 @@
 require './lib/move/syntax/pawn_validator'
 require './lib/standards/piece'
+require './lib/errors/color_unknown_error'
 
 RSpec.describe Move::Syntax::PawnValidator do
   describe '#validate' do
@@ -73,5 +74,12 @@ RSpec.describe Move::Syntax::PawnValidator do
       end # context "when move is a capture"
     end # context "when player color is black"
 
-  end
+    context "when color is unknown" do
+      it "raises ColorUnknownError" do
+        move = { move: 'a3', color: 'unknown' }
+        expect{ validator.validate(move) }.to raise_error(ColorUnknownError)
+      end
+    end
+
+  end # describe '#validate'
 end
