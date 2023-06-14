@@ -2,8 +2,7 @@ module Move
   module Syntax
     module KnightMoves
       MOVES = [
-        /^N[a-h][1-8]$/,
-        /^Nx[a-h][1-8]$/,
+        /^Nx?[a-h][1-8]$/,
         /^Nax?[b,c][1-8]$/,
         /^Nbx?(?!b)[a-d][1-8]$/,
         /^Ncx?(?!c)[a-e][1-8]$/,
