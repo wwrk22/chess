@@ -2,7 +2,7 @@ require './lib/standards/pieces'
 
 module Move
   module Syntax
-    module Pawn
+    module PawnMoves
       WH_MOVE = /^[a-h][3-8]$/
       BL_MOVE = /^[a-h][1-6]$/
 
