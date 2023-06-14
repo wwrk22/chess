@@ -5,7 +5,7 @@ module Move
   module Syntax
     class PawnValidator
 
-      # Return true if move has valid syntax. Otherwise, return false.
+      # Return the move if move has valid syntax. Otherwise, return nil.
       # Raise ColorUnknownError if color is unknown.
       def validate(move)
         return validate_capture_move(move) if move[:move].include? 'x'
