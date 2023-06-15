@@ -3,7 +3,7 @@ require './lib/move/move'
 require './lib/standards/piece'
 
 RSpec.describe PawnMoveInterpreter do
-  describe '#compute_possible_start_sqs' do
+  describe '#compute_starts' do
     subject(:interpreter) { described_class.new }
 
     context "when player color is white" do
@@ -11,7 +11,7 @@ RSpec.describe PawnMoveInterpreter do
         it "returns an array of the square below the target square" do
           exp_result = [{ file: 'a', rank: 2 }]
           target_sq = { file: 'a', rank: 3 }
-          result = interpreter.compute_possible_start_sqs(target_sq, Piece::WH)
+          result = interpreter.compute_starts(target_sq, Piece::WH)
           expect(result).to eq(exp_result)
         end
       end
@@ -20,7 +20,7 @@ RSpec.describe PawnMoveInterpreter do
         it "returns an array of the two squares below the target square" do
           exp_result = [{ file: 'a', rank: 3 }, { file: 'a', rank: 2 }]
           target_sq = { file: 'a', rank: 4 }
-          result = interpreter.compute_possible_start_sqs(target_sq, Piece::WH)
+          result = interpreter.compute_starts(target_sq, Piece::WH)
           expect(result).to eq(exp_result)
         end
       end
@@ -31,7 +31,7 @@ RSpec.describe PawnMoveInterpreter do
         it "returns an array of the square above the target square" do
           exp_result = [{ file: 'a', rank: 7 }]
           target_sq = { file: 'a', rank: 6 }
-          result = interpreter.compute_possible_start_sqs(target_sq, Piece::BL)
+          result = interpreter.compute_starts(target_sq, Piece::BL)
           expect(result).to eq(exp_result)
         end
       end
@@ -40,7 +40,7 @@ RSpec.describe PawnMoveInterpreter do
         it "returns an array of the two squares above the target square" do
           exp_result = [{ file: 'a', rank: 6 }, { file: 'a', rank: 7 }]
           target_sq = { file: 'a', rank: 5 }
-          result = interpreter.compute_possible_start_sqs(target_sq, Piece::BL)
+          result = interpreter.compute_starts(target_sq, Piece::BL)
           expect(result).to eq(exp_result)
         end
       end
@@ -52,7 +52,7 @@ RSpec.describe PawnMoveInterpreter do
 
     matcher :be_same_as do |other_move|
       match do |move|
-        move.possible_start_sqs == other_move.possible_start_sqs &&
+        move.starts == other_move.starts &&
         move.target_sq == other_move.target_sq &&
         move.piece_type == other_move.piece_type &&
         move.color == other_move.color &&
@@ -63,7 +63,7 @@ RSpec.describe PawnMoveInterpreter do
     context "when player color is white" do
       it "returns a Move object with correctly populated values" do
         exp_result = Move.new
-        exp_result.possible_start_sqs = [{ file: 'a', rank: 2 }]
+        exp_result.starts = [{ file: 'a', rank: 2 }]
         exp_result.target_sq = { file: 'a', rank: 3}
         exp_result.piece_type = Piece::PA
         exp_result.color = Piece::WH
@@ -76,7 +76,7 @@ RSpec.describe PawnMoveInterpreter do
     context "when player color is black" do
       it "returns a Move object with correctly populated values" do
         exp_result = Move.new
-        exp_result.possible_start_sqs = [{ file: 'a', rank: 7 }]
+        exp_result.starts = [{ file: 'a', rank: 7 }]
         exp_result.target_sq = { file: 'a', rank: 6 }
         exp_result.piece_type = Piece::PA
         exp_result.color = Piece::BL
@@ -92,17 +92,17 @@ RSpec.describe PawnMoveInterpreter do
 
     context "when player color is white" do
       it "returns a Move object with correct possible start squares" do
-        exp_possible_start_sqs = [{ file: 'b', rank: 2 }]
+        exp_starts = [{ file: 'b', rank: 2 }]
         move = interpreter.interpret_capture({ start_file: 'b', move: { file: 'a', rank: 3 }, color: Piece::WH })
-        expect(move.possible_start_sqs).to eq(exp_possible_start_sqs)
+        expect(move.starts).to eq(exp_starts)
       end
     end
 
     context "when player color is black" do
       it "returns a Move object with correct possible start squares" do
-        exp_possible_start_sqs = [{ file: 'b', rank: 7 }]
+        exp_starts = [{ file: 'b', rank: 7 }]
         move = interpreter.interpret_capture({ start_file: 'b', move: { file: 'a', rank: 6 }, color: Piece::BL })
-        expect(move.possible_start_sqs).to eq(exp_possible_start_sqs)
+        expect(move.starts).to eq(exp_starts)
       end
     end
   end # describe '#interpret_capture'
