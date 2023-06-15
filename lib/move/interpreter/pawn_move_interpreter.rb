@@ -10,14 +10,34 @@ class PawnMoveInterpreter
   # interpreter.
   def interpret_move(raw_move, interpreted_move = Move.new)
     set_piece_info(interpreted_move, raw_move[:color])
-    compute_possible_start_sqs(raw_move[:move], raw_move[:color])
+    interpreted_move.possible_start_sqs = compute_possible_start_sqs(raw_move[:move], raw_move[:color])
     interpreted_move.target_sq = raw_move[:move]
+    interpreted_move
   end
 
   def compute_possible_start_sqs(target_sq, color, sqs = [])
     compute_possible_start_sqs_wh(target_sq, sqs) if color == Piece::WH
     compute_possible_start_sqs_bl(target_sq, sqs) if color == Piece::BL
     sqs
+  end
+
+  # Takes the raw format of a capture move
+  # (e.g. { start_file: 'b', move: { file: 'a', rank: 3 }, color: Piece::WH }),
+  # and interprets it to construct then return a Move object. The raw move
+  # should have had its syntax and color validated by a validator before being
+  # passed to this interpreter.
+  def interpret_capture(raw_move, interpreted_move = Move.new)
+    set_piece_info(interpreted_move, raw_move[:color])
+    interpreted_move.target_sq = raw_move[:move]
+    interpreted_move.capture = true
+
+    if raw_move[:color] == Piece::WH
+      interpreted_move.possible_start_sqs = [{ file: raw_move[:start_file], rank: raw_move[:move][:rank] - 1 }]
+    else
+      interpreted_move.possible_start_sqs = [{ file: raw_move[:start_file], rank: raw_move[:move][:rank] + 1 }]
+    end
+
+    interpreted_move
   end
 
 

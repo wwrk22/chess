@@ -46,4 +46,64 @@ RSpec.describe PawnMoveInterpreter do
       end
     end # context "when player color is black"
   end # describe '#compute_possble_start_sqs'
+
+  describe '#interpret_move' do
+    subject(:interpreter) { described_class.new }
+
+    matcher :be_same_as do |other_move|
+      match do |move|
+        move.possible_start_sqs == other_move.possible_start_sqs &&
+        move.target_sq == other_move.target_sq &&
+        move.piece_type == other_move.piece_type &&
+        move.color == other_move.color &&
+        move.opp_color == other_move.opp_color
+      end
+    end
+
+    context "when player color is white" do
+      it "returns a Move object with correctly populated values" do
+        exp_result = Move.new
+        exp_result.possible_start_sqs = [{ file: 'a', rank: 2 }]
+        exp_result.target_sq = { file: 'a', rank: 3}
+        exp_result.piece_type = Piece::PA
+        exp_result.color = Piece::WH
+        exp_result.opp_color = Piece::BL
+        result = interpreter.interpret_move({ move: { file: 'a', rank: 3 }, color: Piece::WH })
+        expect(result).to be_same_as(exp_result)
+      end
+    end
+
+    context "when player color is black" do
+      it "returns a Move object with correctly populated values" do
+        exp_result = Move.new
+        exp_result.possible_start_sqs = [{ file: 'a', rank: 7 }]
+        exp_result.target_sq = { file: 'a', rank: 6 }
+        exp_result.piece_type = Piece::PA
+        exp_result.color = Piece::BL
+        exp_result.opp_color = Piece::WH
+        result = interpreter.interpret_move({ move: { file: 'a', rank: 6 }, color: Piece::BL })
+        expect(result).to be_same_as(exp_result)
+      end
+    end
+  end # describe '#interpret_move'
+
+  describe '#interpret_capture' do
+    subject(:interpreter) { described_class.new }
+
+    context "when player color is white" do
+      it "returns a Move object with correct possible start squares" do
+        exp_possible_start_sqs = [{ file: 'b', rank: 2 }]
+        move = interpreter.interpret_capture({ start_file: 'b', move: { file: 'a', rank: 3 }, color: Piece::WH })
+        expect(move.possible_start_sqs).to eq(exp_possible_start_sqs)
+      end
+    end
+
+    context "when player color is black" do
+      it "returns a Move object with correct possible start squares" do
+        exp_possible_start_sqs = [{ file: 'b', rank: 7 }]
+        move = interpreter.interpret_capture({ start_file: 'b', move: { file: 'a', rank: 6 }, color: Piece::BL })
+        expect(move.possible_start_sqs).to eq(exp_possible_start_sqs)
+      end
+    end
+  end # describe '#interpret_capture'
 end
