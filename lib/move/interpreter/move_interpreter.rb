@@ -1,3 +1,5 @@
+require './lib/standards/board'
+
 # Any move interpreted is expected to have been validated by a validator class.
 class MoveInterpreter
   attr_reader :color
@@ -8,7 +10,7 @@ class MoveInterpreter
 
   def parse_piece(move)
     piece = move[0]
-    return Piece::PA if 'abcdefgh'.include? piece
+    return Piece::PA if Board::FILES.include? piece
     return piece
   end
 
