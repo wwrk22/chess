@@ -14,4 +14,12 @@ class Move
   def initialize
     @capture = false
   end
+
+  # Use all of the data in this Move except for @starts to compute all possible
+  # starting squares. A block that performs the actual computation is required
+  # to output an array of squares.
+  def compute_starts
+    data = { target: @target, piece: @piece, color: @color, capture: @capture }
+    yield(data)
+  end
 end
