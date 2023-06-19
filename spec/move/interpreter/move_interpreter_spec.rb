@@ -21,4 +21,22 @@ RSpec.describe MoveInterpreter do
       end
     end # context "when move is for a piece other than a pawn"
   end # describe '#parse_piece'
+
+  describe '#parse_target' do
+    context "when move is a check or checkmate" do
+      it "returns true" do
+        move = 'bxa3+'
+        target = interpreter.parse_target(move)
+        expect(target).to eq({ f: 'a', r: 3 })
+      end
+    end
+
+    context "when move is not a check or checkmate" do
+      it "returns true" do
+        move = 'Nba3'
+        target = interpreter.parse_target(move)
+        expect(target).to eq({ f: 'a', r: 3 })
+      end
+    end
+  end # describe '#parse_target'
 end
