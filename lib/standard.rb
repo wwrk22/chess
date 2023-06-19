@@ -1,4 +1,5 @@
 module Standard
   CH = '+' # Check
-  CHM = '#' # Checkmate
+  CM = '#' # Checkmate
+  CAPTURE = 'x'
 end

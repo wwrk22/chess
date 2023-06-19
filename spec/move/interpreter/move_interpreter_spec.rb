@@ -39,4 +39,38 @@ RSpec.describe MoveInterpreter do
       end
     end
   end # describe '#parse_target'
+
+  describe '#capture?' do
+    context "when move is a capture" do
+      context "when move is a check or checkmate" do
+        it "returns true" do
+          move = 'bxa3+'
+          expect(interpreter.capture?(move)).to eq(true)
+        end
+      end
+
+      context "when move is not a check or checkmate" do
+        it "returns false" do
+          move = 'bxa3'
+          expect(interpreter.capture?(move)).to eq(true)
+        end
+      end
+    end
+
+    context "when move is not a capture" do
+      context "when move is a check or checkmate" do
+        it "returns true" do
+          move = 'Nba3#'
+          expect(interpreter.capture?(move)).to eq(false)
+        end
+      end
+
+      context "when move is not a check or checkmate" do
+        it "returns false" do
+          move = 'Nba3'
+          expect(interpreter.capture?(move)).to eq(false)
+        end
+      end
+    end
+  end
 end
