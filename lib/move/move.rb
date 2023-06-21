@@ -1,3 +1,5 @@
+require './lib/standards/piece'
+
 class Move
   # All the possible starting squares
   attr_accessor :starts
@@ -7,6 +9,10 @@ class Move
 
   # Type and color of the chess piece being play
   attr_accessor :piece, :color
+  
+  # The starting file or rank of the moving piece
+  # These are not always required
+  attr_accessor :start_f, :start_r
 
   # Tell whether or not the move is a capture
   attr_accessor :capture
@@ -30,6 +36,11 @@ class Move
 
   # Return a hash of the attributes, all except @starts.
   def to_hash
-    { target: @target, piece: @piece, color: @color, capture: @capture }
+    if @piece == Piece::PA && @capture
+      { target: @target, piece: @piece, color: @color,
+        capture: @capture, start_f: @start_f }
+    else
+      { target: @target, piece: @piece, color: @color, capture: @capture }
+    end
   end
 end
