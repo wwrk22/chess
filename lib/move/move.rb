@@ -21,9 +21,9 @@ class Move
   # missing, thn return false. Otherwise, proceed to call the block, then
   # return true.
   def compute_starts
-    return false if to_hash.has_value? nil
+    return false if to_hash.has_value?(nil) || block_given? == false
     @starts = yield(to_hash)
-    true
+    return true
   end
 
   private
