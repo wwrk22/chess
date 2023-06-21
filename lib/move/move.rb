@@ -17,9 +17,19 @@ class Move
 
   # Use all of the data in this Move except for @starts to compute all possible
   # starting squares. A block that performs the actual computation is required
-  # to output an array of squares.
+  # to output an array of squares. If any of the necessary information is
+  # missing, thn return false. Otherwise, proceed to call the block, then
+  # return true.
   def compute_starts
-    data = { target: @target, piece: @piece, color: @color, capture: @capture }
-    yield(data)
+    return false if to_hash.has_value? nil
+    @starts = yield(to_hash)
+    true
+  end
+
+  private
+
+  # Return a hash of the attributes, all except @starts.
+  def to_hash
+    { target: @target, piece: @piece, color: @color, capture: @capture }
   end
 end

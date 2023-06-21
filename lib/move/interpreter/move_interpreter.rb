@@ -5,6 +5,7 @@ require './lib/standard'
 class MoveInterpreter
   attr_reader :color
 
+  # Color is required to interpret pawn moves correctly.
   def initialize(color)
     @color = color
   end
