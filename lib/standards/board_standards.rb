@@ -1,3 +1,3 @@
-module Board
+module BoardStandards
   FILES = 'abcdefgh'
 end

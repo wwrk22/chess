@@ -1,4 +1,4 @@
-require './lib/standards/board'
+require './lib/standards/board_standards'
 require './lib/standard'
 
 # Any move interpreted is expected to have been validated by a validator class.
@@ -13,7 +13,7 @@ class MoveInterpreter
   # Parse the type of the chess piece in play.
   def parse_piece(move)
     piece = move[0]
-    return Piece::PA if Board::FILES.include? piece
+    return Piece::PA if BoardStandards::FILES.include? piece
     return piece
   end
 
@@ -32,6 +32,14 @@ class MoveInterpreter
       return (move[-4] == Standard::CAPTURE) ? true : false
     else
       return (move[-3] == Standard::CAPTURE) ? true : false
+    end
+  end
+
+  def set_start_f_or_r(move_str, move)
+    if move_str =~ /^R[a-h1-8](x|[a-h]).*$/
+      f_or_r = move_str[1]
+      move.start_f = f_or_r if BoardStandards::FILES.include? move_str[1]
+      move.start_r = f_or_r.to_i
     end
   end
 end

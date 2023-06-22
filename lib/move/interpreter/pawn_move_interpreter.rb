@@ -1,7 +1,6 @@
 require './lib/move/move'
 require_relative './move_interpreter'
 require './lib/standards/piece'
-require_relative '../move'
 
 # Interpret pawn moves for one color to output a Move object that gives the
 # necessary information to determine the legality of the move.
