@@ -27,20 +27,24 @@ class Move
   # missing, thn return false. Otherwise, proceed to call the block, then
   # return true.
   def compute_starts
-    return false if to_hash.has_value?(nil) || block_given? == false
-    @starts = yield(to_hash)
-    return true
+    return nil if to_hash.has_value?(nil) || block_given? == false
+    yield to_hash(true)
   end
 
   private
 
   # Return a hash of the attributes, all except @starts.
-  def to_hash
+  def to_hash(include_start = false)
     if @piece == Piece::PA && @capture
       { target: @target, piece: @piece, color: @color,
         capture: @capture, start_f: @start_f }
     else
-      { target: @target, piece: @piece, color: @color, capture: @capture }
+      if include_start
+        { target: @target, piece: @piece, color: @color, capture: @capture,
+          start_f: @start_f, start_r: @start_r }
+      else
+        { target: @target, piece: @piece, color: @color, capture: @capture }
+      end
     end
   end
 end
