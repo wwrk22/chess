@@ -71,6 +71,28 @@ RSpec.describe MoveInterpreter do
           expect(interpreter.capture?(move)).to eq(false)
         end
       end
+    end # context "when move is not a capture"
+  end # describe '#capture?'
+
+  describe '#parse_start_fr' do
+    context "when move is for a pawn" do
+      it "returns the file or rank of the moving pawn" do
+        expect(interpreter.parse_start_fr('axb3')).to eq('a')
+      end
     end
-  end
+
+    context "when move is for a piece other than pawn and king" do
+      context "when move is a capture" do
+        it "returns the file or rank of the capturing piece" do
+          expect(interpreter.parse_start_fr('Raxd4')).to eq('a')
+        end
+      end
+
+      context "when move is not a capture" do
+        it "returns the file or rank of the moving piece" do
+          expect(interpreter.parse_start_fr('Nba3')).to eq('b')
+        end
+      end
+    end
+  end # describe '#parse_start_fr'
 end

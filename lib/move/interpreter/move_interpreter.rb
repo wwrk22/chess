@@ -35,11 +35,14 @@ class MoveInterpreter
     end
   end
 
-  def set_start_f_or_r(move_str, move)
-    if move_str =~ /^R[a-h1-8](x|[a-h]).*$/
-      f_or_r = move_str[1]
-      move.start_f = f_or_r if BoardStandards::FILES.include? move_str[1]
-      move.start_r = f_or_r.to_i
+  # Parse then return the file or rank of the square of the moving piece.
+  def parse_start_fr(move)
+    # Move is for pawn.
+    return move[0] if move =~ /^[a-h]x[a-h][1-8]$/
+
+    # Move is for rook, knight, bishop, or queen.
+    if move =~ /^[RNBQ][a-h1-8](x|[a-h]).+$/
+      BoardStandards::FILES.include?(move[1]) ? move[1] : move[1].to_i
     end
   end
 end
