@@ -14,10 +14,16 @@ class Move
   # These are not always required
   attr_accessor :start_f, :start_r
 
-  # Tell whether or not the move is a capture
-  attr_accessor :capture
-
-  def initialize
-    @capture = false
+  def compute(&computation)
+    @starts = computation.call(to_hash)
   end
+
+  private
+
+  def to_hash
+    { target: @target, color: @color,
+      start_f: @start_f ? @start_f : nil,
+      start_r: @start_r ? @start_r : nil }
+  end
+
 end
