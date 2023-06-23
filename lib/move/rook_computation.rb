@@ -1,4 +1,3 @@
-require './lib/standards/piece'
 require './lib/board/board'
 
 module RookComputation

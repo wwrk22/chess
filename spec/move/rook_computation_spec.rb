@@ -1,5 +1,5 @@
 require './lib/move/rook_computation'
-require './spec/support/computation_helpers.rb'
+require './spec/support/computation_helpers'
 
 RSpec.configure do |cfg|
   cfg.include ComputationHelpers
