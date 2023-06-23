@@ -13,5 +13,4 @@ module ComputationHelpers
       line << { f: file, r: rank }
     end
   end
-
 end
