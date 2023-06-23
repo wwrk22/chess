@@ -17,21 +17,18 @@ module KnightComputation
         starts.concat(bottom_right(file, rank))
         starts.concat(bottom_left(file, rank))
         starts.concat(top_left(file, rank))
-        prune_oob_squares(starts)
       end
 
       def starts_for_file(data, starts = [])
         file_diff = (data[:target][:f].ord - data[:start_f].ord).abs
-        starts.concat(one_file_away(data)) if file_diff == 1
-        starts.concat(two_files_away(data)) if file_diff == 2
-        prune_oob_squares(starts)
+        return starts.concat(one_file_away(data)) if file_diff == 1
+        return starts.concat(two_files_away(data)) if file_diff == 2
       end
 
       def starts_for_rank(data, starts = [])
         rank_diff = (data[:target][:r] - data[:start_r]).abs
-        starts.concat(one_rank_away(data)) if rank_diff == 1
-        starts.concat(two_ranks_away(data)) if rank_diff == 2
-        prune_oob_squares(starts)
+        return starts.concat(one_rank_away(data)) if rank_diff == 1
+        return starts.concat(two_ranks_away(data)) if rank_diff == 2
       end
 
       private
@@ -75,17 +72,7 @@ module KnightComputation
         [{ f: (file.ord - 2).chr, r: rank + 1 },
          { f: (file.ord - 1).chr, r: rank + 2 }]
       end
-
-      def prune_oob_squares(starts)
-        starts.delete_if do |square|
-          valid_square?(square[:f], square[:r]) == false
-        end
-      end
-
-      def valid_square?(file, rank)
-        BoardStandards::FILES.include?(file) && 1 <= rank && rank <= 8
-      end
-    end
-  end
+    end # class << self
+  end # module Helper
 
 end
