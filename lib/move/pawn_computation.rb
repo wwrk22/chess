@@ -42,4 +42,5 @@ module PawnComputation
       end
     end
   end
+
 end
