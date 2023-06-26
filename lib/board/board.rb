@@ -2,6 +2,9 @@ require './lib/standards/board_standards'
 
 class Board
 
+  def at(file, rank)
+  end
+
   class << self
 
     def get_line(f_or_r)
