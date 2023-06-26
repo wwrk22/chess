@@ -40,7 +40,7 @@ RSpec.describe MoveArbiter do
             end
           end
 
-          context "when there is not a pawn of the player's color on the square" do
+          context "when the starting square is empty" do
             subject(:arbiter) { described_class.new }
             let!(:board) { instance_double(Board) }
 
@@ -54,7 +54,49 @@ RSpec.describe MoveArbiter do
               start_sq = arbiter.judge_pawn_move(board, data)
               expect(start_sq).to be_nil
             end
-          end
+          end # context "when the only starting square is empty"
+
+          context "when the there is a non-pawn piece of the player's color on the square" do
+            subject(:arbiter) { described_class.new }
+            let!(:board) { instance_double(Board) }
+
+            before do
+              allow(board).to receive(:at).with('a', 3).and_return(nil)
+              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::RO, color: Piece::WH })
+            end
+
+            it "returns nil" do
+              data = {
+                capture: false,
+                target: { f: 'a', r: 3 },
+                starts: [{ f: 'a', r: 2 }],
+                color: Piece::WH
+              }
+              start_sq = arbiter.judge_pawn_move(board, data)
+              expect(start_sq).to be_nil
+            end
+          end # context "when the there is a non-pawn piece of the player's color on the square"
+
+          context "when there is a piece of the opponent's color on the square" do
+            subject(:arbiter) { described_class.new }
+            let!(:board) { instance_double(Board) }
+
+            before do
+              allow(board).to receive(:at).with('a', 3).and_return(nil)
+              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::PA, color: Piece::BL })
+            end
+
+            it "returns nil" do
+              data = {
+                capture: false,
+                target: { f: 'a', r: 3 },
+                starts: [{ f: 'a', r: 2 }],
+                color: Piece::WH
+              }
+              start_sq = arbiter.judge_pawn_move(board, data)
+              expect(start_sq).to be_nil
+            end
+          end # context "when there is a piece of the opponent's color on the square"
         end # context "when there is only one possible starting square"
 
         context "when there are two possible starting squares" do
@@ -167,6 +209,26 @@ RSpec.describe MoveArbiter do
           expect(start_sq).to be_nil
         end
       end # context "when target square does not have a piece of the opponent's color"
+
+      context "when target square has a piece of the player's color" do
+        subject(:arbiter) { described_class.new }
+        let!(:board) { instance_double(Board) }
+
+        before do
+          allow(board).to receive(:at).with('a', 3).and_return({ piece: Piece::PA, color: Piece::WH })
+        end
+        
+        it "returns nil" do
+          data = {
+            capture: true,
+            target: { f: 'a', r: 3 },
+            starts: [{ f: 'b', r: 2 }],
+            color: Piece::WH
+          }
+          start_sq = arbiter.judge_pawn_move(board, data)
+          expect(start_sq).to be_nil
+        end
+      end
     end # context "when the move is a capture"
   end # describe '#judge_pawn_move'
 

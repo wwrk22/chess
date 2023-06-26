@@ -30,6 +30,8 @@ class MoveArbiter
     else # capture
       return nil if target_sq.nil?
 
+      return nil if target_sq[:color] == data[:color]
+
       start_sq = data[:starts][0]
 
       if pawn? board.at(start_sq[:f], start_sq[:r]), data[:color]
@@ -43,11 +45,11 @@ class MoveArbiter
 
   private
 
-  def pawn?(square, color)
-    if square.nil?
+  def pawn?(piece_data, color)
+    if piece_data.nil?
       return false
     else
-      return square[:piece] == Piece::PA && square[:color] == color
+      return piece_data[:piece] == Piece::PA && piece_data[:color] == color
     end
   end
 end
