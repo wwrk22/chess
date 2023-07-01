@@ -38,6 +38,6 @@ class PawnArbiter
   def square_holds_pawn(square, board, player_color)
     chess_piece = board.at(square[:f], square[:r])
     return false if chess_piece.nil? # square does not hold a chess piece
-    chess_piece[:piece] == Piece::PA && chess_piece[:color] == player_color
+    chess_piece[:type] == Piece::PA && chess_piece[:color] == player_color
   end
 end

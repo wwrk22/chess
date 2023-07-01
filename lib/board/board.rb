@@ -3,6 +3,9 @@ require './lib/standards/board_standards'
 class Board
 
   def at(file, rank)
+    # Return hash format:
+    # If the square holds a chess piece: { type: 'P', color: 'w' } for a white pawn
+    # If the square is empty: nil
   end
 
   class << self

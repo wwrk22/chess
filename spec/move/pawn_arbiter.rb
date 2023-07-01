@@ -27,7 +27,7 @@ RSpec.describe PawnArbiter do
 
             before do
               allow(board).to receive(:at).with('a', 3).and_return(nil)
-              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::PA, color: Piece::WH })
+              allow(board).to receive(:at).with('a', 2).and_return({ type: Piece::PA, color: Piece::WH })
             end
 
             it "returns the square" do
@@ -56,7 +56,7 @@ RSpec.describe PawnArbiter do
 
             before do
               allow(board).to receive(:at).with('a', 3).and_return(nil)
-              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::RO, color: Piece::WH })
+              allow(board).to receive(:at).with('a', 2).and_return({ type: Piece::RO, color: Piece::WH })
             end
 
             it "returns nil" do
@@ -75,7 +75,7 @@ RSpec.describe PawnArbiter do
 
             before do
               allow(board).to receive(:at).with('a', 3).and_return(nil)
-              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::PA, color: Piece::BL })
+              allow(board).to receive(:at).with('a', 2).and_return({ type: Piece::PA, color: Piece::BL })
             end
 
             it "returns nil" do
@@ -116,7 +116,7 @@ RSpec.describe PawnArbiter do
 
             before do
               allow(board).to receive(:at).with('a', 4).and_return(nil)
-              allow(board).to receive(:at).with('a', 3).and_return({ piece: Piece::PA, color: Piece::WH })
+              allow(board).to receive(:at).with('a', 3).and_return({ type: Piece::PA, color: Piece::WH })
             end
 
             it "returns the square" do
@@ -136,7 +136,7 @@ RSpec.describe PawnArbiter do
             before do
               allow(board).to receive(:at).with('a', 4).and_return(nil)
               allow(board).to receive(:at).with('a', 3).and_return(nil)
-              allow(board).to receive(:at).with('a', 2).and_return({ piece: Piece::PA, color: Piece::WH })
+              allow(board).to receive(:at).with('a', 2).and_return({ type: Piece::PA, color: Piece::WH })
             end
 
             it "returns the square" do
@@ -158,8 +158,8 @@ RSpec.describe PawnArbiter do
         let!(:board) { instance_double(Board) }
 
         before do
-          allow(board).to receive(:at).with('a', 3).and_return({ piece: Piece::PA, color: Piece::BL })
-          allow(board).to receive(:at).with('b', 2).and_return({ piece: Piece::PA, color: Piece::WH })
+          allow(board).to receive(:at).with('a', 3).and_return({ type: Piece::PA, color: Piece::BL })
+          allow(board).to receive(:at).with('b', 2).and_return({ type: Piece::PA, color: Piece::WH })
         end
 
         it "returns the starting square of the capturing pawn" do
@@ -195,7 +195,7 @@ RSpec.describe PawnArbiter do
         let!(:board) { instance_double(Board) }
 
         before do
-          allow(board).to receive(:at).with('a', 3).and_return({ piece: Piece::PA, color: Piece::WH })
+          allow(board).to receive(:at).with('a', 3).and_return({ type: Piece::PA, color: Piece::WH })
         end
         
         it "returns nil" do
