@@ -8,6 +8,10 @@ RSpec.describe RookArbiter do
   describe '#check_target' do
     let!(:file) { 'd' }
     let!(:rank) { 4 }
+    let!(:target) { { file: file, rank: rank } }
+    let!(:test_type) { Piece::RO }
+    let!(:test_color) { Piece::WH }
+    let!(:wh_rook) { { type: test_type, color: test_color } }
     let!(:board) { instance_double(Board) }
 
     context "when the target square on the board is empty" do
@@ -16,20 +20,39 @@ RSpec.describe RookArbiter do
       end
 
       it "returns false" do
-        target = { file: file, rank: rank }
-        piece = { type: Piece::RO, color: Piece::WH }
-        expect(arbiter.check_target(board, target, piece)).to eq(false)
+        expect(arbiter.check_target(board, target, wh_rook)).to eq(false)
       end
     end # context "when the target square on the board is empty"
 
     context "when the target square on the board is not empty" do
+      context "when the chess piece on the square matches both type and color" do
+        before do
+          allow(board).to receive(:at).with(file, rank).and_return({ type: test_type, color: test_color })
+        end
+
+        it "returns true" do
+          expect(arbiter.check_target(board, target, wh_rook)).to eq(true)
+        end
+      end
+
       context "when the chess piece on the square matches the type only" do
+        before do
+          allow(board).to receive(:at).with(file, rank).and_return({ type: test_type, color: Piece::BL })
+        end
+
+        it "returns false" do
+          expect(arbiter.check_target(board, target, wh_rook)).to eq(false)
+        end
       end
 
       context "when the chess piece on the square matches the color only" do
-      end
+        before do
+          allow(board).to receive(:at).with(file, rank).and_return({ type: Piece::PA, color: test_color })
+        end
 
-      context "when the chess piece on the square matches both type and color" do
+        it "returns false" do
+          expect(arbiter.check_target(board, target, wh_rook)).to eq(false)
+        end
       end
 
       context "when the chess piece on the square matches neither type nor color" do
@@ -38,9 +61,7 @@ RSpec.describe RookArbiter do
         end
 
         it "returns false" do
-          target = { file: file, rank: rank }
-          piece = { type: Piece::RO, color: Piece::WH }
-          expect(arbiter.check_target(board, target, piece)).to eq(false)
+          expect(arbiter.check_target(board, target, wh_rook)).to eq(false)
         end
       end
     end # context "when the target square on the board is not empty"
