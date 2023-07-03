@@ -14,9 +14,10 @@ class RookArbiter
   # one of the chess piece types in the Piece module, and the 'color' key with
   # either of the two chess piece colors in the Piece module.
   def check_target(board, square, piece = {})
-    if board.at(square[:file], square[:rank]).nil?
-      return nil
-    end
+    target = board.at(square[:file], square[:rank])
+
+    return false if target.nil?
+    target[:type] == piece[:type] && target[:color] == piece[:color]
   end
 
   private
