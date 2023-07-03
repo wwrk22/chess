@@ -10,8 +10,8 @@ class PawnArbiter
     capture, starts, player_color = [data[:capture], data[:starts], data[:color]]
     target = board.at(data[:target][:f], data[:target][:r])
 
-    return judge_non_capture(target, starts, player_color, board) if capture == false
-    return judge_capture(starts[0], target, board, player_color)
+    return judge_capture(starts[0], target, board, player_color) if capture
+    return judge_non_capture(target, starts, player_color, board)
   end
 
   private
