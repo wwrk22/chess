@@ -20,6 +20,12 @@ class RookArbiter
     target[:type] == piece[:type] && target[:color] == piece[:color]
   end
 
+  def check_start(board, square, piece = {})
+    start = board.at(square[:file], square[:rank])
+
+    return nil if start.nil?
+  end
+
   private
 
   def judge_non_capture(target, possible_starts, player_color, board)
