@@ -24,7 +24,6 @@ RSpec.describe Move do
       end
     end
 
-
     context "when a piece is moved with a starting file or rank" do
       subject(:move) { described_class.new }
 
