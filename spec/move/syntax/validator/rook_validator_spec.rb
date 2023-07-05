@@ -1,6 +1,6 @@
-require './lib/move/syntax/rook_validator'
-require './lib/standards/piece'
-require './lib/errors/color_unknown_error'
+require './lib/move/syntax/validator/rook_validator'
+require './lib/standard/chess_piece'
+require './lib/error/color_unknown_error'
 
 RSpec.describe Move::Syntax::RookValidator do
 
@@ -12,14 +12,14 @@ RSpec.describe Move::Syntax::RookValidator do
       context "when syntx is valid" do
         context "when starting file or rank is specified" do
           it "returns the move" do 
-            move = { move: 'R8a5', color: Piece::BL }
+            move = { move: 'R8a5', color: ChessPiece::BL }
             expect(validator.validate(move)).to eq(move)
           end
         end
 
         context "when starting file or rank is not specified" do
           it "returns the move" do 
-            move = { move: 'Ra5', color: Piece::WH }
+            move = { move: 'Ra5', color: ChessPiece::WH }
             expect(validator.validate(move)).to eq(move)
           end
         end
@@ -27,7 +27,7 @@ RSpec.describe Move::Syntax::RookValidator do
 
       context "when syntax is invalid" do
         it "returns nil" do
-          move = { move: 'Rz5', color: Piece::BL }
+          move = { move: 'Rz5', color: ChessPiece::BL }
           expect(validator.validate(move)).to be_nil
         end
       end # context "when syntax is invalid"
@@ -37,14 +37,14 @@ RSpec.describe Move::Syntax::RookValidator do
       context "when syntax is valid" do
         context "when starting file or rank is specified" do
           it "returns the move" do
-            move = { move: 'Rdxa5', color: Piece::WH }
+            move = { move: 'Rdxa5', color: ChessPiece::WH }
             expect(validator.validate(move)).to eq(move)
           end
         end
 
         context "when starting file or rank is not specified" do
           it "returns the move" do
-            move = { move: 'Rxa5', color: Piece::BL }
+            move = { move: 'Rxa5', color: ChessPiece::BL }
             expect(validator.validate(move)).to eq(move)
           end
         end
@@ -52,7 +52,7 @@ RSpec.describe Move::Syntax::RookValidator do
 
       context "when syntax is invalid" do
         it "returns nil" do
-          move = { move: 'R9xa5', color: Piece::BL }
+          move = { move: 'R9xa5', color: ChessPiece::BL }
           expect(validator.validate(move)).to be_nil
         end
       end # context "when syntax is invalid"
