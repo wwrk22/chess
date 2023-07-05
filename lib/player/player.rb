@@ -1,20 +1,16 @@
-require_relative './standard/piece'
-require_relative './move/syntax_validator'
+require_relative '../standard/piece'
 
-# Uses the SyntaxValidator to validate player moves.
 class Player
   attr_reader :name, :color
 
   def initialize(name, color)
     @name = name
     @color = color
-    @syn_vtor = SyntaxValidator.new
   end
 
-  # Return a hash of the move and color if the move had valid syntax.
-  # Otherwise, return nil.
+  # Prompt the player for a move, then return a formatted hash of the move.
   def prompt_move
     input = gets.chomp
-    return { move: input, color: @color } if @syn_vtor.validate(input)
+    return { move: input, color: @color }
   end
 end
