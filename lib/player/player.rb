@@ -1,5 +1,3 @@
-require_relative '../standard/piece'
-
 class Player
   attr_reader :name, :color
 

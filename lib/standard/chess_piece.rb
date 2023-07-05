@@ -1,4 +1,4 @@
-module Piece
+module ChessPiece
   WH = 'wh'
   BL = 'bl'
 
