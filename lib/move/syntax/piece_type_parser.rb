@@ -2,10 +2,6 @@ require './lib/standard/chess_piece'
 require './lib/standard/chess_board'
 
 
-module Move
-
-module Syntax
-
 class PieceTypeParser
 
   def parse(move)
@@ -14,7 +10,3 @@ class PieceTypeParser
   end
 
 end # PieceTypeParser
-
-end # Syntax
-
-end # Move

@@ -2,8 +2,7 @@ require_relative '../move/king_moves'
 require './lib/error/color_unknown_error'
 require './lib/standard/chess_piece'
 
-module Move
-module Syntax
+
 class KingValidator
   
   # Return the move if move has valid syntax. Otherwise, return nil.
@@ -16,6 +15,4 @@ class KingValidator
     move if move[:move] =~ KingMoves::MOVE || move[:move] =~ KingMoves::CASTLE
   end
 
-end
-end
 end

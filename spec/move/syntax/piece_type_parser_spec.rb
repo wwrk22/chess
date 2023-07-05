@@ -1,7 +1,7 @@
 require './lib/move/syntax/piece_type_parser'
 
 
-RSpec.describe Move::Syntax::PieceTypeParser do
+RSpec.describe PieceTypeParser do
 
   describe '#parse' do
     subject(:parser) { described_class.new }
