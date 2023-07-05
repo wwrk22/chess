@@ -1,5 +1,5 @@
 require './lib/move/move'
-require './lib/standards/piece'
+require './lib/standard/piece'
 require './spec/support/move_helpers'
 
 RSpec.configure do |cfg|

@@ -1,4 +1,4 @@
-require './lib/standards/piece'
+require './lib/standard/piece'
 
 class Move
   # All the possible starting squares

@@ -1,4 +1,4 @@
-require './lib/standards/piece'
+require './lib/standard/piece'
 
 module MoveHelpers
   # Create and return a Move object with attributes required for a non-capture

@@ -1,4 +1,4 @@
-require_relative './standards/pieces'
+require_relative './standard/piece'
 require_relative './move/syntax_validator'
 
 # Uses the SyntaxValidator to validate player moves.

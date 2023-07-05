@@ -1,4 +1,4 @@
-require './lib/player'
+require './lib/player/player'
 
 RSpec.describe Player do
   describe '#prompt_move' do
