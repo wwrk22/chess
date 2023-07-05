@@ -1,6 +1,6 @@
-module Piece
-  WH = 'White'
-  BL = 'Black'
+module ChessPiece
+  WH = 'wh'
+  BL = 'bl'
 
   PA = 'P' # pawn
   RO = 'R' # rook
