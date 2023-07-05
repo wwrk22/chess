@@ -1,3 +1,3 @@
-module BoardStandards
+module ChessBoard
   FILES = 'abcdefgh'
 end

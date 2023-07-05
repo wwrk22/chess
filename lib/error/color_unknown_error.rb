@@ -1,8 +1,10 @@
-require './lib/standards/piece'
+require './lib/standard/chess_piece'
 
 class ColorUnknownError < StandardError
   def initialize(color)
-    msg = "Color must be #{Piece::WH} or #{Piece::BL}. #{color} is unknown."
+    white = ChessPiece::WH
+    black = ChessPiece::BL
+    msg = "Color must be #{white} or #{black}. #{color} is unknown."
     super(msg)
   end
 end
