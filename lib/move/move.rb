@@ -1,29 +1,17 @@
-require './lib/standard/piece'
-
 class Move
-  # All the possible starting squares
-  attr_accessor :starts
+  # The starting and ending squares.
+  # Format e.g.: { file: 'a', rank: 3 }
+  attr_accessor :start, :target
 
-  # The destination square
-  attr_accessor :target
+  # The type and color of the moving piece.
+  # Format e.g.: { type: ChessPiece::PA, color: ChessPiece::WH }
+  attr_accessor :moving_piece
 
-  # Type and color of the chess piece being play
-  attr_accessor :piece, :color
-  
-  # The starting file or rank of the moving piece
-  # These are not always required
-  attr_accessor :start_f, :start_r
+  # Indicate whether or not the move is a capture.
+  # Format: Boolean
+  attr_accessor :capture
 
-  def compute(&computation)
-    @starts = computation.call(to_hash)
-  end
-
-  private
-
-  def to_hash
-    { target: @target, color: @color,
-      start_f: @start_f ? @start_f : nil,
-      start_r: @start_r ? @start_r : nil }
-  end
-
+  # The direction in which the moving piece moves to get to its target.
+  # Format e.g.: { file: 1, rank: 0 } indicates a horizontal path
+  attr_accessor :direction
 end
