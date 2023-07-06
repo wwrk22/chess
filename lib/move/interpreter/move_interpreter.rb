@@ -1,5 +1,7 @@
-require './lib/standards/board_standards'
-require './lib/standard'
+require './lib/standard/chess_board'
+require './lib/standard/standard'
+require './lib/standard/chess_piece'
+
 
 # Any move interpreted is expected to have been validated by a validator class.
 class MoveInterpreter
@@ -13,7 +15,7 @@ class MoveInterpreter
   # Parse the type of the chess piece in play.
   def parse_piece(move)
     piece = move[0]
-    return Piece::PA if BoardStandards::FILES.include? piece
+    return ChessPiece::PA if ChessBoard::FILES.include? piece
     return piece
   end
 
@@ -42,7 +44,7 @@ class MoveInterpreter
 
     # Move is for rook, knight, bishop, or queen.
     if move =~ /^[RNBQ][a-h1-8](x|[a-h]).+$/
-      BoardStandards::FILES.include?(move[1]) ? move[1] : move[1].to_i
+      ChessBoard::FILES.include?(move[1]) ? move[1] : move[1].to_i
     end
   end
 end

@@ -1,15 +1,16 @@
 require './lib/move/interpreter/move_interpreter'
-require './lib/standards/piece'
+require './lib/standard/chess_piece'
+
 
 RSpec.describe MoveInterpreter do
-  subject(:interpreter) { described_class.new(Piece::WH) }
+  subject(:interpreter) { described_class.new(ChessPiece::WH) }
   
   describe '#parse_piece' do
     context "when move is for a pawn" do
       it "returns the string 'P'" do
         move = 'a3'
         piece = interpreter.parse_piece(move)
-        expect(piece).to eq(Piece::PA)
+        expect(piece).to eq(ChessPiece::PA)
       end
     end
 
@@ -17,7 +18,7 @@ RSpec.describe MoveInterpreter do
       it "returns the first letter of the move" do
         move = 'Na3'
         piece = interpreter.parse_piece(move)
-        expect(piece).to eq(Piece::KN)
+        expect(piece).to eq(ChessPiece::KN)
       end
     end # context "when move is for a piece other than a pawn"
   end # describe '#parse_piece'
