@@ -15,36 +15,40 @@ class MoveInterpreter
   # Parse the type of the chess piece in play.
   def parse_piece(move)
     piece = move[0]
-    return ChessPiece::PA if ChessBoard::FILES.include? piece
-    return piece
+    piece = ChessPiece::PA if ChessBoard::FILES.include? piece
+    { type: piece, color: @color }
   end
 
   # Parse the destination square of the move.
   def parse_target(move)
+    target_file, target_rank = [move[-2], move[-1].to_i]
+
     if move.end_with?(Standard::CH) || move.end_with?(Standard::CM)
-      { f: move[-3], r: move[-2].to_i }
-    else
-      { f: move[-2], r: move[-1].to_i }
+      target_file, target_rank = [move[-3], move[-2].to_i]
     end
+
+    { file: target_file, rank: target_rank }
   end
 
   # Determine whether or not the move is a capture.
   def capture?(move)
+    capture_mark = move[-3]
+
     if move.end_with?(Standard::CH) || move.end_with?(Standard::CM)
-      return (move[-4] == Standard::CAPTURE) ? true : false
-    else
-      return (move[-3] == Standard::CAPTURE) ? true : false
+      capture_mark = move[-4]
     end
+
+    capture_mark == Standard::CAPTURE
   end
 
   # Parse then return the file or rank of the square of the moving piece.
-  def parse_start_fr(move)
+  def parse_starting_square(move)
     # Move is for pawn.
-    return move[0] if move =~ /^[a-h]x[a-h][1-8]$/
+    return { file: move[0] } if move =~ /^[a-h]x[a-h][1-8]$/
 
     # Move is for rook, knight, bishop, or queen.
     if move =~ /^[RNBQ][a-h1-8](x|[a-h]).+$/
-      ChessBoard::FILES.include?(move[1]) ? move[1] : move[1].to_i
+      ChessBoard::FILES.include?(move[1]) ? { file: move[1] } : { rank: move[1].to_i }
     end
   end
 end
