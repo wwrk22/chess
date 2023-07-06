@@ -2,7 +2,7 @@ require './lib/move/syntax/validator/validator'
 require './lib/standard/chess_piece'
 
 
-RSpec.describe Move::Syntax::Validator do
+RSpec.describe Validator do
   
   describe '#validate' do
     subject(:validator) { described_class.new }

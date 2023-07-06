@@ -7,10 +7,6 @@ require_relative './queen_validator'
 require_relative './king_validator'
 
 
-module Move
-
-module Syntax
-
 class Validator
 
   def initialize
@@ -42,7 +38,3 @@ class Validator
   end
 
 end # Validator
-    
-end # Syntax
-
-end # Move

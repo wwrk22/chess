@@ -1,4 +1,4 @@
-class Move
+class ChessMove
   # The starting and ending squares.
   # Format e.g.: { file: 'a', rank: 3 }
   attr_accessor :start, :target
