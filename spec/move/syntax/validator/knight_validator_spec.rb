@@ -2,7 +2,7 @@ require './lib/move/syntax/validator/knight_validator'
 require './lib/standard/chess_piece'
 require './lib/error/color_unknown_error'
 
-RSpec.describe Move::Syntax::KnightValidator do
+RSpec.describe KnightValidator do
 
   describe '#validate' do
     subject(:validator) { described_class.new }

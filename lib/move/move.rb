@@ -1,17 +1,20 @@
-class ChessMove
-  # The starting and ending squares.
-  # Format e.g.: { file: 'a', rank: 3 }
-  attr_accessor :start, :target
-
-  # The type and color of the moving piece.
-  # Format e.g.: { type: ChessPiece::PA, color: ChessPiece::WH }
+class Move
+  # The type and color of the piece making the move.
   attr_accessor :moving_piece
+
+  # The target square that the @moving_piece is moving to or capturing.
+  attr_accessor :target
 
   # Indicate whether or not the move is a capture.
   # Format: Boolean
   attr_accessor :capture
 
-  # The direction in which the moving piece moves to get to its target.
-  # Format e.g.: { file: 1, rank: 0 } indicates a horizontal path
-  attr_accessor :direction
+  # The possible starting squares of the moving piece used only when the moving
+  # piece is a pawn or a knight.
+  attr_accessor :starts
+
+  # The directions from @target that can be followed to check for possible
+  # starting squares of @moving_piece. This is used by all piece types except
+  # for pawn and knight.
+  attr_accessor :directions
 end

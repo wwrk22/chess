@@ -1,7 +1,7 @@
 require './lib/move/syntax/validator/bishop_validator'
 require './lib/standard/chess_piece'
 
-RSpec.describe Move::Syntax::BishopValidator do
+RSpec.describe BishopValidator do
   
   describe '#validate' do
     subject(:validator) { described_class.new }
