@@ -9,22 +9,16 @@ class PawnComputer
   def compute_non_capture(target, player_color, starts = [])
     target_file, target_rank = [target[:file], target[:rank]]
 
-    # Single move
-    if player_color == ChessPiece::WH && rank_not_four?(target_rank)
-      start_file, start_rank = [target_file, target_rank - 1]
-      starts << { file: start_file, rank: start_rank }
+    if player_color == ChessPiece::WH
+      starts << { file: target_file, rank: target_rank - 1 }
+
+      if target_rank == 4
+        starts << { file: target_file, rank: 2 }
+      end
     end
-
-    # Double move
-
 
     return starts
   end
 
 
-  private
-
-  def rank_not_four?(rank)
-    rank != 4 && 1 < rank
-  end
 end
