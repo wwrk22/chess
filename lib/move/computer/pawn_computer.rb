@@ -2,7 +2,7 @@ require './lib/standard/chess_piece'
 
 
 # Computes the required information for use by the chess board in order to
-# perform a move.
+# perform a move with a pawn.
 class PawnComputer
   
   # Compute at most two possible starting squares for a non-capture move.

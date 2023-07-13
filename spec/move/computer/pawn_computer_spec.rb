@@ -2,7 +2,6 @@ require './lib/move/computer/pawn_computer'
 
 
 RSpec.describe PawnComputer do
-
   describe '#compute_non_capture' do
     context "when the move is for a white pawn" do
       context "when the move is not a pawn's first move in a game" do
