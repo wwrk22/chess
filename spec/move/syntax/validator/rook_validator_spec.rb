@@ -2,7 +2,7 @@ require './lib/move/syntax/validator/rook_validator'
 require './lib/standard/chess_piece'
 require './lib/error/color_unknown_error'
 
-RSpec.describe Move::Syntax::RookValidator do
+RSpec.describe RookValidator do
 
   describe '#validate' do
 

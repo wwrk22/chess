@@ -2,7 +2,7 @@ require './lib/move/syntax/validator/pawn_validator'
 require './lib/standard/chess_piece'
 require './lib/error/color_unknown_error'
 
-RSpec.describe Move::Syntax::PawnValidator do
+RSpec.describe PawnValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 

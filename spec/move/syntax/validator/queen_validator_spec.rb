@@ -1,7 +1,7 @@
 require './lib/move/syntax/validator/queen_validator'
 require './lib/standard/chess_piece'
 
-RSpec.describe Move::Syntax::QueenValidator do
+RSpec.describe QueenValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
