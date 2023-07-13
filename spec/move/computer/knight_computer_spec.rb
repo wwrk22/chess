@@ -2,7 +2,7 @@ require './lib/move/computer/knight_computer'
 
 
 RSpec.describe KnightComputer do
-  describe '#compute_non_capture' do
+  describe '#compute_move' do
     subject(:computer) { described_class.new }
 
     it "returns all of the at most eight possible starting squares" do
@@ -13,7 +13,7 @@ RSpec.describe KnightComputer do
         { file: 'b', rank: 1 }, { file: 'a', rank: 2 },
         { file: 'a', rank: 4 }, { file: 'b', rank: 5 }
       ]
-      expect(computer.compute_non_capture(target)).to eq(exp_output)
+      expect(computer.compute_move(target)).to eq(exp_output)
     end
   end # describe '#compute_non_capture'
 end

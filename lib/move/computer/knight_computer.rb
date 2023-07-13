@@ -3,14 +3,10 @@
 class KnightComputer
   
   # Compute at most eight possible starting squares for a non-capture move.
-  def compute_non_capture(target, starts = [])
-    # top right
+  def compute_move(target, starts = [])
     compute_top_right(target, starts)
-    # bottom right
     compute_bottom_right(target, starts)
-    # bottom left
     compute_bottom_left(target, starts)
-    # top left
     compute_top_left(target, starts)
     starts
   end
