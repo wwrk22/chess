@@ -42,4 +42,8 @@ class PawnComputer
     starts << { file: start_file, rank: target[:rank] - 1 }
   end
 
+  def compute_capture_black(target, start_file, starts)
+    starts << { file: start_file, rank: target[:rank] + 1 }
+  end
+
 end

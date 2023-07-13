@@ -80,6 +80,12 @@ RSpec.describe PawnComputer do
         subject(:computer) { described_class.new }
 
         it "computes the one starting square" do
+          target = { file: 'a', rank: 6 }
+          player_color = ChessPiece::BL
+
+          start_file = 'b'
+          exp_output = [{ file: start_file, rank: 7 }]
+          expect(computer.compute_capture(target, start_file, player_color)).to eq(exp_output)
         end
       end # context "when the capture is not an en-passant"
     end # context "when the capture is for a black pawn"
