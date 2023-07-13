@@ -10,10 +10,10 @@ RSpec.describe PawnComputer do
         subject(:computer) { described_class.new }
 
         it "computes the one starting square for the pawn" do
-          target = { file: 'a', rank: 3 }
+          target = { file: 'a', rank: 5 }
           player_color = ChessPiece::WH
 
-          exp_output = [{ file: 'a', rank: 2 }]
+          exp_output = [{ file: 'a', rank: 4 }]
           expect(computer.compute_non_capture(target, player_color)).to eq(exp_output)
         end
       end
