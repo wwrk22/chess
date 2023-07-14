@@ -15,6 +15,23 @@ RSpec.describe KingComputer do
         result = computer.compute_move(target)
         diff = exp_output.difference(result)
         expect(diff).to be_empty
+        expect(result.size).to eq(exp_output.size)
+      end
+    end
+
+    context "when the target square is on an edge of the board" do
+      subject(:computer) { described_class.new }
+
+      it "returns the correct number of starting squares" do
+        target = { file: 'f', rank: 1 }
+        exp_output = [
+          { file: 'e', rank: 1 }, { file: 'e', rank: 2 }, { file: 'f', rank: 2 },
+          { file: 'g', rank: 2 }, { file: 'g', rank: 1 }
+        ]
+        result = computer.compute_move(target)
+        diff = exp_output.difference(result)
+        expect(diff).to be_empty
+        expect(result.size).to eq(exp_output.size)
       end
     end
   end

@@ -1,6 +1,6 @@
 module ChessBoard
   FILES = 'abcdefgh'
-  RANKS = (0..8)
+  RANKS = (1..8)
 
   def valid_file?(file)
     file.is_a?(String) && FILES.include?(file)
