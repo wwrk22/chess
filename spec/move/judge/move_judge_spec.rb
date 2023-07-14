@@ -83,4 +83,31 @@ RSpec.describe MoveJudge do
       end
     end # context "when the target square must have a chess piece of the specified color"
   end # describe '#check_target'
+
+
+  describe '#clear_path?' do
+    subject(:judge) { described_class.new }
+
+    context "when the path is not diagonal" do
+      context "when the path is horizontal" do
+        context "when the path is clear" do
+          it "returns true" do
+            a = { file: 'a', rank: 1 }
+            b = { file: 'h', rank: 1 }
+            board = instance_double(ChessBoard)
+            result = judge.clear_path?(a, b, board)
+            expect(result).to be_truthy
+          end
+        end
+
+        context "when the path is not clear" do
+          xit "returns false" do
+          end
+        end
+      end
+
+      context "when the path is vertical" do
+      end
+    end
+  end
 end
