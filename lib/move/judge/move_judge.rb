@@ -3,13 +3,13 @@ require './lib/move/move'
 
 class MoveJudge
 
-  def check_target(target_square, board, target_color = nil)
+  def check_target(target_square, board, target = nil)
     target_file = target_square[:file]
     target_rank = target_square[:rank]
-    target = board.at(target_file, target_rank)
+    actual_target = board.at(target_file, target_rank)
 
-    return target.nil? if target_color.nil?
-    return target[:color] == target_color if target.nil? == false
+    return actual_target.nil? if target.nil?
+    return actual_target == target if actual_target.nil? == false
   end
 
 end

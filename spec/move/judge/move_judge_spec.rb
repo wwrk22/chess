@@ -36,48 +36,48 @@ RSpec.describe MoveJudge do
       end
     end # context "when the target square is to be empty"
 
-    context "when the target square must have a chess piece of the specified color" do
+    context "when the target is specified" do
       context "when the the target square is empty" do
         subject(:judge) { described_class.new }
 
         it "returns false" do
           target_square = { file: 'a', rank: 1 }
-          target_color = ChessPiece::WH
+          target = { type: ChessPiece::PA, color: ChessPiece::WH }
 
           board = instance_double(Board)
           allow(board).to receive(:at).with('a', 1).and_return(nil)
 
-          result = judge.check_target(target_square, board, target_color)
+          result = judge.check_target(target_square, board, target)
           expect(result).to be_falsey
         end
       end
 
-      context "when the target square has a chess piece of the specified color" do
+      context "when the target square has the target" do
         subject(:judge) { described_class.new }
 
         it "returns true" do
           target_square = { file: 'a', rank: 1 }
-          target_color = ChessPiece::WH
+          target = { type: ChessPiece::PA, color: ChessPiece::WH }
 
           board = instance_double(Board)
           allow(board).to receive(:at).with('a', 1).and_return({ type: ChessPiece::PA, color: ChessPiece::WH })
 
-          result = judge.check_target(target_square, board, target_color)
+          result = judge.check_target(target_square, board, target)
           expect(result).to be_truthy
         end
       end
 
-      context "when the target square has a chess piece of the player's own color" do
+      context "when the target square has a chess piece other than the target" do
         subject(:judge) { described_class.new }
 
         it "returns false" do
           target_square = { file: 'a', rank: 1 }
-          target_color = ChessPiece::BL
+          target = { type: ChessPiece::PA, color: ChessPiece::BL }
 
           board = instance_double(Board)
           allow(board).to receive(:at).with('a', 1).and_return({ type: ChessPiece::PA, color: ChessPiece::WH })
 
-          result = judge.check_target(target_square, board, target_color)
+          result = judge.check_target(target_square, board, target)
           expect(result).to be_falsey
         end
       end
