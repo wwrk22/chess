@@ -1,3 +1,6 @@
+require './lib/standard/chess_board'
+
+
 # Computes the required information for use by the chess board in order to
 # perform a move with a knight.
 class KnightComputer
@@ -8,9 +11,20 @@ class KnightComputer
     compute_bottom_right(target, starts)
     compute_bottom_left(target, starts)
     compute_top_left(target, starts)
-    starts
+    prune_squares(starts)
   end
 
+  # Remove all squares with out-of-bounds files and/or ranks from the array of
+  # squares, then return the array.
+  def prune_squares(squares)
+    return squares.reduce([]) do |pruned, square|
+      if ChessBoard::FILES.include?(square[:file]) && (0..8).include?(square[:rank])
+        pruned << square
+      end
+
+      pruned
+    end
+  end
   
   private
 
