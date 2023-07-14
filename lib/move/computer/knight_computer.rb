@@ -4,6 +4,7 @@ require './lib/standard/chess_board'
 # Computes the required information for use by the chess board in order to
 # perform a move with a knight.
 class KnightComputer
+  include ChessBoard
   
   # Compute at most eight possible starting squares for a non-capture move.
   def compute_move(target, starts = [])
@@ -18,10 +19,8 @@ class KnightComputer
   # squares, then return the array.
   def prune_squares(squares)
     return squares.reduce([]) do |pruned, square|
-      if ChessBoard::FILES.include?(square[:file]) && (0..8).include?(square[:rank])
-        pruned << square
-      end
-
+      file, rank = [square[:file], square[:rank]]
+      pruned << square if valid_file?(file) && valid_rank?(rank)
       pruned
     end
   end
