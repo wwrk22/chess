@@ -88,26 +88,19 @@ RSpec.describe MoveJudge do
   describe '#clear_path?' do
     subject(:judge) { described_class.new }
 
-    context "when the path is not diagonal" do
-      context "when the path is horizontal" do
-        context "when the path is clear" do
-          it "returns true" do
-            a = { file: 'a', rank: 1 }
-            b = { file: 'h', rank: 1 }
-            board = instance_double(ChessBoard)
-            result = judge.clear_path?(a, b, board)
-            expect(result).to be_truthy
-          end
-        end
+    context "when the direction does not lead to square b" do
+      it "returns false" do
+        a = { file: 'a', rank: 1 }
+        b = { file: 'h', rank: 1 }
+        direction = { file: 6, rank: 0 }
+        board = instance_double(Board)
 
-        context "when the path is not clear" do
-          xit "returns false" do
-          end
-        end
+        result = judge.clear_path?(a, b, board, direction)
+        expect(result).to be_falsey
       end
+    end
 
-      context "when the path is vertical" do
-      end
+    context "when the direction leads to square b" do
     end
   end
 end
