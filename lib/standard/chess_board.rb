@@ -3,10 +3,10 @@ module ChessBoard
   RANKS = (0..8)
 
   def valid_file?(file)
-    FILES.include? file
+    file.is_a?(String) && FILES.include?(file)
   end
 
   def valid_rank?(rank)
-    RANKS.include? rank
+    rank.is_a?(Integer) && RANKS.include?(rank)
   end
 end
