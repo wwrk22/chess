@@ -1,10 +1,10 @@
-require './lib/move/judge/pawn_move_judge'
+require './lib/move/judge/move_judge'
 require './lib/move/pawn_move'
 require './lib/board/board'
 require './lib/standard/chess_piece'
 
 
-RSpec.describe PawnMoveJudge do
+RSpec.describe MoveJudge do
   describe '#check_target' do
     context "when the target square is to be empty" do
       context "when the target square is empty" do

@@ -1,7 +1,7 @@
-require './lib/move/pawn_move'
+require './lib/move/move'
 
 
-class PawnMoveJudge
+class MoveJudge
 
   def check_target(target_square, board, target_color = nil)
     target_file = target_square[:file]
