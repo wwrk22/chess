@@ -4,7 +4,7 @@ require './lib/standard/chess_board'
 class BishopComputer
   include ChessBoard
   
-  # Compute the starting square only if a valid starting file or rank is given.
+  # Compute the two starting squares only if a valid starting file or rank is given.
   def compute_move(target, start_place)
     return compute_with_file(target, start_place) if valid_file? start_place
     return compute_with_rank(target, start_place) if valid_rank? start_place
