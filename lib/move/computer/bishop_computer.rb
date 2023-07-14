@@ -12,6 +12,12 @@ class BishopComputer
       starts << { file: start_place, rank: target[:rank] - file_diff }
     end
 
+    if valid_rank? start_place
+      rank_diff = (target[:rank] - start_place).abs
+      starts << { file: (target[:file].ord - rank_diff).chr, rank: start_place }
+      starts << { file: (target[:file].ord + rank_diff).chr, rank: start_place }
+    end
 
+    starts
   end
 end

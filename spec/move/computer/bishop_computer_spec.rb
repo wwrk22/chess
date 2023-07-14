@@ -13,5 +13,16 @@ RSpec.describe BishopComputer do
         expect(computer.compute_move(target, start_file)).to eq(exp_output)
       end
     end
+
+    context "when the starting rank is specified" do
+      subject(:computer) { described_class.new }
+
+      it "returns the two possible starting squares" do
+        target = { file: 'd', rank: 4 }
+        start_rank = 3
+        exp_output = [{ file: 'c', rank: 3}, { file: 'e', rank: 3}]
+        expect(computer.compute_move(target, start_rank)).to eq(exp_output)
+      end
+    end
   end
 end
