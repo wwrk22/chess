@@ -101,6 +101,74 @@ RSpec.describe MoveJudge do
     end
 
     context "when the direction leads to square b" do
-    end
-  end
+      context "when there are two squares on the path" do
+        context "when the path is clear" do
+          it "returns true" do
+            a = { file: 'a', rank: 1 }
+            b = { file: 'd', rank: 1 }
+            direction = { file: 3, rank: 0 }
+            board = instance_double(Board)
+            allow(board).to receive(:at).with('c', 1).and_return(nil)
+            allow(board).to receive(:at).with('b', 1).and_return(nil)
+
+            result = judge.clear_path?(a, b, board, direction)
+            expect(result).to be_truthy
+          end
+        end
+
+        context "when the path is not clear" do
+          it "returns false" do
+            a = { file: 'a', rank: 1 }
+            b = { file: 'd', rank: 1 }
+            direction = { file: 3, rank: 0 }
+            board = instance_double(Board)
+            allow(board).to receive(:at).with('c', 1).and_return('a chess piece')
+
+            result = judge.clear_path?(a, b, board, direction)
+            expect(result).to be_falsey
+          end
+        end
+      end # context "when there are two squares on the path"
+
+      context "when there is one square on the path" do
+        context "when the path is clear" do
+          it "returns true" do
+            a = { file: 'a', rank: 1 }
+            b = { file: 'a', rank: 3 }
+            direction = { file: 0, rank: 2 }
+            board = instance_double(Board)
+            allow(board).to receive(:at).with('a', 2).and_return(nil)
+
+            result = judge.clear_path?(a, b, board, direction)
+            expect(result).to be_truthy
+          end
+        end
+
+        context "when the path is not clear" do
+          it "returns false" do
+            a = { file: 'a', rank: 1 }
+            b = { file: 'a', rank: 3 }
+            direction = { file: 0, rank: 2 }
+            board = instance_double(Board)
+            allow(board).to receive(:at).with('a', 2).and_return('a chess piece')
+
+            result = judge.clear_path?(a, b, board, direction)
+            expect(result).to be_falsey
+          end
+        end
+      end # context "when there is one square on the path"
+
+      context "when there are no squares on the path" do
+        it "returns true" do
+          a = { file: 'a', rank: 1 }
+          b = { file: 'b', rank: 2 }
+          direction = { file: 1, rank: 1 }
+          board = instance_double(Board)
+
+          result = judge.clear_path?(a, b, board, direction)
+          expect(result).to be_truthy
+        end
+      end
+    end # context "when the direction leads to square b"
+  end # describe '#clear_path?'
 end

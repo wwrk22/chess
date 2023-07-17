@@ -15,17 +15,41 @@ class MoveJudge
   # Check to see if the path between the starting square 'a', and the ending
   # square 'b' is clear. The 'direction' tells which way to go from 'a'.
   def clear_path?(a, b, board, direction)
-    file_steps, rank_steps = [direction[:file], direction[:rank]]
-
-    end_file = (a[:file].ord + direction[:file]).chr
-    end_rank = a[:rank] + direction[:rank]
-    if b[:file] != end_file || b[:rank] != end_rank
+    if square_on_path?(a, b, direction)
+      return traverse_path(a, direction[:file], direction[:rank], board)
+    else
       return false
     end
+  end
 
-#    until file_steps == 0 && rank_steps == 0 do
-#      
-#    end
+
+  private
+  
+  def square_on_path?(a, b, direction)
+    end_file = (a[:file].ord + direction[:file]).chr
+    end_rank = a[:rank] + direction[:rank]
+    return b[:file] == end_file && b[:rank] == end_rank
+  end
+
+  def traverse_path(a, files, ranks, board)
+    files, ranks = [update_steps(files), update_steps(ranks)]
+
+    until files == 0 && ranks == 0 do
+      return false if check_square(a, files, ranks, board) == false
+      files, ranks = [update_steps(files), update_steps(ranks)]
+    end
+
+    return true
+  end
+
+  def check_square(a, files, ranks, board)
+    file_to_check = (a[:file].ord + files).chr
+    rank_to_check = a[:rank] + ranks
+    return board.at(file_to_check, rank_to_check) == nil
+  end
+
+  def update_steps(steps)
+    (steps > 0) ? (steps -= 1) : ((steps < 0) ? (steps += 1) : steps)
   end
 
 
