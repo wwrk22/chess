@@ -11,12 +11,13 @@ RSpec.describe PawnMoveJudge do
 
         it "calls #check_target on the start and target squares" do
           move = PawnMove.new
-          target = { file: 'a', rank: 3 }
-          start = { file: 'a', rank: 2 }
+          move.target = { file: 'a', rank: 3 }
+          move.starts = [{ file: 'a', rank: 2 }]
+          move.capture = false
           board = instance_double(Board)
-          expect(judge).to receive(:check_target).with(target, board).once
-          expect(judge).to receive(:check_target).with(start, board, move.moving_piece).once
-          judge.judge_move(move)
+          expect(judge).to receive(:check_target).with(move.target, board).once
+          expect(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).once
+          judge.judge_move(move, board)
         end
       end
 
