@@ -15,13 +15,16 @@ RSpec.describe PawnMoveJudge do
           move.starts = [{ file: 'a', rank: 2 }]
           move.capture = false
           board = instance_double(Board)
-          expect(judge).to receive(:check_target).with(move.target, board).once
-          expect(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).once
-          judge.judge_move(move, board)
+          allow(judge).to receive(:check_target).with(move.target, board).and_return(true)
+          allow(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).and_return(true)
+          expect(judge.judge_move(move, board)).to eq(true)
         end
       end
 
       context "when there are two start squares" do
+        subject(:judge) { described_class.new }
+
+        
       end
     end # context "when the move is not a capture"
 
