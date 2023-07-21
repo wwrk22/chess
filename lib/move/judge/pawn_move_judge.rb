@@ -27,9 +27,20 @@ class PawnMoveJudge < MoveJudge
   end
 
   def judge_capture(target_sq, start_file, pawn_color, board)
-    if board.at(target_sq[:file], target_sq[:rank]).nil?
-    else
+    target = board.at(target_sq[:file], target_sq[:rank])
+
+    if target.nil?
       return false
+    else
+      if target[:color] == pawn_color
+        return false
+      else # target chess piece is opponent's
+        start_rank = pawn_color == ChessPiece::WH ? target_sq[:rank] - 1 : target_sq[:rank] + 1
+        start_sq = { file: start_file, rank: start_rank }
+
+        pawn = { type: ChessPiece::PA, color: pawn_color }
+        return check_target(start_sq, board, pawn)
+      end
     end
   end
 
