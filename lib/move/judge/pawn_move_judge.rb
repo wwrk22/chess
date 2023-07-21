@@ -7,7 +7,9 @@ class PawnMoveJudge < MoveJudge
     file, rank = [target_sq[:file], target_sq[:rank]]
     pawn = { type: ChessPiece::PA, color: pawn_color }
 
-    return check_target(target_sq, board, pawn) if board.at(file, rank).nil?
-    return false # if target square is not empty
+    (board.at(file, rank).nil?) ? check_target(start_sq, board, pawn) : false
+  end
+
+  def judge_double_move(target_sq, start_sq, pawn_color, board)
   end
 end
