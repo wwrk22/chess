@@ -43,5 +43,23 @@ RSpec.describe PawnMoveJudge do
 
 
   describe '#judge_double_move' do
+    subject(:judge) { described_class.new }
+
+    context "when the pawn is white" do
+      context "when the middle square is not empty" do
+        it "returns false" do
+          target_sq = { file: 'a', rank: 4 }
+          middle_sq = { file: 'a', rank: 3 }
+          start_sq = { file: 'a', rank: 2 }
+          pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+          board = instance_double(Board)
+
+          allow(board).to receive(:at).with(middle_sq[:file], middle_sq[:rank]).and_return('a chess piece')
+          expect(judge.judge_double_move(target_sq, start_sq, pawn[:color], board)).to be_falsey
+        end
+      end # context "when the middle square is not empty"
+    end # context "when the pawn is white"
+
+
   end
 end
