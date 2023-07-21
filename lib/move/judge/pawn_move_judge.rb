@@ -16,24 +16,20 @@ class PawnMoveJudge < MoveJudge
   # determine move legality.
   # Otherwise, return false to indicate middle square is not empty.
   def judge_double_move(target_sq, start_sq, pawn_color, board)
-    if pawn_color == ChessPiece::WH
-      middle_sq_rank = target_sq[:rank] - 1
-
-      if board.at(target_sq[:file], middle_sq_rank).nil?
-        return judge_single_move(target_sq, start_sq, pawn_color, board)
-      else
-        return false
-      end
+    if mid_sq_empty?(target_sq, pawn_color, board)
+      return judge_single_move(target_sq, start_sq, pawn_color, board)
+    else
+      return false
     end
+  end
 
-    if pawn_color == ChessPiece::BL
-      middle_sq_rank = target_sq[:rank] + 1
+  private
 
-      if board.at(target_sq[:file], middle_sq_rank).nil?
-        return judge_single_move(target_sq, start_sq, pawn_color, board)
-      else
-        return false
-      end
+  def mid_sq_empty?(target_sq, pawn_color, board)
+    if pawn_color == ChessPiece::WH
+      return board.at(target_sq[:file], target_sq[:rank] - 1).nil?
+    else
+      return board.at(target_sq[:file], target_sq[:rank] + 1).nil?
     end
   end
 end
