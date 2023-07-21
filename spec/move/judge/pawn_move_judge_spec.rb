@@ -78,6 +78,14 @@ RSpec.describe PawnMoveJudge do
           expect(judge.judge_double_move(target_sq, start_sq, ChessPiece::BL, board)).to be_falsey
         end
       end
+
+      context "when the middle square is empty" do
+        it "calls #judge_single_move and returns its value" do
+          allow(board).to receive(:at).with(middle_sq[:file], middle_sq[:rank]).and_return(nil)
+          expect(judge).to receive(:judge_single_move).with(target_sq, start_sq, ChessPiece::BL, board)
+          judge.judge_double_move(target_sq, start_sq, ChessPiece::BL, board)
+        end
+      end
     end # context "when the pawn is black"
   end # describe '#judge_double_move'
 end
