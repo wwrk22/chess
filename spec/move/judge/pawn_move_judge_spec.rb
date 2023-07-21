@@ -44,30 +44,40 @@ RSpec.describe PawnMoveJudge do
 
   describe '#judge_double_move' do
     subject(:judge) { described_class.new }
+    let!(:board) { instance_double(Board) }
 
     context "when the pawn is white" do
       let!(:target_sq) { { file: 'a', rank: 4 } }
       let!(:middle_sq) { { file: 'a', rank: 3 } }
       let!(:start_sq) { { file: 'a', rank: 2 } }
-      let!(:pawn) { { type: ChessPiece::PA, color: ChessPiece::WH } }
-      let!(:board) { instance_double(Board) }
 
       context "when the middle square is not empty" do
         it "returns false" do
           allow(board).to receive(:at).with(middle_sq[:file], middle_sq[:rank]).and_return('a chess piece')
-          expect(judge.judge_double_move(target_sq, start_sq, pawn[:color], board)).to be_falsey
+          expect(judge.judge_double_move(target_sq, start_sq, ChessPiece::WH, board)).to be_falsey
         end
       end # context "when the middle square is not empty"
 
       context "when the middle square is empty" do
         it "calls #judge_single_move and returns its value" do
           allow(board).to receive(:at).with(middle_sq[:file], middle_sq[:rank]).and_return(nil)
-          expect(judge).to receive(:judge_single_move).with(target_sq, start_sq, pawn[:color], board)
-          judge.judge_double_move(target_sq, start_sq, pawn[:color], board)
+          expect(judge).to receive(:judge_single_move).with(target_sq, start_sq, ChessPiece::WH, board)
+          judge.judge_double_move(target_sq, start_sq, ChessPiece::WH, board)
         end
       end
     end # context "when the pawn is white"
 
+    context "when the pawn is black" do
+      let!(:target_sq) { { file: 'a', rank: 5 } }
+      let!(:middle_sq) { { file: 'a', rank: 6 } }
+      let!(:start_sq) { { file: 'a', rank: 7 } }
 
-  end
+      context "when the middle square is not empty" do
+        it "returns false" do
+          allow(board).to receive(:at).with(middle_sq[:file], middle_sq[:rank]).and_return('a chess piece')
+          expect(judge.judge_double_move(target_sq, start_sq, ChessPiece::BL, board)).to be_falsey
+        end
+      end
+    end # context "when the pawn is black"
+  end # describe '#judge_double_move'
 end

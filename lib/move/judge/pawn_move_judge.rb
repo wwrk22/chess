@@ -25,5 +25,14 @@ class PawnMoveJudge < MoveJudge
         return false
       end
     end
+
+    if pawn_color == ChessPiece::BL
+      middle_sq_rank = target_sq[:rank] + 1
+
+      if board.at(target_sq[:file], middle_sq_rank).nil?
+      else
+        return false
+      end
+    end
   end
 end
