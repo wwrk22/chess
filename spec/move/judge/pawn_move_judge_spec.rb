@@ -5,67 +5,30 @@ require './lib/standard/chess_piece'
 
 
 RSpec.describe PawnMoveJudge do
-  describe '#judge' do
-    context "when the move is not a capture" do
-      context "when there is one start square" do
-        context "when the right pieces are in place" do
-          subject(:judge) { described_class.new }
+  describe '#judge_single_move' do
+    context "when target square is empty" do
+      context "when start square has the moving pawn" do
 
-          it "returns true" do
-            move = PawnMove.new
-            move.target = { file: 'a', rank: 3 }
-            move.starts = [{ file: 'a', rank: 2 }]
-            move.capture = false
-            move.moving_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
-            board = instance_double(Board)
+      end
 
-            allow(judge).to receive(:check_target).with(move.target, board).and_return(true)
-            allow(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).and_return(true)
-            expect(judge.judge_move(move, board)).to eq(true)
-          end
-        end
-      end # context "when there is one start square"
+      context "when start square has the wrong chess piece" do
+      end
 
-      context "when there are two start squares" do
-        context "when the start closer to target has the moving pawn" do
-          subject(:judge) { described_class.new }
-          
-          it "returns true" do
-            move = PawnMove.new
-            move.target = { file: 'a', rank: 4 }
-            move.starts = [{ file: 'a', rank: 3 }, { file: 'a', rank: 2 }]
-            move.capture = false
-            move.moving_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
-            board = instance_double(Board)
+      context "when start square is empty" do
+      end
+    end
 
-            allow(judge).to receive(:check_target).with(move.target, board).and_return(true)
-            allow(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).and_return(true)
-            expect(judge.judge_move(move, board)).to eq(true)
-          end
-        end
+    context "when target square is not empty" do
+      subject(:judge) { described_class.new }
 
-        context "when the start further away from the target has the moving pawn" do
-          subject(:judge) { described_class.new }
-          
-          it "returns true" do
-            move = PawnMove.new
-            move.target = { file: 'a', rank: 4 }
-            move.starts = [{ file: 'a', rank: 3 }, { file: 'a', rank: 2 }]
-            move.capture = false
-            move.moving_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
-            board = instance_double(Board)
-
-            allow(judge).to receive(:check_target).with(move.target, board).and_return(true)
-            allow(judge).to receive(:check_target).with(move.starts[0], board, move.moving_piece).and_return(false)
-            allow(judge).to receive(:check_target).with(move.starts[1], board, move.moving_piece).and_return(true)
-            allow(judge).to receive(:check_target).with(move.starts[0], board).and_return(true)
-            expect(judge.judge_move(move, board)).to eq(true)
-          end
-        end
-      end # context "when there are two start squares"
-    end # context "when the move is not a capture"
-
-    context "when the move is a capture" do
-    end # context "when the move is a capture"
+      it "returns false" do
+        target_sq = { file: 'a', rank: 3 }
+        start_sq = { file: 'a', rank: 2 }
+        pawn_color = ChessPiece::WH
+        board = instance_double(Board)
+        allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return('a chess piece')
+        expect(judge.judge_single_move(target_sq, start_sq, pawn_color, board)).to eq(false)
+      end
+    end
   end
 end
