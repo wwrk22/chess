@@ -3,6 +3,9 @@ require './lib/move/pawn_move'
 
 
 class PawnMoveJudge < MoveJudge
+  ##
+  # If the target square is empty and the start square has the moving pawn,
+  # then return true. Return false for all other cases.
   def judge_single_move(target_sq, start_sq, pawn_color, board)
     file, rank = [target_sq[:file], target_sq[:rank]]
     pawn = { type: ChessPiece::PA, color: pawn_color }
