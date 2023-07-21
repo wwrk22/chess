@@ -127,5 +127,20 @@ RSpec.describe PawnMoveJudge do
         end
       end # context "when target square has the player's own chess piece"
     end # context "when the pawn is white"
+
+    context "when the pawn is black" do
+      let!(:target_sq) { { file: 'b', rank: 6 } }
+      let!(:start_file) { 'c' }
+      let!(:board) { instance_double(Board) }
+
+      context "when target square has the player's own chess piece" do
+        it "returns false" do
+          player_piece = { type: ChessPiece::PA, color: ChessPiece::BL }
+          allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(player_piece)
+
+          expect(judge.judge_capture(target_sq, start_file, ChessPiece::BL, board)).to be_falsey
+        end
+      end
+    end
   end # describe '#judge_capture'
 end
