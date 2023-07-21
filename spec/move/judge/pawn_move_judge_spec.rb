@@ -88,4 +88,22 @@ RSpec.describe PawnMoveJudge do
       end
     end # context "when the pawn is black"
   end # describe '#judge_double_move'
+
+
+  describe '#judge_capture' do
+    subject(:judge) { described_class.new }
+
+    context "when the pawn is white" do
+      context "when target square does not have an opponent chess piece" do
+        let!(:target_sq) { { file: 'b', rank: 3 } }
+        let!(:start_file) { 'a' }
+        let!(:board) { instance_double(Board) }
+
+        it "returns false" do
+          allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(nil)
+          expect(judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+        end
+      end
+    end # context "when the pawn is white"
+  end # describe '#judge_capture'
 end

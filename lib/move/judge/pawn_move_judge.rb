@@ -26,6 +26,13 @@ class PawnMoveJudge < MoveJudge
     end
   end
 
+  def judge_capture(target_sq, start_file, pawn_color, board)
+    if board.at(target_sq[:file], target_sq[:rank]).nil?
+    else
+      return false
+    end
+  end
+
   private
 
   def mid_sq_empty?(target_sq, pawn_color, board)
