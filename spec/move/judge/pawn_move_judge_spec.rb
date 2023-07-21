@@ -168,6 +168,16 @@ RSpec.describe PawnMoveJudge do
 
     context "when the pawn is black" do
       context "when opponent pawn is not on the en-passant square" do
+        it "returns false" do
+          target_sq = { file: 'b', rank: 3 }
+          start_file = 'a'
+          ep_sq = { file: 'b', rank: 4 }
+          white_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+          board = instance_double(Board)
+
+          allow(judge).to receive(:check_target).with(ep_sq, board, white_pawn).and_return(false)
+          expect(judge.judge_ep_capture(target_sq, start_file, ChessPiece::BL, board)).to be_falsey
+        end
       end
 
       context "when opponent pawn is on the en-passant square" do

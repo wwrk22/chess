@@ -44,6 +44,11 @@ class PawnMoveJudge < MoveJudge
       ep_sq = { file: target_sq[:file], rank: target_sq[:rank] - 1 }
       return check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::BL })
     end
+
+    if pawn_color == ChessPiece::BL
+      ep_sq = { file: target_sq[:file], rank: target_sq[:rank] + 1 }
+      return check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::WH })
+    end
   end
 
   private
