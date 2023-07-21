@@ -9,7 +9,7 @@ class MoveJudge
     actual_target = board.at(target_file, target_rank)
 
     return actual_target.nil? if target.nil?
-    return actual_target == target if actual_target.nil? == false
+    return (actual_target.nil?) ? false : (actual_target == target)
   end
 
   # Check to see if the path between the starting square 'a', and the ending
