@@ -42,12 +42,21 @@ class PawnMoveJudge < MoveJudge
   def judge_ep_capture(target_sq, start_file, pawn_color, board)
     if pawn_color == ChessPiece::WH
       ep_sq = { file: target_sq[:file], rank: target_sq[:rank] - 1 }
-      return check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::BL })
+      
+      if check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::BL })
+        return judge_capture(target_sq, start_file, ChessPiece::WH, board)
+      else
+        return false
+      end
     end
 
     if pawn_color == ChessPiece::BL
       ep_sq = { file: target_sq[:file], rank: target_sq[:rank] + 1 }
-      return check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::WH })
+      if check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::WH })
+        return judge_capture(target_sq, start_file, ChessPiece::BL, board)
+      else
+        return false
+      end
     end
   end
 
