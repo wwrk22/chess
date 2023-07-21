@@ -40,28 +40,25 @@ class PawnMoveJudge < MoveJudge
   end
 
   def judge_ep_capture(target_sq, start_file, pawn_color, board)
-    if pawn_color == ChessPiece::WH
-      ep_sq = { file: target_sq[:file], rank: target_sq[:rank] - 1 }
-      
-      if check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::BL })
-        return judge_capture(target_sq, start_file, ChessPiece::WH, board)
-      else
-        return false
-      end
-    end
+    target_rank = compute_start_rank(target_sq[:rank], pawn_color)
+    ep_sq = { file: target_sq[:file], rank: target_rank }
+    opponent_pawn = { type: ChessPiece::PA, color: opponent_color(pawn_color) }
 
-    if pawn_color == ChessPiece::BL
-      ep_sq = { file: target_sq[:file], rank: target_sq[:rank] + 1 }
-      if check_target(ep_sq, board, { type: ChessPiece::PA, color: ChessPiece::WH })
-        return judge_capture(target_sq, start_file, ChessPiece::BL, board)
-      else
-        return false
-      end
-    end
+    return check_target(ep_sq, board, opponent_pawn) ?
+      judge_capture(target_sq, start_file, pawn_color, board) : false
   end
 
   private
 
+  ##
+  # Return the opponent's color.
+  def opponent_color(player_color)
+    if player_color == ChessPiece::WH
+      return ChessPiece::BL
+    else
+      return ChessPiece::WH
+    end
+  end
   ##
   # Simply determine the rank of the starting square of a capturing pawn.
   def compute_start_rank(target_rank, pawn_color)
