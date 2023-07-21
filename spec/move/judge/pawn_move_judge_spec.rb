@@ -106,26 +106,25 @@ RSpec.describe PawnMoveJudge do
       end
 
       context "when target square has an opponent chess piece" do
-        before :example do
+        it "calls #check_target on the square of the moving pawn" do
           black_piece = { type: ChessPiece::PA, color: ChessPiece::BL }
           allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(black_piece)
-        end
 
-        context "when start square has a white pawn" do
-          it "returns true" do
-            start_sq = { file: start_file, rank: target_sq[:rank] - 1 }
-            white_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+          start_sq = { file: start_file, rank: target_sq[:rank] - 1 }
+          white_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+          expect(judge).to receive(:check_target).with(start_sq, board, white_pawn)
 
-            allow(judge).to receive(:check_target).with(start_sq, board, white_pawn).and_return(true)
-            expect(judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)).to be_truthy
-          end
-        end
-
-        context "when start square does not have a white pawn" do
+          judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)
         end
       end # context "when target square has an opponent chess piece"
 
       context "when target square has the player's own chess piece" do
+        it "returns false" do
+          player_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
+          allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(player_piece)
+
+          expect(judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+        end
       end # context "when target square has the player's own chess piece"
     end # context "when the pawn is white"
   end # describe '#judge_capture'
