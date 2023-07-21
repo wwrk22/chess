@@ -39,7 +39,7 @@ RSpec.describe PawnMoveJudge do
 
       context "when start square is empty" do
       end
-    end
+    end # context "when target square is empty"
 
     context "when target square is not empty" do
       subject(:judge) { described_class.new }
@@ -53,6 +53,6 @@ RSpec.describe PawnMoveJudge do
         allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return('a chess piece')
         expect(judge.judge_single_move(target_sq, start_sq, pawn_color, board)).to be_falsey
       end
-    end
-  end
+    end # context "when target square is not empty"
+  end # describe '#judge_single_move'
 end
