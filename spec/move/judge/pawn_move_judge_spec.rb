@@ -141,6 +141,37 @@ RSpec.describe PawnMoveJudge do
           expect(judge.judge_capture(target_sq, start_file, ChessPiece::BL, board)).to be_falsey
         end
       end
-    end
+    end # context "when the pawn is black"
   end # describe '#judge_capture'
+
+  
+  describe '#judge_ep_capture' do
+    subject(:judge) { described_class.new }
+
+    context "when the pawn is white" do
+      context "when opponent pawn is not on the en-passant square" do
+        it "returns false" do
+          target_sq = { file: 'b', rank: 6 }
+          start_file = 'a'
+          ep_sq = { file: 'b', rank: 5 }
+          black_pawn = { type: ChessPiece::PA, color: ChessPiece::BL }
+          board = instance_double(Board)
+
+          allow(judge).to receive(:check_target).with(ep_sq, board, black_pawn).and_return(false)
+          expect(judge.judge_ep_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+        end
+      end
+      
+      context "when opponent pawn is on the en-passant square" do
+      end
+    end # context "when the pawn is white"
+
+    context "when the pawn is black" do
+      context "when opponent pawn is not on the en-passant square" do
+      end
+
+      context "when opponent pawn is on the en-passant square" do
+      end
+    end # context "when the pawn is black"
+  end # describe '#judge_ep_capture'
 end
