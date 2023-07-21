@@ -19,7 +19,9 @@ class PawnMoveJudge < MoveJudge
     if pawn_color == ChessPiece::WH
       middle_sq_rank = target_sq[:rank] - 1
 
-      if board.at(target_sq[:file], middle_sq_rank).nil? == false
+      if board.at(target_sq[:file], middle_sq_rank).nil?
+        return judge_single_move(target_sq, start_sq, pawn_color, board)
+      else
         return false
       end
     end
