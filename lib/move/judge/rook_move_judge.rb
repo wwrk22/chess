@@ -8,15 +8,12 @@ class RookMoveJudge < MoveJudge
   include BoardComputer
 
   def judge_move(start_sq, target_sq, player_color, board)
-    if board.at(target_sq[:file], target_sq[:rank]).nil?
-      player_rook = { type: ChessPiece::RO, color: player_color }
+    return false if board.at(target_sq[:file], target_sq[:rank]).nil? == false
 
-      if check_target(start_sq, board, player_rook)
-        direction = compute_direction(start_sq, target_sq)
-        return clear_path?(start_sq, target_sq, board, direction)
-      end
-    end
+    direction = compute_direction(start_sq, target_sq)
+    rook = { type: ChessPiece::RO, color: player_color }
 
-    return false
+    return check_target(start_sq, board, rook) ?
+      clear_path?(start_sq, target_sq, board, direction) : false
   end
 end
