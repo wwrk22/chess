@@ -47,4 +47,6 @@ RSpec.describe RookMoveJudge do
       end # context "when the start square has the player's rook"
     end # context "when the target square is empty"
   end # describe '#judge_move'
+
+  
 end
