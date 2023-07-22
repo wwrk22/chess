@@ -49,4 +49,6 @@ RSpec.describe RookMoveJudge do
   end # describe '#judge_move'
 
   
+  describe '#judge_capture' do
+  end
 end

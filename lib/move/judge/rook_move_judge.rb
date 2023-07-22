@@ -16,7 +16,6 @@ class RookMoveJudge < MoveJudge
 
 
   def judge_capture(start_sq, target_sq, player_color, board)
-    
   end
 
 
