@@ -5,6 +5,22 @@ require './lib/standard/chess_piece'
 
 
 RSpec.describe MoveJudge do
+  describe '#check_square' do
+    subject(:judge) { described_class.new }
+
+    context "when looking for an empty square" do
+      it "checks that the square on the board is nil" do
+        square = { file: 'a', rank: 1 }
+        board = instance_double(Board)
+        
+        allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(nil)
+
+        expect(judge.check_square(square, board)).to be_truthy
+      end
+    end
+  end # describe '#check_square'
+
+
   describe '#check_target' do
     context "when the target square is to be empty" do
       context "when the target square is empty" do

@@ -3,6 +3,12 @@ require './lib/move/move'
 
 class MoveJudge
 
+  def check_square(square, board, color = nil, type = nil)
+    if color.nil? && type.nil?
+      return board.at(square[:file], square[:rank]).nil?
+    end
+  end
+
   def check_target(target_square, board, target = nil)
     target_file = target_square[:file]
     target_rank = target_square[:rank]
@@ -35,14 +41,14 @@ class MoveJudge
     files, ranks = [update_steps(files), update_steps(ranks)]
 
     until files == 0 && ranks == 0 do
-      return false if check_square(a, files, ranks, board) == false
+      return false if empty_square?(a, files, ranks, board) == false
       files, ranks = [update_steps(files), update_steps(ranks)]
     end
 
     return true
   end
 
-  def check_square(a, files, ranks, board)
+  def empty_square?(a, files, ranks, board)
     file_to_check = (a[:file].ord + files).chr
     rank_to_check = a[:rank] + ranks
     return board.at(file_to_check, rank_to_check) == nil
