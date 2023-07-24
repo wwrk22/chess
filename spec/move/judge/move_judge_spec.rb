@@ -2,9 +2,35 @@ require './lib/move/judge/move_judge'
 require './lib/move/pawn_move'
 require './lib/board/board'
 require './lib/standard/chess_piece'
+require './lib/move/move'
 
 
 RSpec.describe MoveJudge do
+  describe '#judge_move' do
+    subject(:judge) { described_class.new }
+
+    context "when target square is not empty" do
+      it "returns false" do
+        move = Move.new
+        move.start = { file: 'a', rank: 1 },
+        move.target = { file: 'a', rank: 2 },
+        move.piece = { type: ChessPiece::RO, color: ChessPiece::WH },
+        move.clear_path_required = true
+
+        board = instance_double(Board)
+        target_file, target_rank = [move.target[:file], move.target[:rank]]
+        allow(board).to receive(:at).with(target_file, target_rank).and_return('a chess piece')
+
+        expect(judge.judge_move(move, board)).to be_falsey
+      end
+    end # context "when target square is not empty"
+
+    context "when target square is empty" do
+
+    end # context "when target square is empty"
+  end # describe '#judge_move'
+
+
   describe '#check_square' do
     subject(:judge) { described_class.new }
 

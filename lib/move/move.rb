@@ -22,4 +22,9 @@ class Move
   # for pawn and knight.
   # Computed by a move computer.
   attr_accessor :directions
+
+  # NEW ATTRIBUTES
+  attr_accessor :start
+  attr_accessor :clear_path_required
+  attr_accessor :piece
 end

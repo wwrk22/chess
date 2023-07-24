@@ -2,7 +2,23 @@ require './lib/move/move'
 
 
 class MoveJudge
+  ##
+  # Return true if the move defined by parameters is legal, false otherwise.
+  # Starting square is checked for the moving piece, target square is checked
+  # for emptiness, and the path between the two is checked for emptiness if the
+  # parameter `check_path` is true.
+  def judge_move(move_data, board)
+    target = move_data.target
 
+    if board.at(target[:file], target[:rank]).nil?
+      return false
+    else
+    end
+  end
+
+  ##
+  # Check a square to see if it's empty or if it has a chess piece of either
+  # specified type or color, or both. Return true if matched, false otherwise.
   def check_square(square, board, color = nil, type = nil)
     target = board.at(square[:file], square[:rank])
     chess_piece_to_find = { type: type, color: color }
