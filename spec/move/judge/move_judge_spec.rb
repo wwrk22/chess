@@ -8,14 +8,29 @@ RSpec.describe MoveJudge do
   describe '#check_square' do
     subject(:judge) { described_class.new }
 
+    let!(:board) { instance_double(Board) }
+    let!(:white_pawn) { { type: ChessPiece::PA, color: ChessPiece::WH } }
+    let!(:square) { { file: 'a', rank: 1 } }
+
+    before :example do
+      allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_pawn)
+    end
+
     context "when looking for an empty square" do
       it "checks that the square on the board is nil" do
-        square = { file: 'a', rank: 1 }
-        board = instance_double(Board)
-        
-        allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(nil)
+        expect(judge.check_square(square, board)).to be_falsey
+      end
+    end # context "when looking for an empty square"
 
-        expect(judge.check_square(square, board)).to be_truthy
+    context "when looking for any chess piece of a chosen color" do
+      it "checks the color of the chess piece found on the square" do
+        expect(judge.check_square(square, board, ChessPiece::WH)).to be_truthy
+      end
+    end # context "when looking for any chess piece of a chosen color"
+
+    context "when looking for a chess piece of a chosen color" do
+      it "checks the color and type of the chess piece found on the square" do
+        expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_truthy
       end
     end
   end # describe '#check_square'

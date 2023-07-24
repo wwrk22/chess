@@ -7,6 +7,24 @@ class MoveJudge
     if color.nil? && type.nil?
       return board.at(square[:file], square[:rank]).nil?
     end
+
+    if color.nil? == false && type.nil?
+      target = board.at(square[:file], square[:rank])
+
+      if target.nil? == false
+        return target[:color] == color
+      end
+    end
+
+    if color && type
+      target = board.at(square[:file], square[:rank])
+
+      if target.nil? == false
+        return target[:color] == color
+      else
+        false
+      end
+    end
   end
 
   def check_target(target_square, board, target = nil)
