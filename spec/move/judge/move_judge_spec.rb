@@ -10,29 +10,72 @@ RSpec.describe MoveJudge do
 
     let!(:board) { instance_double(Board) }
     let!(:white_pawn) { { type: ChessPiece::PA, color: ChessPiece::WH } }
+    let!(:black_pawn) { { type: ChessPiece::PA, color: ChessPiece::BL } }
     let!(:square) { { file: 'a', rank: 1 } }
 
-    before :example do
-      allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_pawn)
-    end
-
     context "when looking for an empty square" do
-      it "checks that the square on the board is nil" do
-        expect(judge.check_square(square, board)).to be_falsey
+      context "when the square is empty" do
+        it "returns true" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(nil)
+          expect(judge.check_square(square, board)).to be_truthy
+        end
+      end
+
+      context "when the square is not empty" do
+        it "returns false" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_pawn)
+          expect(judge.check_square(square, board)).to be_falsey
+        end
       end
     end # context "when looking for an empty square"
 
     context "when looking for any chess piece of a chosen color" do
-      it "checks the color of the chess piece found on the square" do
-        expect(judge.check_square(square, board, ChessPiece::WH)).to be_truthy
+      context "when the square has a chess piece of the chosen color" do
+        it "returns true" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_pawn)
+          expect(judge.check_square(square, board, ChessPiece::WH)).to be_truthy
+        end
+      end
+
+      context "when the square has a chess piece of the other color" do
+        it "returns false" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(black_pawn)
+          expect(judge.check_square(square, board, ChessPiece::WH)).to be_falsey
+        end
       end
     end # context "when looking for any chess piece of a chosen color"
 
-    context "when looking for a chess piece of a chosen color" do
-      it "checks the color and type of the chess piece found on the square" do
-        expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_truthy
+    context "when looking for a chess piece of a chosen color and type" do
+      context "when a chess piece of same color and type is found" do
+        it "returns true" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_pawn)
+          expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_truthy
+        end
       end
-    end
+
+      context "when a chess piece of both different color and type is found" do
+        it "returns false" do
+          black_knight = { type: ChessPiece::KN, color: ChessPiece::BL }
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(black_knight)
+          expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_falsey
+        end
+      end
+
+      context "when a chess piece of same color but different type is found" do
+        it "returns false" do
+          white_knight = { type: ChessPiece::KN, color: ChessPiece::WH }
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(white_knight)
+          expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_falsey
+        end
+      end
+
+      context "when a chess piece of different color but same type is found" do
+        it "returns false" do
+          allow(board).to receive(:at).with(square[:file], square[:rank]).and_return(black_pawn)
+          expect(judge.check_square(square, board, ChessPiece::WH, ChessPiece::PA)).to be_falsey
+        end
+      end
+    end # context "when looking for a chess piece of a chosen color and type"
   end # describe '#check_square'
 
 

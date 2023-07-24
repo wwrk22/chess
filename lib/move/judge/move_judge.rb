@@ -4,27 +4,12 @@ require './lib/move/move'
 class MoveJudge
 
   def check_square(square, board, color = nil, type = nil)
-    if color.nil? && type.nil?
-      return board.at(square[:file], square[:rank]).nil?
-    end
+    target = board.at(square[:file], square[:rank])
+    chess_piece_to_find = { type: type, color: color }
 
-    if color.nil? == false && type.nil?
-      target = board.at(square[:file], square[:rank])
-
-      if target.nil? == false
-        return target[:color] == color
-      end
-    end
-
-    if color && type
-      target = board.at(square[:file], square[:rank])
-
-      if target.nil? == false
-        return target[:color] == color
-      else
-        false
-      end
-    end
+    return target.nil? if color.nil? && type.nil?
+    return target == chess_piece_to_find if type
+    return target.nil? ? false : target[:color] == color
   end
 
   def check_target(target_square, board, target = nil)
