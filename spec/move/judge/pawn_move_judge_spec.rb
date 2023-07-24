@@ -20,14 +20,14 @@ RSpec.describe PawnMoveJudge do
 
       context "when start square has the moving pawn" do
         it "returns true" do
-          allow(judge).to receive(:check_target).with(start_sq, board, pawn).and_return(true)
+          allow(judge).to receive(:check_square).with(start_sq, board, pawn[:color], pawn[:type]).and_return(true)
           expect(judge.judge_single_move(target_sq, start_sq, pawn[:color], board)).to be_truthy
         end
       end
 
       context "when start square does not have the moving pawn" do
         it "returns false" do
-          allow(judge).to receive(:check_target).with(start_sq, board, pawn).and_return(false)
+          allow(judge).to receive(:check_square).with(start_sq, board, pawn[:color], pawn[:type]).and_return(false)
           expect(judge.judge_single_move(target_sq, start_sq, pawn[:color], board)).to be_falsey
         end
       end
@@ -97,33 +97,33 @@ RSpec.describe PawnMoveJudge do
       let!(:target_sq) { { file: 'b', rank: 3 } }
       let!(:start_file) { 'a' }
       let!(:board) { instance_double(Board) }
+      let!(:player_color) { ChessPiece::WH }
 
       context "when target square does not have an opponent chess piece" do
         it "returns false" do
           allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(nil)
-          expect(judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+          expect(judge.judge_capture(target_sq, start_file, player_color, board)).to be_falsey
         end
       end
 
       context "when target square has an opponent chess piece" do
-        it "calls #check_target on the square of the moving pawn" do
+        it "calls #check_square on the square of the moving pawn" do
           black_piece = { type: ChessPiece::PA, color: ChessPiece::BL }
           allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(black_piece)
 
           start_sq = { file: start_file, rank: target_sq[:rank] - 1 }
-          white_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
-          expect(judge).to receive(:check_target).with(start_sq, board, white_pawn)
+          expect(judge).to receive(:check_square).with(start_sq, board, player_color, ChessPiece::PA)
 
-          judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)
+          judge.judge_capture(target_sq, start_file, player_color, board)
         end
       end # context "when target square has an opponent chess piece"
 
       context "when target square has the player's own chess piece" do
         it "returns false" do
-          player_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
+          player_piece = { type: ChessPiece::PA, color: player_color }
           allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(player_piece)
 
-          expect(judge.judge_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+          expect(judge.judge_capture(target_sq, start_file, player_color, board)).to be_falsey
         end
       end # context "when target square has the player's own chess piece"
     end # context "when the pawn is white"
@@ -153,22 +153,23 @@ RSpec.describe PawnMoveJudge do
       let!(:start_file) { 'a' }
       let!(:ep_sq) { { file: 'b', rank: 5 } }
       let!(:board) { instance_double(Board) }
-      let!(:black_pawn) { { type: ChessPiece::PA, color: ChessPiece::BL } }
+      let!(:player_color) { ChessPiece::WH }
+      let!(:opponent_color) { ChessPiece::BL }
 
 
       context "when opponent pawn is not on the en-passant square" do
         it "returns false" do
-          allow(judge).to receive(:check_target).with(ep_sq, board, black_pawn).and_return(false)
-          expect(judge.judge_ep_capture(target_sq, start_file, ChessPiece::WH, board)).to be_falsey
+          allow(judge).to receive(:check_square).with(ep_sq, board, opponent_color, ChessPiece::PA).and_return(false)
+          expect(judge.judge_ep_capture(target_sq, start_file, player_color, board)).to be_falsey
         end
       end
       
       context "when opponent pawn is on the en-passant square" do
         it "calls #judge_capture" do
-          allow(judge).to receive(:check_target).with(ep_sq, board, black_pawn).and_return(true)
-          expect(judge).to receive(:judge_capture).with(target_sq, start_file, ChessPiece::WH, board)
+          allow(judge).to receive(:check_square).with(ep_sq, board, opponent_color, ChessPiece::PA).and_return(true)
+          expect(judge).to receive(:judge_capture).with(target_sq, start_file, player_color, board)
 
-          judge.judge_ep_capture(target_sq, start_file, ChessPiece::WH, board)
+          judge.judge_ep_capture(target_sq, start_file, player_color, board)
         end
       end
     end # context "when the pawn is white"
@@ -177,22 +178,23 @@ RSpec.describe PawnMoveJudge do
       let!(:target_sq) { { file: 'b', rank: 3 } }
       let!(:start_file) { 'a' }
       let!(:ep_sq) { { file: 'b', rank: 4 } }
-      let!(:white_pawn) { { type: ChessPiece::PA, color: ChessPiece::WH } }
+      let!(:player_color) { ChessPiece::BL }
+      let!(:opponent_color) { ChessPiece::WH }
       let!(:board) { instance_double(Board) }
 
       context "when opponent pawn is not on the en-passant square" do
         it "returns false" do
-          allow(judge).to receive(:check_target).with(ep_sq, board, white_pawn).and_return(false)
-          expect(judge.judge_ep_capture(target_sq, start_file, ChessPiece::BL, board)).to be_falsey
+          allow(judge).to receive(:check_square).with(ep_sq, board, opponent_color, ChessPiece::PA).and_return(false)
+          expect(judge.judge_ep_capture(target_sq, start_file, player_color, board)).to be_falsey
         end
       end
 
       context "when opponent pawn is on the en-passant square" do
         it "calls #judge_capture" do
-          allow(judge).to receive(:check_target).with(ep_sq, board, white_pawn).and_return(true)
-          expect(judge).to receive(:judge_capture).with(target_sq, start_file, ChessPiece::BL, board)
+          allow(judge).to receive(:check_square).with(ep_sq, board, opponent_color, ChessPiece::PA).and_return(true)
+          expect(judge).to receive(:judge_capture).with(target_sq, start_file, player_color, board)
 
-          judge.judge_ep_capture(target_sq, start_file, ChessPiece::BL, board)
+          judge.judge_ep_capture(target_sq, start_file, player_color, board)
         end
       end
     end # context "when the pawn is black"

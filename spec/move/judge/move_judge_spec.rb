@@ -2,87 +2,53 @@ require './lib/move/judge/move_judge'
 require './lib/move/pawn_move'
 require './lib/board/board'
 require './lib/standard/chess_piece'
+require './lib/move/move'
 
 
 RSpec.describe MoveJudge do
-  describe '#check_target' do
-    context "when the target square is to be empty" do
-      context "when the target square is empty" do
-        subject(:judge) { described_class.new }
+  describe '#judge_move' do
+    subject(:judge) { described_class.new }
+    let!(:board) { instance_double(Board) }
+    let!(:m) do
+      m = Move.new
+      m.start = { file: 'a', rank: 1 }
+      m.target = { file: 'a', rank: 2 }
+      m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
+      m
+    end
 
-        it "returns true" do
-          target_square = { file: 'a', rank: 1 }
+    context "when the target square is not empty" do
+      it "returns false" do
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return('a chess piece')
 
-          board = instance_double(Board)
-          allow(board).to receive(:at).with('a', 1).and_return(nil)
+        expect(judge.judge_move(m, board)).to be_falsey
+      end
+    end
 
-          result = judge.check_target(target_square, board)
-          expect(result).to be_truthy
-        end
+    context "when the target square is empty" do
+      before :example do
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return(nil)
       end
 
-      context "when the target square is not empty" do
-        subject(:judge) { described_class.new }
-
+      context "when the starting square does not have the moving piece" do
         it "returns false" do
-          target_square = { file: 'a', rank: 1 }
+          allow(board).to receive(:at).with(m.start[:file], m.start[:rank]).and_return(nil)
 
-          board = instance_double(Board)
-          allow(board).to receive(:at).with('a', 1).and_return('a chess piece')
-
-          result = judge.check_target(target_square, board)
-          expect(result).to be_falsey
-        end
-      end
-    end # context "when the target square is to be empty"
-
-    context "when the target is specified" do
-      context "when the the target square is empty" do
-        subject(:judge) { described_class.new }
-
-        it "returns false" do
-          target_square = { file: 'a', rank: 1 }
-          target = { type: ChessPiece::PA, color: ChessPiece::WH }
-
-          board = instance_double(Board)
-          allow(board).to receive(:at).with('a', 1).and_return(nil)
-
-          result = judge.check_target(target_square, board, target)
-          expect(result).to be_falsey
+          expect(judge.judge_move(m, board)).to be_falsey
         end
       end
 
-      context "when the target square has the target" do
-        subject(:judge) { described_class.new }
+      context "when the starting square has the moving piece" do
+        it "returns true/false for a clear/non-clear path respectively" do
+          allow(board).to receive(:at).with(m.start[:file], m.start[:rank]).and_return(m.piece)
+          direction = { file: 0, rank: 1 }
+          allow(judge).to receive(:clear_path?).with(m.start, m.target, board, direction).and_return(true)
 
-        it "returns true" do
-          target_square = { file: 'a', rank: 1 }
-          target = { type: ChessPiece::PA, color: ChessPiece::WH }
-
-          board = instance_double(Board)
-          allow(board).to receive(:at).with('a', 1).and_return({ type: ChessPiece::PA, color: ChessPiece::WH })
-
-          result = judge.check_target(target_square, board, target)
-          expect(result).to be_truthy
+          expect(judge.judge_move(m, board)).to be_truthy
         end
       end
-
-      context "when the target square has a chess piece other than the target" do
-        subject(:judge) { described_class.new }
-
-        it "returns false" do
-          target_square = { file: 'a', rank: 1 }
-          target = { type: ChessPiece::PA, color: ChessPiece::BL }
-
-          board = instance_double(Board)
-          allow(board).to receive(:at).with('a', 1).and_return({ type: ChessPiece::PA, color: ChessPiece::WH })
-
-          result = judge.check_target(target_square, board, target)
-          expect(result).to be_falsey
-        end
-      end
-    end # context "when the target square must have a chess piece of the specified color"
-  end # describe '#check_target'
+    end # context "when the target square is empty"
+  end # describe '#judge_move'
 
 
   describe '#clear_path?' do

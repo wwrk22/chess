@@ -8,9 +8,8 @@ class PawnMoveJudge < MoveJudge
   # then return true. Return false for all other cases.
   def judge_single_move(target_sq, start_sq, pawn_color, board)
     file, rank = [target_sq[:file], target_sq[:rank]]
-    pawn = { type: ChessPiece::PA, color: pawn_color }
-
-    (board.at(file, rank).nil?) ? check_target(start_sq, board, pawn) : false
+    (board.at(file, rank).nil?) ?
+      check_square(start_sq, board, pawn_color, ChessPiece::PA) : false
   end
 
   ##
@@ -36,15 +35,14 @@ class PawnMoveJudge < MoveJudge
 
     start_rank = compute_start_rank(target_sq[:rank], pawn_color)
     start_sq = { file: start_file, rank: start_rank }
-    check_target(start_sq, board, { type: ChessPiece::PA, color: pawn_color })
+    check_square(start_sq, board, pawn_color, ChessPiece::PA)
   end
 
   def judge_ep_capture(target_sq, start_file, pawn_color, board)
     target_rank = compute_start_rank(target_sq[:rank], pawn_color)
     ep_sq = { file: target_sq[:file], rank: target_rank }
-    opponent_pawn = { type: ChessPiece::PA, color: opponent_color(pawn_color) }
 
-    return check_target(ep_sq, board, opponent_pawn) ?
+    return check_square(ep_sq, board, opponent_color(pawn_color), ChessPiece::PA) ?
       judge_capture(target_sq, start_file, pawn_color, board) : false
   end
 
@@ -59,6 +57,7 @@ class PawnMoveJudge < MoveJudge
       return ChessPiece::WH
     end
   end
+
   ##
   # Simply determine the rank of the starting square of a capturing pawn.
   def compute_start_rank(target_rank, pawn_color)
