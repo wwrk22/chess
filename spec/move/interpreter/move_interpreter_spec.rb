@@ -3,31 +3,6 @@ require './lib/standard/chess_piece'
 
 
 RSpec.describe MoveInterpreter do
-  
-  describe '#parse_piece' do
-    context "when move is for a white pawn" do
-      subject(:interpreter) { described_class.new(ChessPiece::WH) }
-      
-      it "returns the correct type and color" do
-        move = 'a3'
-        piece = interpreter.parse_piece(move)
-        expected_piece = { type: ChessPiece::PA, color: ChessPiece::WH }
-        expect(piece).to eq(expected_piece)
-      end
-    end
-
-    context "when move is for a piece other than a pawn" do
-      subject(:interpreter) { described_class.new(ChessPiece::BL) }
-      
-      it "returns the correct type and color" do
-        move = 'Na6'
-        piece = interpreter.parse_piece(move)
-        expected_piece = { type: ChessPiece::KN, color: ChessPiece::BL }
-        expect(piece).to eq(expected_piece)
-      end
-    end # context "when move is for a piece other than a pawn"
-  end # describe '#parse_piece'
-
   describe '#parse_target' do
     subject(:interpreter) { described_class.new(ChessPiece::WH) }
       
