@@ -6,6 +6,44 @@ require './lib/move/move'
 
 
 RSpec.describe MoveJudge do
+  describe '#judge_capture' do
+    subject(:judge) { described_class.new }
+    let!(:board) { instance_double(Board) }
+    let!(:m) do
+      m = Move.new
+      m.start = { file: 'a', rank: 1 }
+      m.target = { file: 'a', rank: 5 }
+      m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
+      m
+    end
+
+    context "when the target square is empty" do
+      it "returns false" do
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return nil
+        expect(judge.judge_capture(m, board)).to be_falsey
+      end
+    end
+
+    context "when the target square has player's own piece" do
+      it "returns false" do
+        player_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return player_pawn
+        expect(judge.judge_capture(m, board)).to be_falsey
+      end
+    end
+
+    context "when the target square has an opponent piece" do
+      it "calls #judge_move to determine the legality" do
+        opponent_pawn = { type: ChessPiece::PA, color: ChessPiece::BL }
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return opponent_pawn
+
+        expect(judge).to receive(:judge_move).with(m, board)
+        judge.judge_capture(m, board)
+      end
+    end # context "when the target square has an opponent piece"
+  end # describe '#judge_capture'
+
+
   describe '#judge_move' do
     subject(:judge) { described_class.new }
     let!(:board) { instance_double(Board) }

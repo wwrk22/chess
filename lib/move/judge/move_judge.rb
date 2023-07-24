@@ -6,10 +6,7 @@ class MoveJudge
   include BoardComputer
 
   ##
-  # Return true if the move defined by parameters is legal, false otherwise.
-  # Starting square is checked for the moving piece, target square is checked
-  # for emptiness, and the path between the two is checked for emptiness if the
-  # parameter `check_path` is true.
+  # Return true if the move is legal. Otherwise, return false.
   def judge_move(move, board)
     target = board.at(move.target[:file], move.target[:rank])
     return false if target.nil? == false
@@ -17,6 +14,14 @@ class MoveJudge
     direction = compute_direction(move.start, move.target)
     return board.at(move.start[:file], move.start[:rank]) == move.piece &&
       clear_path?(move.start, move.target, board, direction)
+  end
+
+  ##
+  # Return true if the capture-move is legal. Otherwise, return false.
+  def judge_capture(move, board)
+    target = board.at(move.target[:file], move.target[:rank])
+    return false if target.nil? || target[:color] == move.piece[:color]
+    return judge_move(move, board)
   end
 
   # Check to see if the path between the starting square 'a', and the ending
