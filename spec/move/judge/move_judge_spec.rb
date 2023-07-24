@@ -8,26 +8,47 @@ require './lib/move/move'
 RSpec.describe MoveJudge do
   describe '#judge_move' do
     subject(:judge) { described_class.new }
+    let!(:board) { instance_double(Board) }
+    let!(:m) do
+      m = Move.new
+      m.start = { file: 'a', rank: 1 }
+      m.target = { file: 'a', rank: 2 }
+      m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
+      m.clear_path_required = true
+      m
+    end
 
-    context "when target square is not empty" do
+    context "when the target square is not empty" do
       it "returns false" do
-        move = Move.new
-        move.start = { file: 'a', rank: 1 },
-        move.target = { file: 'a', rank: 2 },
-        move.piece = { type: ChessPiece::RO, color: ChessPiece::WH },
-        move.clear_path_required = true
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return('a chess piece')
 
-        board = instance_double(Board)
-        target_file, target_rank = [move.target[:file], move.target[:rank]]
-        allow(board).to receive(:at).with(target_file, target_rank).and_return('a chess piece')
-
-        expect(judge.judge_move(move, board)).to be_falsey
+        expect(judge.judge_move(m, board)).to be_falsey
       end
-    end # context "when target square is not empty"
+    end
 
-    context "when target square is empty" do
+    context "when the target square is empty" do
+      before :example do
+        allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return(nil)
+      end
 
-    end # context "when target square is empty"
+      context "when the starting square does not have the moving piece" do
+        it "returns false" do
+          allow(board).to receive(:at).with(m.start[:file], m.start[:rank]).and_return(nil)
+
+          expect(judge.judge_move(m, board)).to be_falsey
+        end
+      end
+
+      context "when the starting square has the moving piece" do
+        it "returns true/false for a clear/non-clear path respectively" do
+          allow(board).to receive(:at).with(m.start[:file], m.start[:rank]).and_return(m.piece)
+          direction = { file: 0, rank: 1 }
+          allow(judge).to receive(:clear_path?).with(m.start, m.target, board, direction).and_return(true)
+
+          expect(judge.judge_move(m, board)).to be_truthy
+        end
+      end
+    end # context "when the target square is empty"
   end # describe '#judge_move'
 
 
