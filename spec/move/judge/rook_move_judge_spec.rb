@@ -21,15 +21,13 @@ RSpec.describe RookMoveJudge do
     end # context "when the target square is not empty"
 
     context "when the target square is empty" do
-      let!(:player_rook) { { type: ChessPiece::RO, color: player_color } }
-
       before :example do
         allow(board).to receive(:at).with(target_sq[:file], target_sq[:rank]).and_return(nil)
       end
 
       context "when the start square does not have the player's rook" do
         it "returns false" do
-          allow(judge).to receive(:check_target).with(start_sq, board, player_rook).and_return(false)
+          allow(judge).to receive(:check_square).with(start_sq, board, ChessPiece::WH, ChessPiece::RO).and_return(false)
 
           expect(judge.judge_move(start_sq, target_sq, player_color, board)).to be_falsey
         end
@@ -38,7 +36,7 @@ RSpec.describe RookMoveJudge do
       context "when the start square has the player's rook" do
         it "calls #clear_path? to check if the path between start and target is clear" do
           direction = { file: 0, rank: 4 }
-          allow(judge).to receive(:check_target).with(start_sq, board, player_rook).and_return(true)
+          allow(judge).to receive(:check_square).with(start_sq, board, ChessPiece::WH, ChessPiece::RO).and_return(true)
           allow(judge).to receive(:compute_direction).with(start_sq, target_sq).and_return(direction)
 
           expect(judge).to receive(:clear_path?).with(start_sq, target_sq, board, direction)
