@@ -20,14 +20,14 @@ RSpec.describe PawnMoveJudge do
 
       context "when start square has the moving pawn" do
         it "returns true" do
-          allow(judge).to receive(:check_target).with(start_sq, board, pawn).and_return(true)
+          allow(judge).to receive(:check_square).with(start_sq, board, pawn[:color], pawn[:type]).and_return(true)
           expect(judge.judge_single_move(target_sq, start_sq, pawn[:color], board)).to be_truthy
         end
       end
 
       context "when start square does not have the moving pawn" do
         it "returns false" do
-          allow(judge).to receive(:check_target).with(start_sq, board, pawn).and_return(false)
+          allow(judge).to receive(:check_square).with(start_sq, board, pawn[:color], pawn[:type]).and_return(false)
           expect(judge.judge_single_move(target_sq, start_sq, pawn[:color], board)).to be_falsey
         end
       end
