@@ -14,7 +14,6 @@ RSpec.describe MoveJudge do
       m.start = { file: 'a', rank: 1 }
       m.target = { file: 'a', rank: 2 }
       m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
-      m.clear_path_required = true
       m
     end
 
