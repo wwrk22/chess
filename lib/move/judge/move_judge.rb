@@ -19,18 +19,6 @@ class MoveJudge
       clear_path?(move.start, move.target, board, direction)
   end
 
-  ##
-  # Check a square to see if it's empty or if it has a chess piece of either
-  # specified type or color, or both. Return true if matched, false otherwise.
-  def check_square(square, board, color = nil, type = nil)
-    target = board.at(square[:file], square[:rank])
-    chess_piece_to_find = { type: type, color: color }
-
-    return target.nil? if color.nil? && type.nil?
-    return target == chess_piece_to_find if type
-    return target.nil? ? false : target[:color] == color
-  end
-
   # Check to see if the path between the starting square 'a', and the ending
   # square 'b' is clear. The 'direction' tells which way to go from 'a'.
   def clear_path?(a, b, board, direction)

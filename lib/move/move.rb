@@ -1,9 +1,9 @@
 class Move
   # The type and color of the piece making the move.
   # Interpreted by MoveInterpreter.
-  attr_accessor :moving_piece
+  attr_accessor :piece
 
-  # The target square that the @moving_piece is moving to or capturing.
+  # The target square that the @piece is moving to or capturing.
   # Interpreted by MoveInterpreter.
   attr_accessor :target
 
@@ -15,16 +15,11 @@ class Move
   # The possible starting squares of the moving piece used only when the moving
   # piece is a pawn or a knight.
   # Computed by a move computer.
-  attr_accessor :starts
+  attr_accessor :start
 
   # The directions from @target that can be followed to check for possible
-  # starting squares of @moving_piece. This is used by all piece types except
+  # starting squares of @piece. This is used by all piece types except
   # for pawn and knight.
   # Computed by a move computer.
   attr_accessor :directions
-
-  # NEW ATTRIBUTES
-  attr_accessor :start
-  attr_accessor :clear_path_required
-  attr_accessor :piece
 end
