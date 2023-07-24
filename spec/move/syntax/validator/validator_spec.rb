@@ -9,21 +9,43 @@ RSpec.describe Validator do
 
     context "when the move is for a pawn" do
       it "returns the output of PawnValidator#validate" do
-        move = { move: 'a3', color: ChessPiece::WH }
+        move_str = 'a3'
+        player_color = ChessPiece::WH
 
-        expect(validator.instance_variable_get(:@pawn_validator)).to receive(:validate).with(move)
-        validator.validate(move, ChessPiece::PA)
+        pawn_validator_attr = validator.instance_variable_get(:@pawn_validator)
+        expect(pawn_validator_attr).to receive(:validate).with(move_str, player_color)
+        validator.validate(move_str, player_color)
       end
     end
 
-    context "when the move is for a piece that is not pawn" do
+    context "when the move is for a type other than pawn" do
       it "returns the output of #validate of the appropriate validator class" do
-        move = { move: 'Nba3', color: ChessPiece::BL }
+        move_str = 'Nba3'
+        player_color = ChessPiece::BL
+        knight_validator_attr = validator.instance_variable_get(:@knight_validator)
 
-        expect(validator.instance_variable_get(:@knight_validator)).to receive(:validate).with(move)
-        validator.validate(move, ChessPiece::KN)
+        expect(knight_validator_attr).to receive(:validate).with(move_str, player_color)
+        validator.validate(move_str, player_color)
       end
     end
   end
+
+  describe '#parse_piece' do
+    subject(:validator) { described_class.new }
+
+    context "when the move is for a pawn" do
+      it "returns 'P'" do
+        move = 'a3'
+        expect(validator.parse_piece(move)).to eq(ChessPiece::PA)
+      end
+    end # context "when the move is for a pawn"
+
+    context "when the move is for a type other than pawn" do
+      it "returns the initial designating the type" do
+        move = 'R1a5'
+        expect(validator.parse_piece(move)).to eq(ChessPiece::RO)
+      end
+    end
+  end # describe '#parse_piece'
 
 end
