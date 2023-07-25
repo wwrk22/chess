@@ -11,15 +11,15 @@ RSpec.describe KnightValidator do
       context "when syntax is valid" do
         context "when starting file or rank is not specified" do
           it "returns the move" do
-            move = { move: 'Na3', color: ChessPiece::WH }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'Na3'
+            expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
           end
         end
 
         context "when starting file or rank is specified" do
           it "returns the move" do
-            move = { move: 'Nba3', color: ChessPiece::WH }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'Nba3'
+            expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
           end
         end
       end # context "when sytax is valid"
@@ -27,15 +27,13 @@ RSpec.describe KnightValidator do
       context "when syntax is invalid" do 
         context "when starting file or rank is not specified" do
           it "returns nil" do
-            move = { move: 'Nz3', color: ChessPiece::BL }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('Nz3', ChessPiece::BL)).to be_nil
           end
         end
 
         context "when starting file or rank is specified" do
           it "returns nil" do
-            move = { move: 'Naa3', color: ChessPiece::BL }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('Naa3', ChessPiece::BL)).to be_nil
           end
         end
       end # context "when syntax is invalid"
@@ -45,15 +43,15 @@ RSpec.describe KnightValidator do
       context "when syntax is valid" do
         context "when starting fle or rank is not specified" do
           it "returns the move" do
-            move = { move: 'Nxa3', color: ChessPiece::BL }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'Nxa3'
+            expect(validator.validate(move_str, ChessPiece::BL)).to eq(move_str)
           end
         end
 
         context "when starting file or rank is specified" do
           it "returns the move" do
-            move = { move: 'Nbxa3', color: ChessPiece::BL }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'Nbxa3'
+            expect(validator.validate(move_str, ChessPiece::BL)).to eq(move_str)
           end
         end
       end # context "when syntax is valid"
@@ -61,15 +59,13 @@ RSpec.describe KnightValidator do
       context "when syntax is invalid" do
         context "when starting fle or rank is not specified" do
           it "returns nil" do
-            move = { move: 'Nxa9', color: ChessPiece::WH }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('Nxa9', ChessPiece::WH)).to be_nil
           end
         end
 
         context "when starting file or rank is specified" do
           it "returns nil" do
-            move = { move: 'Nexa3', color: ChessPiece::WH }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('Nexa3', ChessPiece::WH)).to be_nil
           end
         end
       end # context "when syntax is invalid"

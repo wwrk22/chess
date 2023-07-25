@@ -7,20 +7,20 @@ class RookValidator
 
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
-  def validate(move)
-    if move[:color] != ChessPiece::WH && move[:color] != ChessPiece::BL
-      raise ColorUnknownError.new(move[:color])
+  def validate(move_str, player_color)
+    if player_color != ChessPiece::WH && player_color != ChessPiece::BL
+      raise ColorUnknownError.new(player_color)
     end
 
-    return validate_capture(move) if move[:move].include? 'x'
-    return move if move[:move] =~ RookMoves::MOVE
+    return validate_capture(move_str) if move_str.include? 'x'
+    return move_str if move_str =~ RookMoves::MOVE
   end
 
   private
 
-  def validate_capture(move)
+  def validate_capture(move_str)
     RookMoves::CAPTURES.each do |capture|
-      return move if move[:move] =~ capture
+      return move_str if move_str =~ capture
     end
 
     nil

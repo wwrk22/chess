@@ -8,29 +8,26 @@ RSpec.describe KingValidator do
     context "when move is not a capture" do
       context "when target square has valid file and rank" do
         it "returns the move" do
-          move = { move: 'Ke2', color: ChessPiece::WH }
-          expect(validator.validate(move)).to eq(move)
+          move_str = 'Ke2'
+          expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
         end
       end
 
       context "when target square has invalid file" do
         it "returns nil" do
-          move = { move: 'Kz2', color: ChessPiece::BL }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Kz2', ChessPiece::BL)).to be_nil
         end
       end
 
       context "when target square has invalid rank" do
         it "returns nil" do
-          move = { move: 'Ke9', color: ChessPiece::WH }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Ke9', ChessPiece::WH)).to be_nil
         end
       end
 
       context "when starting file or rank is specified" do
         it "returns nil" do
-          move = { move: 'Kde2', color: ChessPiece::BL }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Kde2', ChessPiece::BL)).to be_nil
         end
       end
     end # context "when move is not a capture"
@@ -38,44 +35,41 @@ RSpec.describe KingValidator do
     context "when move is a capture" do
       context "when target square has valid file and rank" do
         it "returns the move" do
-          move = { move: 'Kxe2', color: ChessPiece::WH }
-          expect(validator.validate(move)).to eq(move)
+          move_str = 'Kxe2'
+          expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
         end
       end
 
       context "when target square has invalid file" do
         it "returns nil" do
-          move = { move: 'Kxz2', color: ChessPiece::BL }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Kxz2', ChessPiece::BL)).to be_nil
         end
       end
 
       context "when target square has invalid rank" do
         it "returns nil" do
-          move = { move: 'Kxe9', color: ChessPiece::WH }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Kxe9', ChessPiece::WH)).to be_nil
         end
       end
 
       context "when starting file or rank is specified" do
         it "returns nil" do
-          move = { move: 'Kdxe2', color: ChessPiece::BL }
-          expect(validator.validate(move)).to be_nil
+          expect(validator.validate('Kdxe2', ChessPiece::BL)).to be_nil
         end
       end
     end # context "when move is a capture"
 
     context "when move is a king-side castle" do
       it "returns the move" do
-        move = { move: '0-0', color: ChessPiece::WH }
-        expect(validator.validate(move)).to eq(move)
+        move_str = '0-0'
+        expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
       end
     end
 
     context "when move is a queen-side castle" do
       it "returns the move" do
-        move = { move: '0-0-0', color: ChessPiece::BL }
-        expect(validator.validate(move)).to eq(move)
+        move_str = '0-0-0'
+        expect(validator.validate(move_str, ChessPiece::BL)).to eq(move_str)
       end
     end
   end # describe '#validate'
