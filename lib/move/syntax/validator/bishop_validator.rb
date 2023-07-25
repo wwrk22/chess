@@ -6,11 +6,11 @@ class BishopValidator
 
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
-  def validate(move)
-    if move[:color] != ChessPiece::WH && move[:color] != ChessPiece::BL
-      raise ColorUnknownError.new(move[:color])
+  def validate(move_str, player_color)
+    if player_color != ChessPiece::WH && player_color != ChessPiece::BL
+      raise ColorUnknownError.new(player_color)
     end
 
-    move if move[:move] =~ BishopMoves::MOVE
+    move_str if move_str =~ BishopMoves::MOVE
   end
 end

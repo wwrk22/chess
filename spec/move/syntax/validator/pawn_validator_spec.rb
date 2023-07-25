@@ -10,15 +10,14 @@ RSpec.describe PawnValidator do
       context "when move is not a capture" do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
-            move = { move: 'a3', color: ChessPiece::WH }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'a3'
+            expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
           end
         end
 
         context "when syntax is invalid" do
           it "returns nil" do
-            move = { move: 'a2', color: ChessPiece::WH }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('a2', ChessPiece::WH)).to be_nil
           end
         end
       end # context "when move is not a capture"
@@ -26,15 +25,14 @@ RSpec.describe PawnValidator do
       context "when move is a capture" do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
-            move = { move: 'bxa3', color: ChessPiece::WH }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'bxa3'
+            expect(validator.validate(move_str, ChessPiece::WH)).to eq(move_str)
           end
         end # context "when syntax is valid"
 
         context "when syntax is invalid" do
           it "returns nil" do
-            move = { move: 'cxa2', color: ChessPiece::WH }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('cxa2', ChessPiece::WH)).to be_nil
           end
         end # context "when syntax is invalid"
       end # context "when move is a capture"
@@ -44,15 +42,14 @@ RSpec.describe PawnValidator do
       context "when move is not a capture" do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
-            move = { move: 'h6', color: ChessPiece::BL }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'h6'
+            expect(validator.validate(move_str, ChessPiece::BL)).to eq(move_str)
           end
         end
 
         context "when syntax is invalid" do
           it "returns nil" do
-            move = { move: 'h7', color: ChessPiece::BL }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('h7', ChessPiece::BL)).to be_nil
           end
         end
       end # context "when move is not a capture"
@@ -60,15 +57,14 @@ RSpec.describe PawnValidator do
       context "when move is a capture" do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
-            move = { move: 'gxh6', color: ChessPiece::BL }
-            expect(validator.validate(move)).to eq(move)
+            move_str = 'gxh6'
+            expect(validator.validate(move_str, ChessPiece::BL)).to eq(move_str)
           end
         end # context "when syntax is valid"
 
         context "when syntax is invalid" do
           it "returns nil" do
-            move = { move: 'axh7', color: ChessPiece::BL }
-            expect(validator.validate(move)).to be_nil
+            expect(validator.validate('axh7', ChessPiece::BL)).to be_nil
           end
         end # context "when syntax is invalid"
       end # context "when move is a capture"
@@ -76,10 +72,8 @@ RSpec.describe PawnValidator do
 
     context "when color is unknown" do
       it "raises ColorUnknownError" do
-        move = { move: 'a3', color: 'unknown' }
-        expect{ validator.validate(move) }.to raise_error(ColorUnknownError)
+        expect{ validator.validate('a3', 'unknown') }.to raise_error(ColorUnknownError)
       end
     end
-
   end # describe '#validate'
 end

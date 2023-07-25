@@ -12,13 +12,6 @@ class MoveInterpreter
     @color = color
   end
 
-  # Parse the type of the chess piece in play.
-  def parse_piece(move)
-    piece = move[0]
-    piece = ChessPiece::PA if ChessBoard::FILES.include? piece
-    { type: piece, color: @color }
-  end
-
   # Parse the destination square of the move.
   def parse_target(move)
     target_file, target_rank = [move[-2], move[-1].to_i]
