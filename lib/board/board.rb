@@ -1,15 +1,33 @@
 require './lib/standard/chess_board'
+require './lib/error/invalid_square'
+require_relative './board_specs'
 
 
 class Board
+  include BoardSpecs
+  
+  def initialize
+    @ranks = Array.new(8, Array.new(8, nil))
+  end
 
   def at(file, rank)
-    # Return hash format:
-    # If the square holds a chess piece: { type: 'P', color: 'w' } for a white pawn
-    # If the square is empty: nil
+    check_coordinates(file, rank)
+
+    file_index = files.index(file)
+    @ranks[rank][file_index]
   end
 
   def search(piece)
+  end
+
+
+  private
+
+  def check_coordinates(file, rank)
+    return if files.include?(file) && ranks.include?(rank)
+    raise InvalidSquare::RankError.new(rank) if files.include?(file)
+    raise InvalidSquare::FileError.new(file) if ranks.include?(rank)
+    raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 
   class << self
