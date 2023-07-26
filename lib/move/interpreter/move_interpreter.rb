@@ -40,8 +40,6 @@ class MoveInterpreter
     return { file: move[0] } if move =~ /^[a-h]x[a-h][1-8]$/
 
     # Move is for rook, knight, bishop, or queen.
-    if move =~ /^[RNBQ][a-h1-8](x|[a-h]).+$/
-      ChessBoard::FILES.include?(move[1]) ? { file: move[1] } : { rank: move[1].to_i }
-    end
+    ChessBoard::FILES.include?(move[1]) ? { file: move[1] } : { rank: move[1].to_i }
   end
 end
