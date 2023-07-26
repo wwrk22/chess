@@ -29,5 +29,16 @@ RSpec.describe Board do
         end
       end
     end # context "when the square coordinates are out-of-range"
+
+    context "when the square coordinates are in-range" do
+      subject(:board) { described_class.new }
+
+      it "returns whatever is on the square" do
+        file = 'a'
+        rank = 1
+
+        expect(board.at(file, rank)).to be_nil # nil indicates an empty square
+      end
+    end
   end # describe '#at'
 end

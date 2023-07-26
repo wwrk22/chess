@@ -14,7 +14,7 @@ module InvalidSquare
   end
 
   class CoordinatesError < StandardError
-    def initialize(rank, file)
+    def initialize(file, rank)
       msg = "The rank #{rank} and file #{file} is invalid." \
             " Valid ranges are 0-7 and a-h respectively."
       super(msg)

@@ -13,6 +13,8 @@ class Board
   def at(file, rank)
     check_coordinates(file, rank)
 
+    file_index = files.index(file)
+    @ranks[rank][file_index]
   end
 
   def search(piece)
@@ -22,11 +24,9 @@ class Board
   private
 
   def check_coordinates(file, rank)
-    valid_file = files.include? file
-    valid_rank = ranks.include? rank
-    
-    raise InvalidSquare::RankError.new(rank) if valid_file
-    raise InvalidSquare::FileError.new(file) if valid_rank
+    return if files.include?(file) && ranks.include?(rank)
+    raise InvalidSquare::RankError.new(rank) if files.include?(file)
+    raise InvalidSquare::FileError.new(file) if ranks.include?(rank)
     raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 
