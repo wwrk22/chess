@@ -9,6 +9,9 @@ class Board
     # If the square is empty: nil
   end
 
+  def search(piece)
+  end
+
   class << self
 
     def get_line(f_or_r)
