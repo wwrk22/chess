@@ -11,18 +11,23 @@ class Board
   end
 
   def at(file, rank)
-    valid_file = files.include? file
-    valid_rank = ranks.include? rank
-    
-    if valid_file && valid_rank
-    else
-      raise InvalidSquare::RankError.new(rank) if valid_file
-      raise InvalidSquare::FileError.new(file) if valid_rank
-      raise InvalidSquare::CoordinatesError.new(file, rank)
-    end
+    check_coordinates(file, rank)
+
   end
 
   def search(piece)
+  end
+
+
+  private
+
+  def check_coordinates(file, rank)
+    valid_file = files.include? file
+    valid_rank = ranks.include? rank
+    
+    raise InvalidSquare::RankError.new(rank) if valid_file
+    raise InvalidSquare::FileError.new(file) if valid_rank
+    raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 
   class << self
