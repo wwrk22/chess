@@ -64,6 +64,4 @@ class MoveJudge
   def update_steps(steps)
     (steps > 0) ? (steps -= 1) : ((steps < 0) ? (steps += 1) : steps)
   end
-
-
 end

@@ -157,6 +157,3 @@ class Board
 
   end # class << self
 end
-
-b = Board.new
-print b.to_s

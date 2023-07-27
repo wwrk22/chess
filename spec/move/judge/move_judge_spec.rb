@@ -1,9 +1,13 @@
 require './lib/move/judge/move_judge'
 require './lib/move/pawn_move'
 require './lib/board/board'
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 require './lib/move/move'
 
+
+RSpec.configure do |cfg|
+  cfg.include PieceSpecs
+end
 
 RSpec.describe MoveJudge do
   describe '#judge_capture' do
@@ -13,7 +17,7 @@ RSpec.describe MoveJudge do
       m = Move.new
       m.start = { file: 'a', rank: 1 }
       m.target = { file: 'a', rank: 5 }
-      m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
+      m.piece = { type: rook, color: white }
       m
     end
 
@@ -26,7 +30,7 @@ RSpec.describe MoveJudge do
 
     context "when the target square has player's own piece" do
       it "returns false" do
-        player_pawn = { type: ChessPiece::PA, color: ChessPiece::WH }
+        player_pawn = { type: pawn, color: white }
         allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return player_pawn
         expect(judge.judge_capture(m, board)).to be_falsey
       end
@@ -34,7 +38,7 @@ RSpec.describe MoveJudge do
 
     context "when the target square has an opponent piece" do
       it "calls #judge_move to determine the legality" do
-        opponent_pawn = { type: ChessPiece::PA, color: ChessPiece::BL }
+        opponent_pawn = { type: pawn, color: black }
         allow(board).to receive(:at).with(m.target[:file], m.target[:rank]).and_return opponent_pawn
 
         expect(judge).to receive(:judge_move).with(m, board)
@@ -51,7 +55,7 @@ RSpec.describe MoveJudge do
       m = Move.new
       m.start = { file: 'a', rank: 1 }
       m.target = { file: 'a', rank: 2 }
-      m.piece = { type: ChessPiece::RO, color: ChessPiece::WH }
+      m.piece = { type: rook, color: white }
       m
     end
 

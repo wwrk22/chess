@@ -1,4 +1,4 @@
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 require './lib/standard/chess_board'
 require_relative './pawn_validator'
 require_relative './rook_validator'
@@ -9,6 +9,7 @@ require_relative './king_validator'
 
 
 class Validator
+  include PieceSpecs
 
   def initialize
     @pawn_validator = PawnValidator.new
@@ -21,17 +22,17 @@ class Validator
 
   def validate(move_str, color)
     case parse_piece(move_str)
-    when ChessPiece::PA
+    when pawn
       @pawn_validator.validate(move_str, color)
-    when ChessPiece::RO
+    when rook
       @rook_validator.validate(move_str, color)
-    when ChessPiece::KN
+    when knight
       @knight_validator.validate(move_str, color)
-    when ChessPiece::BI
+    when bishop
       @bishop_validator.validate(move_str, color)
-    when ChessPiece::QU
+    when queen
       @queen_validator.validate(move_str, color)
-    when ChessPiece::KI
+    when king
       @king_validator.validate(move_str, color)
     else
       false
@@ -39,7 +40,7 @@ class Validator
   end
 
   def parse_piece(move_str)
-    return ChessPiece::PA if ChessBoard::FILES.include? move_str[0]
+    return pawn if ChessBoard::FILES.include? move_str[0]
     return move_str[0]
   end
 

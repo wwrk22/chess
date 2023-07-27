@@ -1,8 +1,9 @@
 require_relative '../move/pawn_moves'
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 
 
 class PawnValidator
+  include PieceSpecs
 
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
@@ -16,8 +17,8 @@ class PawnValidator
   # Validate a move that is a capture. Raise ColorUnknownError if color is
   # unknown.
   def validate_capture_move(move_str, player_color)
-    return check_white_capture(move_str) if player_color == ChessPiece::WH
-    return check_black_capture(move_str) if player_color == ChessPiece::BL
+    return check_white_capture(move_str) if player_color == white
+    return check_black_capture(move_str) if player_color == black
     raise ColorUnknownError.new(player_color)
   end
 
@@ -42,8 +43,8 @@ class PawnValidator
   # Validate a move that is not a capture. Raise ColorUnknownError if color
   # is unknown.
   def validate_non_capture_move(move_str, player_color)
-    return check_white_move(move_str) if player_color == ChessPiece::WH
-    return check_black_move(move_str) if player_color == ChessPiece::BL
+    return check_white_move(move_str) if player_color == white
+    return check_black_move(move_str) if player_color == black
     raise ColorUnknownError.new(player_color)
   end
 
