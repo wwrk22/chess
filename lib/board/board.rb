@@ -24,8 +24,57 @@ class Board
   def search(piece)
   end
 
+  ##
+  # Output a visual representation of the board to $stdout.
+  def to_s
+    @ranks.each_with_index.reduce("") do |board, (rank, rank_index)|
+      rank.each_with_index.reduce(board) do |line, (square, file_index)|
+        board += format_square_or_piece(square, file_index, rank_index)
+      end
+    end
+  end
+
+  ##
+  # Format the given square for printing. Return the unicode string of the
+  # formatted square.
+  def format_square(square, file_index, rank_index)
+    formatted = black_square
+    formatted = white_square if (file_index % 2) + (rank_index % 2) == 1
+    formatted += "\n" if file_index == 7
+    formatted
+  end
+
+  ##
+  # Format the given piece for printing. Return the unicode string of the
+  # formatted piece.
+  def format_piece(piece, file_index, rank_index)
+    file_index == 7 ? (piece.unicode + "\n") : piece.unicode
+  end
+
 
   private
+
+  def format_square_or_piece(square, file_index, rank_index)
+    if square.nil?
+      return format_square(square, file_index, rank_index)
+    else
+      return format_piece(square, file_index, rank_index)
+    end
+  end
+
+  ##
+  # For the given square, print either an empty square or the chess piece
+  # that is on the square.
+  def print_square(square, file_index, rank_index)
+    if square.nil?
+      print format_square(square, file_index, rank_index)
+    else
+      print format_piece(square, file_index, rank_index)
+    end
+  end
+
+  def empty_square(file_index, rank_index)
+  end
 
   def check_coordinates(file, rank)
     return if files.include?(file) && ranks.include?(rank)
@@ -108,3 +157,6 @@ class Board
 
   end # class << self
 end
+
+b = Board.new
+print b.to_s
