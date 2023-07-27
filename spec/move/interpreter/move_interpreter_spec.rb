@@ -1,10 +1,14 @@
 require './lib/move/interpreter/move_interpreter'
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 
+
+RSpec.configure do |cfg|
+  cfg.include PieceSpecs
+end
 
 RSpec.describe MoveInterpreter do
   describe '#parse_target' do
-    subject(:interpreter) { described_class.new(ChessPiece::WH) }
+    subject(:interpreter) { described_class.new(white) }
       
     context "when move is a check or checkmate" do
       it "returns true" do
@@ -24,7 +28,7 @@ RSpec.describe MoveInterpreter do
   end # describe '#parse_target'
 
   describe '#capture?' do
-    subject(:interpreter) { described_class.new(ChessPiece::WH) }
+    subject(:interpreter) { described_class.new(white) }
       
     context "when move is a capture" do
       context "when move is a check or checkmate" do
@@ -60,7 +64,7 @@ RSpec.describe MoveInterpreter do
   end # describe '#capture?'
 
   describe '#parse_starting_square' do
-    subject(:interpreter) { described_class.new(ChessPiece::WH) }
+    subject(:interpreter) { described_class.new(white) }
       
     context "when move is for a pawn" do
       it "returns the file or rank of the moving pawn" do

@@ -1,6 +1,6 @@
 require './lib/standard/chess_board'
 require './lib/standard/standard'
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 
 
 # Any move interpreted is expected to have been validated by a validator class.
