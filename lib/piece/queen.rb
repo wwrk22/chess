@@ -12,7 +12,7 @@ class Queen
   ##
   # Create a new queen with its color. Raise error for unknown color.
   def initialize(color)
-    super(color)
+    super(queen, color)
   end
 
   ##

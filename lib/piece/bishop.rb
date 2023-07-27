@@ -12,7 +12,7 @@ class Bishop < ChessPiece
   ##
   # Create a new bishop with its color. Raise error for unknown color.
   def initialize(color)
-    super(color)
+    super(bishop, color)
   end
 
   ##
