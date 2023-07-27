@@ -1,6 +1,7 @@
 require './lib/board/board'
 require './lib/board/board_specs'
 require './lib/error/invalid_square'
+require './lib/piece/pawn'
 
 
 RSpec.configure do |cfg|
@@ -53,8 +54,8 @@ RSpec.describe Board do
       subject(:board) { described_class.new }
 
       it "appends a newline to the formatted string" do
-        formatted_square = board.format_square(nil, 7, 0)
-        expect(formatted_square[-1]).to eq("\n")
+        formatted = board.format_square(nil, 7, 0)
+        expect(formatted[-1]).to eq("\n")
       end
     end # context "when the square is on file h"
 
@@ -63,8 +64,8 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "returns a black square" do
-          formatted_square = board.format_square(nil, 1, 1)
-          expect(formatted_square).to eq(black_square)
+          formatted = board.format_square(nil, 1, 1)
+          expect(formatted).to eq(black_square)
         end
       end
 
@@ -72,8 +73,8 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "returns a white square" do
-          formatted_square = board.format_square(nil, 1, 0)
-          expect(formatted_square).to eq(white_square)
+          formatted = board.format_square(nil, 1, 0)
+          expect(formatted).to eq(white_square)
         end
       end
 
@@ -81,8 +82,8 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "returns a black square" do
-          formatted_square = board.format_square(nil, 0, 0)
-          expect(formatted_square).to eq(black_square)
+          formatted = board.format_square(nil, 0, 0)
+          expect(formatted).to eq(black_square)
         end
       end
 
@@ -90,18 +91,22 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "returns a white square" do
-          formatted_square = board.format_square(nil, 0, 1)
-          expect(formatted_square).to eq(white_square)
+          formatted = board.format_square(nil, 0, 1)
+          expect(formatted).to eq(white_square)
         end
       end
     end # context "when the square is empty"
-
-    context "when the square has a chess piece" do
-      context "when the square is on file h" do
-      end
-
-      context "when the square is not on file h" do
-      end
-    end # context "when the square has a chess piece"
   end # describe '#format_square'
+
+
+  describe '#format_piece' do
+    context "when the piece is on file h" do
+      subject(:board) { described_class.new }
+
+      it "appends a newline to the formatted string" do
+        formatted = board.format_piece(nil, 7, 0)
+        expect(formatted[-1]).to eq("\n")
+      end
+    end
+  end # describe '#format_piece'
 end

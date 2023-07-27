@@ -35,17 +35,29 @@ class Board
   end
 
   ##
-  # Format the given square, whether it's empty or has a chess piece, for
-  # printing. Return a string representation of the formatted square.
+  # Format the given square for printing. Return the unicode string of the
+  # formatted square.
   def format_square(square, file_index, rank_index)
-    formatted_square = black_square
-    formatted_square = white_square if (file_index % 2) + (rank_index % 2) == 1
-    formatted_square += "\n" if file_index == 7
-    formatted_square
+    formatted = black_square
+    formatted = white_square if (file_index % 2) + (rank_index % 2) == 1
+    formatted += "\n" if file_index == 7
+    formatted
+  end
+
+  ##
+  # Format the given piece for printing. Return the unicode string of the
+  # formatted piece.
+  def format_piece(piece, file_index, rank_index)
+    formatted = ""
+    formatted += "\n" if file_index == 7
+    formatted
   end
 
 
   private
+
+  def empty_square(file_index, rank_index)
+  end
 
   def check_coordinates(file, rank)
     return if files.include?(file) && ranks.include?(rank)
