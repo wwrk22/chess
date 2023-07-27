@@ -1,14 +1,16 @@
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 
 
 class GameState
+  include PieceSpecs
+
   ##
   # Search for both white and black kings on the board and return 0 or 1 to
   # indicate not-found or found for each.
   # Return value format e.g.: { wh_king_found: 0, bl_king_found: 1 }
   def search_kings(board)
-    wh_king = { type: ChessPiece::KI, color: ChessPiece::WH }
-    bl_king = { type: ChessPiece::KI, color: ChessPiece::BL }
+    wh_king = { type: king, color: white }
+    bl_king = { type: king, color: black }
     return { wh_king_found: board.search(wh_king),
              bl_king_found: board.search(bl_king) }
   end
@@ -19,7 +21,7 @@ class GameState
   # for white only or black only respectively.
   def determine_winner(wh_king_found, bl_king_found)
     return nil if wh_king_found - bl_king_found == 0
-    return ChessPiece::WH if wh_king_found - bl_king_found == 1
-    return ChessPiece::BL if bl_king_found - wh_king_found == 1
+    return white if wh_king_found - bl_king_found == 1
+    return black if bl_king_found - wh_king_found == 1
   end
 end
