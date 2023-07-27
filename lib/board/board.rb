@@ -27,9 +27,9 @@ class Board
   ##
   # Output a visual representation of the board to $stdout.
   def to_s
-    @ranks.each_with_index do |rank, rank_index|
-      rank.each_with_index do |square, file_index|
-        print format_square(square, file_index, rank_index)
+    @ranks.each_with_index.reduce("") do |board, (rank, rank_index)|
+      rank.each_with_index.reduce(board) do |line, (square, file_index)|
+        board += format_square_or_piece(square, file_index, rank_index)
       end
     end
   end
@@ -53,6 +53,25 @@ class Board
 
 
   private
+
+  def format_square_or_piece(square, file_index, rank_index)
+    if square.nil?
+      return format_square(square, file_index, rank_index)
+    else
+      return format_piece(square, file_index, rank_index)
+    end
+  end
+
+  ##
+  # For the given square, print either an empty square or the chess piece
+  # that is on the square.
+  def print_square(square, file_index, rank_index)
+    if square.nil?
+      print format_square(square, file_index, rank_index)
+    else
+      print format_piece(square, file_index, rank_index)
+    end
+  end
 
   def empty_square(file_index, rank_index)
   end
@@ -138,3 +157,6 @@ class Board
 
   end # class << self
 end
+
+b = Board.new
+print b.to_s
