@@ -1,5 +1,10 @@
 require './lib/move/computer/pawn_computer'
+require './lib/piece/piece_specs'
 
+
+RSpec.configure do |cfg|
+  cfg.include PieceSpecs
+end
 
 RSpec.describe PawnComputer do
   describe '#compute_non_capture' do
@@ -9,7 +14,7 @@ RSpec.describe PawnComputer do
 
         it "computes the one starting square for the pawn" do
           target = { file: 'a', rank: 5 }
-          player_color = ChessPiece::WH
+          player_color = white
 
           exp_output = [{ file: 'a', rank: 4 }]
           expect(computer.compute_non_capture(target, player_color)).to eq(exp_output)
@@ -21,7 +26,7 @@ RSpec.describe PawnComputer do
 
         it "computes the two possible starting squares for the pawn" do
           target = { file: 'a', rank: 4 }
-          player_color = ChessPiece::WH
+          player_color = white
 
           exp_output = [{ file: 'a', rank: 3 }, { file: 'a', rank: 2 }]
           expect(computer.compute_non_capture(target, player_color)).to eq(exp_output)
@@ -36,7 +41,7 @@ RSpec.describe PawnComputer do
 
         it "computes the one starting square for the pawn" do
           target = { file: 'a', rank: 6 }
-          player_color = ChessPiece::BL
+          player_color = black
 
           exp_output = [{ file: 'a', rank: 7 }]
           expect(computer.compute_non_capture(target, player_color)).to eq(exp_output)
@@ -48,7 +53,7 @@ RSpec.describe PawnComputer do
 
         it "computes the two possible starting squares for the pawn" do
           target = { file: 'a', rank: 5 }
-          player_color = ChessPiece::BL
+          player_color = black
 
           exp_output = [{ file: 'a', rank: 6 }, { file: 'a', rank: 7 }]
           expect(computer.compute_non_capture(target, player_color)).to eq(exp_output)
@@ -65,7 +70,7 @@ RSpec.describe PawnComputer do
 
         it "computes the one starting square" do
           target = { file: 'a', rank: 3 }
-          player_color = ChessPiece::WH
+          player_color = white
 
           start_file = 'b'
           exp_output = [{ file: start_file, rank: 2 }]
@@ -80,7 +85,7 @@ RSpec.describe PawnComputer do
 
         it "computes the one starting square" do
           target = { file: 'a', rank: 6 }
-          player_color = ChessPiece::BL
+          player_color = black
 
           start_file = 'b'
           exp_output = [{ file: start_file, rank: 7 }]

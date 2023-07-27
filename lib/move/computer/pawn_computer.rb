@@ -1,13 +1,14 @@
-require './lib/standard/chess_piece'
+require './lib/piece/piece_specs'
 
 
 # Computes the required information for use by the chess board in order to
 # perform a move with a pawn.
 class PawnComputer
+  include PieceSpecs
   
   # Compute at most two possible starting squares for a non-capture move.
   def compute_non_capture(target, player_color, starts = [])
-    if player_color == ChessPiece::WH
+    if player_color == white
       return compute_non_capture_white(target, starts)
     else
       return compute_non_capture_black(target, starts)
@@ -16,7 +17,7 @@ class PawnComputer
 
   # Compute the one starting square for a capture move.
   def compute_capture(target, start_file, player_color, starts = [])
-    if player_color == ChessPiece::WH
+    if player_color == white
       return compute_capture_white(target, start_file, starts) 
     else
       return compute_capture_black(target, start_file, starts)
