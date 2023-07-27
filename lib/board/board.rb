@@ -10,6 +10,10 @@ class Board
     @ranks = Array.new(8, Array.new(8, nil))
   end
 
+  ##
+  # Return the chess piece on the square designated by the given coordinates.
+  # An empty square returns nil, and a chess piece is returned as a ChessPiece
+  # object.
   def at(file, rank)
     check_coordinates(file, rank)
 
