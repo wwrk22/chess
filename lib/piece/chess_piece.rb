@@ -12,4 +12,10 @@ class ChessPiece
       raise ColorUnknownError.new(color)
     end
   end
+
+  ##
+  # [Abstract]
+  # A subclass representing a kind of ChessPiece should return the unicode
+  # string for the visual representation.
+  def unicode; raise "SubclassResponsibility"; end
 end
