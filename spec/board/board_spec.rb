@@ -2,10 +2,12 @@ require './lib/board/board'
 require './lib/board/board_specs'
 require './lib/error/invalid_square'
 require './lib/piece/pawn'
+require './lib/piece/piece_specs'
 
 
 RSpec.configure do |cfg|
   cfg.include BoardSpecs
+  cfg.include PieceSpecs
 end
 
 RSpec.describe Board do
@@ -100,13 +102,22 @@ RSpec.describe Board do
 
 
   describe '#format_piece' do
+    subject(:board) { described_class.new }
+
+    it "returns the unicode string of the given piece" do
+      pawn = Pawn.new(white)
+      formatted = board.format_piece(pawn, 0, 0)
+      expect(formatted).to eq(Pawn.unicode_wh)
+    end
+
     context "when the piece is on file h" do
       subject(:board) { described_class.new }
 
       it "appends a newline to the formatted string" do
-        formatted = board.format_piece(nil, 7, 0)
+        pawn = Pawn.new(white)
+        formatted = board.format_piece(pawn, 7, 0)
         expect(formatted[-1]).to eq("\n")
       end
-    end
+    end # context "when the piece is on file h"
   end # describe '#format_piece'
 end

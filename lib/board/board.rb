@@ -48,9 +48,7 @@ class Board
   # Format the given piece for printing. Return the unicode string of the
   # formatted piece.
   def format_piece(piece, file_index, rank_index)
-    formatted = ""
-    formatted += "\n" if file_index == 7
-    formatted
+    file_index == 7 ? (piece.unicode + "\n") : piece.unicode
   end
 
 
