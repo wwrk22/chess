@@ -24,6 +24,27 @@ class Board
   def search(piece)
   end
 
+  ##
+  # Output a visual representation of the board to $stdout.
+  def to_s
+    @ranks.each_with_index do |rank, rank_index|
+      rank.each_with_index do |square, file_index|
+        print format_square(square, file_index, rank_index)
+      end
+    end
+  end
+
+  ##
+  # Format the given square, whether it's empty or has a chess piece, for
+  # printing. Return a string representation of the formatted square.
+  def format_square(square, file_index, rank_index)
+    if (file_index % 2) + (rank_index % 2) == 1
+      return white_square
+    else
+      return black_square
+    end
+  end
+
 
   private
 
