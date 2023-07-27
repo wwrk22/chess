@@ -50,6 +50,12 @@ RSpec.describe Board do
 
   describe '#format_square' do
     context "when the square is on file h" do
+      subject(:board) { described_class.new }
+
+      it "appends a newline to the formatted string" do
+        formatted_square = board.format_square(nil, 7, 0)
+        expect(formatted_square[-1]).to eq("\n")
+      end
     end # context "when the square is on file h"
 
     context "when the square is empty" do

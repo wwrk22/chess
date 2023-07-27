@@ -38,11 +38,10 @@ class Board
   # Format the given square, whether it's empty or has a chess piece, for
   # printing. Return a string representation of the formatted square.
   def format_square(square, file_index, rank_index)
-    if (file_index % 2) + (rank_index % 2) == 1
-      return white_square
-    else
-      return black_square
-    end
+    formatted_square = black_square
+    formatted_square = white_square if (file_index % 2) + (rank_index % 2) == 1
+    formatted_square += "\n" if file_index == 7
+    formatted_square
   end
 
 
