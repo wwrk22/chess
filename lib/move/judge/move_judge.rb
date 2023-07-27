@@ -20,7 +20,7 @@ class MoveJudge
   # Return true if the capture-move is legal. Otherwise, return false.
   def judge_capture(move, board)
     target = board.at(move.target[:file], move.target[:rank])
-    return false if target.nil? || target[:color] == move.piece[:color]
+    return false if target.nil? || target.color == move.color
     return judge_move(move, board)
   end
 

@@ -12,7 +12,7 @@ class King < ChessPiece
   ##
   # Create a new king with its color. Raise error for unknown color.
   def initialize(color)
-    super(color)
+    super(king, color)
   end
 
   ##

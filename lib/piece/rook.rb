@@ -12,7 +12,7 @@ class Rook < ChessPiece
   ##
   # Create a new rook with its color. Raise error for unknown color.
   def initialize(color)
-    super(color)
+    super(rook, color)
   end
 
   ##

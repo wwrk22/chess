@@ -3,14 +3,12 @@ require './lib/error/color_unknown_error'
 
 class ChessPiece
   
-  attr_reader :color
+  attr_reader :type, :color
 
-  def initialize(color)
-    if color == white || color == black
-      @color = color
-    else
-      raise ColorUnknownError.new(color)
-    end
+  def initialize(type, color)
+    raise ColorUnknownError.new(color) if color != white && color != black
+    @color = color
+    @type = type
   end
 
   ##

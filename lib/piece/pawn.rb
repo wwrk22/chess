@@ -12,7 +12,7 @@ class Pawn < ChessPiece
   ##
   # Create a new pawn with its color. Raise error for unknown color.
   def initialize(color)
-    super(color)
+    super(pawn, color)
   end
 
   ##
