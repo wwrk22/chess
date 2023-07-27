@@ -1,6 +1,5 @@
 require_relative './chess_piece'
 require_relative './piece_specs'
-require './lib/error/color_unknown_error'
 
 
 class Pawn < ChessPiece
@@ -10,16 +9,10 @@ class Pawn < ChessPiece
   UNICODE_BL = "\u265F"
   private_constant :UNICODE_WH, :UNICODE_BL
 
-  attr_reader :color
-
   ##
   # Create a new chess piece with its color. Raise error for unknown color.
   def initialize(color)
-    if color == white || color == black
-      @color = color
-    else
-      raise ColorUnknownError.new(color)
-    end
+    super(color)
   end
 
   def unicode
