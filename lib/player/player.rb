@@ -13,7 +13,7 @@ class Player
 
   def prompt_move
     input = gets.chomp
-    validated_input = @validator.validate(input, @color)
-    validated_input.nil? ? nil : Move.new(validated_input, @color)
+    validation = @validator.validate(input, @color)
+    validation.nil? ? nil : Move.new(input, @color)
   end
 end
