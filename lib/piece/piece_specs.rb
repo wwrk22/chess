@@ -20,4 +20,8 @@ module PieceSpecs
   def bishop; BISHOP; end
   def queen; QUEEN; end
   def king; KING; end
+
+  def valid_color?(color)
+    color == WHITE || color == BLACK
+  end
 end

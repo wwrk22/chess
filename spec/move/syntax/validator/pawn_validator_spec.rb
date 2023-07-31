@@ -8,77 +8,35 @@ RSpec.configure do |cfg|
 end
 
 RSpec.describe PawnValidator do
-  describe '#validate' do
-    subject(:validator) { described_class.new }
+  describe '#validate_capture_move' do
+    context "when the move is for a white pawn" do
+      context "when the move has valid syntax" do
+        subject(:validator) { described_class.new }
 
-    context "when player color is white" do
-      context "when move is not a capture" do
-        context "when syntax is valid" do
-          it "returns 'P'" do
-            move_str = 'a3'
-            expect(validator.validate(move_str, white)).to eq(pawn)
+        matcher :eq_piece do |other_piece|
+          match do |piece|
+            piece.type == other_piece.type && piece.color == other_piece.color
           end
         end
 
-        context "when syntax is invalid" do
-          it "returns nil" do
-            expect(validator.validate('a2', white)).to be_nil
-          end
+        it "returns a ChessPiece object representing a white pawn" do
+          white_pawn = ChessPiece.new(pawn, white)
+
+          result = validator.validate_capture_move('bxa3', white)
+          expect(result).to eq_piece(white_pawn)
         end
-      end # context "when move is not a capture"
-
-      context "when move is a capture" do
-        context "when syntax is valid" do
-          it "returns 'P'" do
-            move_str = 'bxa3'
-            expect(validator.validate(move_str, white)).to eq(pawn)
-          end
-        end # context "when syntax is valid"
-
-        context "when syntax is invalid" do
-          it "returns nil" do
-            expect(validator.validate('cxa2', white)).to be_nil
-          end
-        end # context "when syntax is invalid"
-      end # context "when move is a capture"
-    end # context "when player color is white"
-
-    context "when player color is black" do
-      context "when move is not a capture" do
-        context "when syntax is valid" do
-          it "returns 'P'" do
-            move_str = 'h6'
-            expect(validator.validate(move_str, black)).to eq(pawn)
-          end
-        end
-
-        context "when syntax is invalid" do
-          it "returns nil" do
-            expect(validator.validate('h7', black)).to be_nil
-          end
-        end
-      end # context "when move is not a capture"
-
-      context "when move is a capture" do
-        context "when syntax is valid" do
-          it "returns 'P'" do
-            move_str = 'gxh6'
-            expect(validator.validate(move_str, black)).to eq(pawn)
-          end
-        end # context "when syntax is valid"
-
-        context "when syntax is invalid" do
-          it "returns nil" do
-            expect(validator.validate('axh7', black)).to be_nil
-          end
-        end # context "when syntax is invalid"
-      end # context "when move is a capture"
-    end # context "when player color is black"
-
-    context "when color is unknown" do
-      it "raises ColorUnknownError" do
-        expect{ validator.validate('a3', 'unknown') }.to raise_error(ColorUnknownError)
       end
-    end
-  end # describe '#validate'
+
+      context "when the move has invalid syntax" do
+      end
+    end # context "when the move is for a white pawn"
+
+    context "when the move is for a black pawn" do
+      context "when the move has valid syntax" do
+      end
+
+      context "when the move has invalid syntax" do
+      end
+    end # context "when the move is for a black pawn"
+  end # describe '#validate_capture_move'
 end

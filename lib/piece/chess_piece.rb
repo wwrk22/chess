@@ -1,7 +1,9 @@
 require './lib/error/color_unknown_error'
+require_relative './piece_specs'
 
 
 class ChessPiece
+  include PieceSpecs
   
   attr_reader :type, :color
 
