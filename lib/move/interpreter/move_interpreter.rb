@@ -5,13 +5,6 @@ require './lib/piece/piece_specs'
 
 # Any move interpreted is expected to have been validated by a validator class.
 class MoveInterpreter
-  attr_reader :color
-
-  # Color is required to interpret pawn moves correctly.
-  def initialize(color)
-    @color = color
-  end
-
   # Parse the destination square of the move.
   def parse_target(move)
     target_file, target_rank = [move[-2], move[-1].to_i]
