@@ -1,8 +1,9 @@
+require_relative './start_computer'
 require './lib/piece/piece_specs'
 
 
 # Compute the starting square of the moving pawn.
-class PawnStartComputer
+class PawnStartComputer < StartComputer
   include PieceSpecs
  
   # Updated #compute_capture
@@ -17,12 +18,9 @@ class PawnStartComputer
     { file: start_coordinate, rank: target[:rank] + rank_diff }
   end
 
-  def cc(move, board)
-    start_square = compute_capture_start
-
-    start = board.at(start_square[:file], start_square[:rank])
-    if start.nil? == false && start.type == move.piece && start.color == move.color
-      move.start = start_square
-    end
+  def compute_capture(move, board)
+    compute_args = [move.color, move.start_coordinate, move.target]
+    start_square = compute_capture_start(*compute_args)
+    check_start(start_square, move.piece, board)
   end
 end
