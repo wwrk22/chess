@@ -16,7 +16,7 @@ RSpec.describe PawnValidator do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
             move_str = 'a3'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(pawn)
           end
         end
 
@@ -31,7 +31,7 @@ RSpec.describe PawnValidator do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
             move_str = 'bxa3'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(pawn)
           end
         end # context "when syntax is valid"
 
@@ -48,7 +48,7 @@ RSpec.describe PawnValidator do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
             move_str = 'h6'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(pawn)
           end
         end
 
@@ -63,7 +63,7 @@ RSpec.describe PawnValidator do
         context "when syntax is valid" do
           it "returns the hash arg that was given" do
             move_str = 'gxh6'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(pawn)
           end
         end # context "when syntax is valid"
 
