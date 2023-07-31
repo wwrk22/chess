@@ -14,14 +14,14 @@ class RookValidator
     end
 
     return validate_capture(move_str) if move_str.include? 'x'
-    return move_str if move_str =~ RookMoves::MOVE
+    return rook if move_str =~ RookMoves::MOVE
   end
 
   private
 
   def validate_capture(move_str)
     RookMoves::CAPTURES.each do |capture|
-      return move_str if move_str =~ capture
+      return rook if move_str =~ capture
     end
 
     nil
