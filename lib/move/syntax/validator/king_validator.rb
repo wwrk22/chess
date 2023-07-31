@@ -13,7 +13,8 @@ class KingValidator
       raise ColorUnknownError.new(player_color)
     end
 
-    move_str if move_str =~ KingMoves::MOVE || move_str =~ KingMoves::CASTLE
+    move_str =~ KingMoves::MOVE || move_str =~ KingMoves::CASTLE ?
+      king : nil
   end
 
 end
