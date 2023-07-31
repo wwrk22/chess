@@ -15,9 +15,9 @@ RSpec.describe Validator do
       it "returns the output of PawnValidator#validate" do
         move_str = 'a3'
         player_color = white
+        validators = validator.instance_variable_get(:@validators)
 
-        pawn_validator_attr = validator.instance_variable_get(:@pawn_validator)
-        expect(pawn_validator_attr).to receive(:validate).with(move_str, player_color)
+        expect(validators[pawn]).to receive(:validate).with(move_str, player_color)
         validator.validate(move_str, player_color)
       end
     end
@@ -26,9 +26,9 @@ RSpec.describe Validator do
       it "returns the output of #validate of the appropriate validator class" do
         move_str = 'Nba3'
         player_color = black
-        knight_validator_attr = validator.instance_variable_get(:@knight_validator)
+        validators = validator.instance_variable_get(:@validators)
 
-        expect(knight_validator_attr).to receive(:validate).with(move_str, player_color)
+        expect(validators[knight]).to receive(:validate).with(move_str, player_color)
         validator.validate(move_str, player_color)
       end
     end
