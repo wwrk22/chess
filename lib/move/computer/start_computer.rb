@@ -1,10 +1,8 @@
 class StartComputer
-  def check_start(move, board)
-    target_file, target_rank = [move.target[:file], move.target[:rank]]
-    target = board.at(target_file, target_rank)
+  def check_start(start_square, piece, board)
+    target = board.at(start_square[:file], start_square[:rank])
 
-    return false if target.nil?
-
-    target.type == move.piece && target.color == move.color
+    (target.nil?) ?
+      false : target.type == piece.type && target.color == piece.color
   end
 end
