@@ -13,7 +13,6 @@ class QueenValidator
       raise ColorUnknownError.new(player_color)
     end
 
-    move_str if move_str =~ QueenMoves::MOVE
+    (move_str =~ QueenMoves::MOVE) ? queen : nil
   end
-
 end

@@ -13,6 +13,6 @@ class BishopValidator
       raise ColorUnknownError.new(player_color)
     end
 
-    move_str if move_str =~ BishopMoves::MOVE
+    (move_str =~ BishopMoves::MOVE) ? bishop : nil
   end
 end

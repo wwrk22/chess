@@ -14,9 +14,9 @@ RSpec.describe BishopValidator do
     context "when move is not a capture" do    
       context "when starting file or rank is unspecified" do
         context "when valid file and rank are specified for target square" do
-          it "returns the move" do
+          it "returns 'B'" do
             move_str = 'Ba5'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(bishop)
           end
         end
 
@@ -35,16 +35,16 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is specified" do
         context "when the specified file is valid" do
-          it "returns the move" do
+          it "returns the 'B'" do
             move_str = 'Bda5'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(bishop)
           end
         end
 
         context "when the specified rank is valid" do
-          it "returns the move" do
+          it "returns the 'B'" do
             move_str = 'B1a5'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(bishop)
           end
         end
 
@@ -66,9 +66,9 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is unspecified" do
         context "when valid file and rank are specified for the target square" do
-          it "returns the move" do
+          it "returns the 'B'" do
             move_str = 'Bxa5'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(bishop)
           end
         end
 
@@ -88,9 +88,9 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is specified" do
         context "when specified file is valid" do
-          it "returns the move" do
+          it "returns the 'B'" do
             move_str = 'Bdxa5'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(bishop)
           end
         end
 
@@ -101,9 +101,9 @@ RSpec.describe BishopValidator do
         end
 
         context "when specified rank is valid" do
-          it "returns the move" do
+          it "returns the 'B'" do
             move_str = 'B1xa5'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(bishop)
           end
         end
 

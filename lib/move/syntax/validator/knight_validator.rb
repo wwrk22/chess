@@ -20,7 +20,7 @@ class KnightValidator
 
   def check_syntax(move_str)
     KnightMoves::MOVES.each do |pattern|
-      return move_str if move_str =~ pattern
+      return knight if move_str =~ pattern
     end
 
     nil

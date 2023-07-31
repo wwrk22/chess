@@ -13,9 +13,9 @@ RSpec.describe QueenValidator do
     context "when move is not a capture" do
       context "when starting file or rank is unspecified" do
         context "when target square file and rank are valid" do
-          it "returns the move" do
+          it "returns the abbreviation for Queen" do
             move_str = 'Qd4'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(queen)
           end
         end
 
@@ -33,9 +33,9 @@ RSpec.describe QueenValidator do
       end # context "when starting file or rank is unspecified"
 
       context "when starting file is specified and valid" do
-        it "returns the move" do
+        it "returns the abbreviation for Queen" do
           move_str = 'Qad4'
-          expect(validator.validate(move_str, white)).to eq(move_str)
+          expect(validator.validate(move_str, white)).to eq(queen)
         end
       end
 
@@ -46,9 +46,9 @@ RSpec.describe QueenValidator do
       end
 
       context "when starting rank is specified and valid" do
-        it "returns the move" do
+        it "returns the abbreviation for Queen" do
           move_str = 'Q1d4'
-          expect(validator.validate(move_str, white)).to eq(move_str)
+          expect(validator.validate(move_str, white)).to eq(queen)
         end
       end
 
@@ -62,9 +62,9 @@ RSpec.describe QueenValidator do
     context "when move is a capture" do
       context "when starting file or rank is unspecified" do
         context "when target square file and rank are valid" do
-          it "returns the move" do
+          it "returns the abbreviation for Queen" do
             move_str = 'Qxd4'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(queen)
           end
         end
 
@@ -83,9 +83,9 @@ RSpec.describe QueenValidator do
 
       context "when starting file or rank is specified" do
         context "when starting file is valid" do
-          it "returns the move" do
+          it "returns the abbreviation for Queen" do
             move_str = 'Qaxd4'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(queen)
           end
         end
 
@@ -96,9 +96,9 @@ RSpec.describe QueenValidator do
         end
 
         context "when starting rank is valid" do
-          it "returns the move" do
+          it "returns the abbreviation for Queen" do
             move_str = 'Q1xd4'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(queen)
           end
         end
 

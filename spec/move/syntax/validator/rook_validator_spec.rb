@@ -16,16 +16,16 @@ RSpec.describe RookValidator do
     context "when move is not a capture" do
       context "when syntx is valid" do
         context "when starting file or rank is specified" do
-          it "returns the move" do 
+          it "returns the abbreviation for Rook" do 
             move_str = 'R8a5'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(rook)
           end
         end
 
         context "when starting file or rank is not specified" do
-          it "returns the move" do 
+          it "returns the abbreviation for Rook" do 
             move_str = 'Ra5'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(rook)
           end
         end
       end # context "when syntax is valid"
@@ -40,16 +40,16 @@ RSpec.describe RookValidator do
     context "when move is a capture" do
       context "when syntax is valid" do
         context "when starting file or rank is specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Rook" do
             move_str = 'Rdxa5'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(rook)
           end
         end
 
         context "when starting file or rank is not specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Rook" do
             move_str = 'Rxa5'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(rook)
           end
         end
       end # context "when syntax is valid"

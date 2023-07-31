@@ -15,16 +15,16 @@ RSpec.describe KnightValidator do
     context "when move is not a capture" do 
       context "when syntax is valid" do
         context "when starting file or rank is not specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Knight" do
             move_str = 'Na3'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(knight)
           end
         end
 
         context "when starting file or rank is specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Knight" do
             move_str = 'Nba3'
-            expect(validator.validate(move_str, white)).to eq(move_str)
+            expect(validator.validate(move_str, white)).to eq(knight)
           end
         end
       end # context "when sytax is valid"
@@ -47,16 +47,16 @@ RSpec.describe KnightValidator do
     context "when move is a capture" do
       context "when syntax is valid" do
         context "when starting fle or rank is not specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Knight" do
             move_str = 'Nxa3'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(knight)
           end
         end
 
         context "when starting file or rank is specified" do
-          it "returns the move" do
+          it "returns the abbreviation for Knight" do
             move_str = 'Nbxa3'
-            expect(validator.validate(move_str, black)).to eq(move_str)
+            expect(validator.validate(move_str, black)).to eq(knight)
           end
         end
       end # context "when syntax is valid"

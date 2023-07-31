@@ -12,9 +12,9 @@ RSpec.describe KingValidator do
 
     context "when move is not a capture" do
       context "when target square has valid file and rank" do
-        it "returns the move" do
+        it "returns the abbreviation for King" do
           move_str = 'Ke2'
-          expect(validator.validate(move_str, white)).to eq(move_str)
+          expect(validator.validate(move_str, white)).to eq(king)
         end
       end
 
@@ -39,9 +39,9 @@ RSpec.describe KingValidator do
 
     context "when move is a capture" do
       context "when target square has valid file and rank" do
-        it "returns the move" do
+        it "returns the abbreviation for King" do
           move_str = 'Kxe2'
-          expect(validator.validate(move_str, white)).to eq(move_str)
+          expect(validator.validate(move_str, white)).to eq(king)
         end
       end
 
@@ -65,16 +65,16 @@ RSpec.describe KingValidator do
     end # context "when move is a capture"
 
     context "when move is a king-side castle" do
-      it "returns the move" do
+      it "returns the abbreviation for King" do
         move_str = '0-0'
-        expect(validator.validate(move_str, white)).to eq(move_str)
+        expect(validator.validate(move_str, white)).to eq(king)
       end
     end
 
     context "when move is a queen-side castle" do
-      it "returns the move" do
+      it "returns the abbreviation for King" do
         move_str = '0-0-0'
-        expect(validator.validate(move_str, black)).to eq(move_str)
+        expect(validator.validate(move_str, black)).to eq(king)
       end
     end
   end # describe '#validate'

@@ -8,8 +8,9 @@ class PawnValidator
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
   def validate(move_str, player_color)
-    return validate_capture_move(move_str, player_color) if move_str.include? 'x'
-    return validate_non_capture_move(move_str, player_color)
+    return move_str.include?('x') ?
+      validate_capture_move(move_str, player_color) :
+      validate_non_capture_move(move_str, player_color)
   end
 
   private
@@ -25,7 +26,7 @@ class PawnValidator
   # Compare move string against white pawn capture-move syntax regex.
   def check_white_capture(move_str)
     PawnMoves::WH_CAPTURES.each do |capture|
-      return move_str if move_str =~ capture
+      return pawn if move_str =~ capture
     end
 
     nil
@@ -34,7 +35,7 @@ class PawnValidator
   # Compare move string against black pawn capture-move syntax regex.
   def check_black_capture(move_str)
     PawnMoves::BL_CAPTURES.each do |capture|
-      return move_str if move_str =~ capture
+      return pawn if move_str =~ capture
     end
 
     nil
@@ -50,12 +51,12 @@ class PawnValidator
 
   # Compare move string against white pawn move syntax regex.
   def check_white_move(move_str)
-    return move_str if move_str =~ PawnMoves::WH_MOVE
+    return move_str =~ PawnMoves::WH_MOVE ? pawn : nil
   end
 
   # Compare move string against black pawn move syntax regex.
   def check_black_move(move_str)
-    return move_str if move_str =~ PawnMoves::BL_MOVE
+    return move_str =~ PawnMoves::BL_MOVE ? pawn : nil
   end
 
 end
