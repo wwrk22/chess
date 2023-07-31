@@ -12,31 +12,23 @@ class Validator
   include PieceSpecs
 
   def initialize
-    @pawn_validator = PawnValidator.new
-    @rook_validator = RookValidator.new
-    @knight_validator = KnightValidator.new
-    @bishop_validator = BishopValidator.new
-    @queen_validator = QueenValidator.new
-    @king_validator = KingValidator.new
+    @validators = { pawn => PawnValidator.new, rook => RookValidator.new,
+                    knight => KnightValidator.new, bishop => BishopValidator.new,
+                    queen => QueenValidator.new, king => KingValidator.new }
   end
 
+  ##
+  # Validate the syntax of the move given. If the syntax is valid, then return
+  # the letter that represents the moving piece type to indicate so. Otherwise,
+  # return nil to indicate that the move has invalid syntax.
   def validate(move_str, color)
-    case parse_piece(move_str)
-    when pawn
-      @pawn_validator.validate(move_str, color)
-    when rook
-      @rook_validator.validate(move_str, color)
-    when knight
-      @knight_validator.validate(move_str, color)
-    when bishop
-      @bishop_validator.validate(move_str, color)
-    when queen
-      @queen_validator.validate(move_str, color)
-    when king
-      @king_validator.validate(move_str, color)
-    else
-      false
+    piece_type = parse_piece(move_str)
+
+    if @validators.has_key? piece_type
+      return @validators[piece_type].validate(move_str, color)
     end
+
+    nil
   end
 
   def parse_piece(move_str)
