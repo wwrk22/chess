@@ -14,7 +14,7 @@ RSpec.describe PawnValidator do
     context "when player color is white" do
       context "when move is not a capture" do
         context "when syntax is valid" do
-          it "returns the hash arg that was given" do
+          it "returns 'P'" do
             move_str = 'a3'
             expect(validator.validate(move_str, white)).to eq(pawn)
           end
@@ -29,7 +29,7 @@ RSpec.describe PawnValidator do
 
       context "when move is a capture" do
         context "when syntax is valid" do
-          it "returns the hash arg that was given" do
+          it "returns 'P'" do
             move_str = 'bxa3'
             expect(validator.validate(move_str, white)).to eq(pawn)
           end
@@ -46,7 +46,7 @@ RSpec.describe PawnValidator do
     context "when player color is black" do
       context "when move is not a capture" do
         context "when syntax is valid" do
-          it "returns the hash arg that was given" do
+          it "returns 'P'" do
             move_str = 'h6'
             expect(validator.validate(move_str, black)).to eq(pawn)
           end
@@ -61,7 +61,7 @@ RSpec.describe PawnValidator do
 
       context "when move is a capture" do
         context "when syntax is valid" do
-          it "returns the hash arg that was given" do
+          it "returns 'P'" do
             move_str = 'gxh6'
             expect(validator.validate(move_str, black)).to eq(pawn)
           end
