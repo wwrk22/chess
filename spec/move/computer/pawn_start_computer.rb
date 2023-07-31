@@ -37,6 +37,4 @@ RSpec.describe PawnStartComputer do
       end
     end # context "when pawn is black"
   end # describe '#compute_capture'
-
-
 end
