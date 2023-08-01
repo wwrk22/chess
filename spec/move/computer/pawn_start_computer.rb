@@ -110,6 +110,48 @@ RSpec.describe PawnStartComputer do
         end
       end
     end # context "when the pawn is white"
+
+    context "when the pawn is black" do
+      let(:move) { instance_double(Move) }
+      let(:board) { instance_double(Board) }
+      let(:black_pawn) { ChessPiece.new(pawn, black) }
+      let(:target_file) { 'a' }
+      let(:target_rank) { 6 }
+
+      before do
+        allow(move).to receive(:piece).and_return(black_pawn)
+        allow(move).to receive(:target).and_return({ file: target_file, rank: target_rank })
+      end
+
+      context "when the square above the target square is empty" do
+        it "returns nil" do
+          allow(board).to receive(:at).with(target_file, target_rank + 1).and_return nil
+
+          result = computer.compute_single(move, board)
+          expect(result).to be_nil
+        end
+      end
+
+      context "when the square above the target square is not a black pawn" do
+        it "returns nil" do
+          black_rook = ChessPiece.new(rook, black)
+          allow(board).to receive(:at).with(target_file, target_rank + 1).and_return(black_rook)
+
+          result = computer.compute_single(move, board)
+          expect(result).to be_nil
+        end
+      end
+
+      context "when the square above the target square has a black pawn" do
+        it "returns the square" do
+          allow(board).to receive(:at).with(target_file, target_rank + 1).and_return black_pawn
+
+          result = computer.compute_single(move, board)
+          expected = { file: target_file, rank: target_rank + 1 }
+          expect(result).to eq(expected)
+        end
+      end
+    end # context "when the pawn is black"
   end # describe '#compute_move'
 
 end

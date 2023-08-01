@@ -29,4 +29,7 @@ class PawnStartComputer < StartComputer
     
     { file: target_file, rank: target_rank + rank_diff } if pawn.eql? move.piece
   end
+
+  def compute_double(move, board)
+  end
 end
