@@ -25,13 +25,8 @@ class PawnStartComputer < StartComputer
   def compute_single(move, board)
     rank_diff = (move.piece.color == white) ? -1 : 1
     target_file, target_rank = [move.target[:file], move.target[:rank]]
-
-    pawn = board.at(move.target[:file], move.target[:rank] + rank_diff)
+    pawn = board.at(target_file, target_rank + rank_diff)
     
-    if pawn.eql? move.piece
-      return { file: target_file, rank: target_rank + rank_diff }
-    else
-      nil
-    end
+    { file: target_file, rank: target_rank + rank_diff } if pawn.eql? move.piece
   end
 end
