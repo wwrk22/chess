@@ -1,3 +1,4 @@
+require 'support/matchers/chess_piece'
 require './lib/move/syntax/validator/queen_validator'
 require './lib/piece/piece_specs'
 
@@ -10,12 +11,15 @@ RSpec.describe QueenValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
+    let(:white_queen) { ChessPiece.new(queen, white) }
+    let(:black_queen) { ChessPiece.new(queen, black) }
+
     context "when move is not a capture" do
       context "when starting file or rank is unspecified" do
         context "when target square file and rank are valid" do
-          it "returns the abbreviation for Queen" do
+          it "returns a ChessPiece representing the moving queen" do
             move_str = 'Qd4'
-            expect(validator.validate(move_str, white)).to eq(queen)
+            expect(validator.validate(move_str, white)).to eq_piece(white_queen)
           end
         end
 
@@ -33,9 +37,9 @@ RSpec.describe QueenValidator do
       end # context "when starting file or rank is unspecified"
 
       context "when starting file is specified and valid" do
-        it "returns the abbreviation for Queen" do
+        it "returns a ChessPiece representing the moving Queen" do
           move_str = 'Qad4'
-          expect(validator.validate(move_str, white)).to eq(queen)
+          expect(validator.validate(move_str, white)).to eq_piece(white_queen)
         end
       end
 
@@ -46,9 +50,9 @@ RSpec.describe QueenValidator do
       end
 
       context "when starting rank is specified and valid" do
-        it "returns the abbreviation for Queen" do
+        it "returns a ChessPiece representing the moving Queen" do
           move_str = 'Q1d4'
-          expect(validator.validate(move_str, white)).to eq(queen)
+          expect(validator.validate(move_str, white)).to eq_piece(white_queen)
         end
       end
 
@@ -62,9 +66,9 @@ RSpec.describe QueenValidator do
     context "when move is a capture" do
       context "when starting file or rank is unspecified" do
         context "when target square file and rank are valid" do
-          it "returns the abbreviation for Queen" do
+          it "returns a ChessPiece representing the moving Queen" do
             move_str = 'Qxd4'
-            expect(validator.validate(move_str, white)).to eq(queen)
+            expect(validator.validate(move_str, white)).to eq_piece(white_queen)
           end
         end
 
@@ -83,9 +87,9 @@ RSpec.describe QueenValidator do
 
       context "when starting file or rank is specified" do
         context "when starting file is valid" do
-          it "returns the abbreviation for Queen" do
+          it "returns a ChessPiece representing the moving Queen" do
             move_str = 'Qaxd4'
-            expect(validator.validate(move_str, black)).to eq(queen)
+            expect(validator.validate(move_str, black)).to eq_piece(black_queen)
           end
         end
 
@@ -96,9 +100,9 @@ RSpec.describe QueenValidator do
         end
 
         context "when starting rank is valid" do
-          it "returns the abbreviation for Queen" do
+          it "returns a ChessPiece representing the moving Queen" do
             move_str = 'Q1xd4'
-            expect(validator.validate(move_str, black)).to eq(queen)
+            expect(validator.validate(move_str, black)).to eq_piece(black_queen)
           end
         end
 
