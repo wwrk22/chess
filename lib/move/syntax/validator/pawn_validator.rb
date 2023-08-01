@@ -1,62 +1,33 @@
 require_relative '../move/pawn_moves'
+require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 
 
 class PawnValidator
   include PieceSpecs
 
-  # Return the move if move has valid syntax. Otherwise, return nil.
-  # Raise ColorUnknownError if color is unknown.
-  def validate(move_str, player_color)
-    return move_str.include?('x') ?
-      validate_capture_move(move_str, player_color) :
-      validate_non_capture_move(move_str, player_color)
-  end
+  # Return the ChessPiece object representing the moving pawn if move has valid
+  # syntax. Otherwise, return nil. Raise ColorUnknownError if color is unknown.
+  def validate(move_str, color)
+    raise ColorUnknownError.new(color) if valid_color?(color) == false
 
-  private
+    return move_str.include?('x') ?
+      validate_capture(move_str, color) :
+      validate_non_capture(move_str, color)
+  end
 
   # Validate a move that is a capture. Raise ColorUnknownError if color is
   # unknown.
-  def validate_capture_move(move_str, player_color)
-    return check_white_capture(move_str) if player_color == white
-    return check_black_capture(move_str) if player_color == black
-    raise ColorUnknownError.new(player_color)
-  end
-
-  # Compare move string against white pawn capture-move syntax regex.
-  def check_white_capture(move_str)
-    PawnMoves::WH_CAPTURES.each do |capture|
-      return pawn if move_str =~ capture
-    end
-
-    nil
-  end
-
-  # Compare move string against black pawn capture-move syntax regex.
-  def check_black_capture(move_str)
-    PawnMoves::BL_CAPTURES.each do |capture|
-      return pawn if move_str =~ capture
-    end
-
-    nil
+  def validate_capture(move_str, color)
+    capture_patterns = (color == white) ? PawnMoves::WH_CAPTURES : PawnMoves::BL_CAPTURES
+    capture_patterns.one? { |pattern| move_str =~ pattern } ?
+      ChessPiece.new(pawn, color) : nil
   end
 
   # Validate a move that is not a capture. Raise ColorUnknownError if color
   # is unknown.
-  def validate_non_capture_move(move_str, player_color)
-    return check_white_move(move_str) if player_color == white
-    return check_black_move(move_str) if player_color == black
-    raise ColorUnknownError.new(player_color)
+  def validate_non_capture(move_str, color)
+    move_pattern = (color == white) ? PawnMoves::WH_MOVE : PawnMoves::BL_MOVE
+    return move_str =~ move_pattern ? ChessPiece.new(pawn, color) : nil
   end
-
-  # Compare move string against white pawn move syntax regex.
-  def check_white_move(move_str)
-    return move_str =~ PawnMoves::WH_MOVE ? pawn : nil
-  end
-
-  # Compare move string against black pawn move syntax regex.
-  def check_black_move(move_str)
-    return move_str =~ PawnMoves::BL_MOVE ? pawn : nil
-  end
-
 end

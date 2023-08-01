@@ -1,4 +1,5 @@
 require_relative '../move/queen_moves'
+require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 require './lib/error/color_unknown_error'
 
@@ -8,11 +9,8 @@ class QueenValidator
 
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
-  def validate(move_str, player_color)
-    if player_color != white && player_color != black
-      raise ColorUnknownError.new(player_color)
-    end
-
-    (move_str =~ QueenMoves::MOVE) ? queen : nil
+  def validate(move_str, color)
+    raise ColorUnknownError.new(color) if valid_color?(color) == false
+    (move_str =~ QueenMoves::MOVE) ? ChessPiece.new(queen, color) : nil
   end
 end

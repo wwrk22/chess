@@ -1,5 +1,7 @@
+require 'spec_helper'
 require './lib/move/syntax/validator/bishop_validator'
 require './lib/piece/piece_specs'
+require './spec/support/matchers/chess_piece'
 
 
 RSpec.configure do |cfg|
@@ -11,12 +13,15 @@ RSpec.describe BishopValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
+    let(:white_bishop) { ChessPiece.new(bishop, white) }
+    let(:black_bishop) { ChessPiece.new(bishop, black) }
+
     context "when move is not a capture" do    
       context "when starting file or rank is unspecified" do
         context "when valid file and rank are specified for target square" do
-          it "returns 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'Ba5'
-            expect(validator.validate(move_str, white)).to eq(bishop)
+            expect(validator.validate(move_str, white)).to eq_piece(white_bishop)
           end
         end
 
@@ -35,16 +40,16 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is specified" do
         context "when the specified file is valid" do
-          it "returns the 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'Bda5'
-            expect(validator.validate(move_str, black)).to eq(bishop)
+            expect(validator.validate(move_str, black)).to eq_piece(black_bishop)
           end
         end
 
         context "when the specified rank is valid" do
-          it "returns the 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'B1a5'
-            expect(validator.validate(move_str, white)).to eq(bishop)
+            expect(validator.validate(move_str, white)).to eq_piece(white_bishop)
           end
         end
 
@@ -66,9 +71,9 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is unspecified" do
         context "when valid file and rank are specified for the target square" do
-          it "returns the 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'Bxa5'
-            expect(validator.validate(move_str, black)).to eq(bishop)
+            expect(validator.validate(move_str, black)).to eq_piece(black_bishop)
           end
         end
 
@@ -88,9 +93,9 @@ RSpec.describe BishopValidator do
 
       context "when starting file or rank is specified" do
         context "when specified file is valid" do
-          it "returns the 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'Bdxa5'
-            expect(validator.validate(move_str, white)).to eq(bishop)
+            expect(validator.validate(move_str, white)).to eq_piece(white_bishop)
           end
         end
 
@@ -101,9 +106,9 @@ RSpec.describe BishopValidator do
         end
 
         context "when specified rank is valid" do
-          it "returns the 'B'" do
+          it "returns a ChessPiece representing the moving bishop" do
             move_str = 'B1xa5'
-            expect(validator.validate(move_str, black)).to eq(bishop)
+            expect(validator.validate(move_str, black)).to eq_piece(black_bishop)
           end
         end
 

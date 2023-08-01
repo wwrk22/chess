@@ -19,8 +19,8 @@ class Validator
 
   ##
   # Validate the syntax of the move given. If the syntax is valid, then return
-  # the letter that represents the moving piece type to indicate so. Otherwise,
-  # return nil to indicate that the move has invalid syntax.
+  # the ChessPiece object that represents the moving piece type to indicate so.
+  # Otherwise, return nil to indicate that the move has invalid syntax.
   def validate(move_str, color)
     piece_type = parse_piece(move_str)
 
