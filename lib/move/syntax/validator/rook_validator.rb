@@ -6,25 +6,17 @@ require './lib/error/color_unknown_error'
 class RookValidator
   include PieceSpecs
 
-  # Return the move if move has valid syntax. Otherwise, return nil.
-  # Raise ColorUnknownError if color is unknown.
-  def validate(move_str, player_color)
-    if player_color != white && player_color != black
-      raise ColorUnknownError.new(player_color)
-    end
-
+  # Return the ChessPiece object representing the moving rook if move has valid
+  # syntax. Otherwise, return nil. Raise ColorUnknownError if color is unknown.
+  def validate(move_str, color)
+    raise ColorUnknownError.new(color) if valid_color?(color) == false
     return validate_capture(move_str) if move_str.include? 'x'
-    return rook if move_str =~ RookMoves::MOVE
+    return ChessPiece.new(rook, color) if move_str =~ RookMoves::MOVE
   end
 
-  private
-
-  def validate_capture(move_str)
-    RookMoves::CAPTURES.each do |capture|
-      return rook if move_str =~ capture
-    end
-
-    nil
+  def validate_capture(move_str, color)
+    match = RookMoves::CAPTURES.one? { |capture| move_str =~ capture }
+    match ? ChessPiece.new(rook, color) : nil
   end
 
 end
