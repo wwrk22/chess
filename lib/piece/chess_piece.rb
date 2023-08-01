@@ -18,4 +18,8 @@ class ChessPiece
   # A subclass representing a kind of ChessPiece should return the unicode
   # string for the visual representation.
   def unicode; raise "SubclassResponsibility"; end
+
+  def eql?(other_piece)
+    @type == other_piece.type && @color == other_piece.color
+  end
 end
