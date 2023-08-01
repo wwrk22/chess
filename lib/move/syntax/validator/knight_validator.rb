@@ -1,6 +1,7 @@
 require_relative '../move/knight_moves'
 require './lib/error/color_unknown_error'
 require './lib/piece/piece_specs'
+require './lib/piece/chess_piece'
 
 
 class KnightValidator
@@ -8,22 +9,9 @@ class KnightValidator
 
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
-  def validate(move_str, player_color)
-    if player_color != white && player_color != black
-      raise ColorUnknownError.new(player_color)
-    end
-
-    check_syntax(move_str)
+  def validate(move_str, color)
+    raise ColorUnknownError.new(color) if valid_color?(color) == false
+    KnightMoves::MOVES.one? { |pattern| move_str =~ pattern } ?
+      ChessPiece.new(knight, color) : nil
   end
-
-  private
-
-  def check_syntax(move_str)
-    KnightMoves::MOVES.each do |pattern|
-      return knight if move_str =~ pattern
-    end
-
-    nil
-  end
-
 end

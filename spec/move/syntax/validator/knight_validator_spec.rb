@@ -12,19 +12,28 @@ RSpec.describe KnightValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
+    let(:white_knight) { ChessPiece.new(knight, white) }
+    let(:black_knight) { ChessPiece.new(knight, black) }
+
+    matcher :eq_piece do |other_piece|
+      match do |piece|
+        piece.type == other_piece.type && piece.color == other_piece.color
+      end
+    end
+
     context "when move is not a capture" do 
       context "when syntax is valid" do
         context "when starting file or rank is not specified" do
-          it "returns the abbreviation for Knight" do
+          it "returns a ChessPiece representing the moving knight" do
             move_str = 'Na3'
-            expect(validator.validate(move_str, white)).to eq(knight)
+            expect(validator.validate(move_str, white)).to eq_piece(white_knight)
           end
         end
 
         context "when starting file or rank is specified" do
-          it "returns the abbreviation for Knight" do
+          it "returns a ChessPiece representing the moving knight" do
             move_str = 'Nba3'
-            expect(validator.validate(move_str, white)).to eq(knight)
+            expect(validator.validate(move_str, white)).to eq_piece(white_knight)
           end
         end
       end # context "when sytax is valid"
@@ -47,16 +56,16 @@ RSpec.describe KnightValidator do
     context "when move is a capture" do
       context "when syntax is valid" do
         context "when starting fle or rank is not specified" do
-          it "returns the abbreviation for Knight" do
+          it "returns a ChessPiece representing the moving knight" do
             move_str = 'Nxa3'
-            expect(validator.validate(move_str, black)).to eq(knight)
+            expect(validator.validate(move_str, black)).to eq_piece(black_knight)
           end
         end
 
         context "when starting file or rank is specified" do
-          it "returns the abbreviation for Knight" do
+          it "returns a ChessPiece representing the moving knight" do
             move_str = 'Nbxa3'
-            expect(validator.validate(move_str, black)).to eq(knight)
+            expect(validator.validate(move_str, black)).to eq_piece(black_knight)
           end
         end
       end # context "when syntax is valid"
