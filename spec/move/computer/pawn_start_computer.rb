@@ -64,40 +64,4 @@ RSpec.describe PawnStartComputer do
     end
   end # describe '#compute_capture'
 
-
-  describe '#compute_single' do
-    subject(:computer) { described_class.new }
-
-    context "when the move is for white" do
-      it "returns the square directly below the target square" do
-        move = instance_double(Move)
-        target_square = { file: 'a', rank: 3 }
-        white_pawn = instance_double(ChessPiece)
-
-        allow(white_pawn).to receive(:color).and_return(white)
-        allow(move).to receive(:target).and_return(target_square)
-        allow(move).to receive(:piece).and_return(white_pawn)
-
-        expected = { file: 'a', rank: 2 }
-        result = computer.compute_single(move)
-        expect(result).to eq(expected)
-      end
-    end
-
-    context "when the move is for black" do
-      it "returns the square directly below the target square" do
-        move = instance_double(Move)
-        target_square = { file: 'a', rank: 6 }
-        black_pawn = instance_double(ChessPiece)
-
-        allow(black_pawn).to receive(:color).and_return(black)
-        allow(move).to receive(:target).and_return(target_square)
-        allow(move).to receive(:piece).and_return(black_pawn)
-
-        expected = { file: 'a', rank: 7 }
-        result = computer.compute_single(move)
-        expect(result).to eq(expected)
-      end
-    end
-  end # describe '#compute_move'
 end

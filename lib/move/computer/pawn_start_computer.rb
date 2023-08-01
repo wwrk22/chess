@@ -22,10 +22,20 @@ class PawnStartComputer < StartComputer
   ##
   # Return the starting square of the moving pawn for a non-capturing move.
   def compute_move(move, board)
-  end
+    # WHITE
+    # 1. Check the square directly below it
+    #   a. If it's a white pawn then return the square
+    #   b. If it's not a white pawn then move on.
+    # 2. Check the square two below the target
+    #   a. If it's a white pawn, then return the square
+    #   b. If it's not a white pawn, then return nil.
 
-  def compute_single(move)
-    rank_diff = (move.piece.color == white) ? -1 : 1
-    { file: move.target[:file], rank: move.target[:rank] + rank_diff }
+    # BLACK
+    # 1. Check the square directly above it
+    #   a. If it's a black pawn then return the square
+    #   b. If it's not a black pawn then move on.
+    # 2. Check the square two above the target
+    #   a. If it's a black pawn, then return the square
+    #   b. If it's not a black pawn, then return nil.
   end
 end
