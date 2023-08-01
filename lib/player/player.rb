@@ -13,7 +13,6 @@ class Player
 
   def prompt_move
     move_str = gets.chomp
-    validation = @validator.validate(move_str, @color)
-    validation.nil? ? nil : Move.new(move_str, @color)
+    @validator.validate(move_str, @color)
   end
 end

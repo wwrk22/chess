@@ -1,4 +1,6 @@
+require 'support/matchers/chess_piece'
 require './lib/player/player'
+require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 require './lib/move/move'
 
@@ -21,20 +23,14 @@ RSpec.describe Player do
       player.prompt_move
     end
 
-    matcher :eq_move do |expected_move|
-      match do |move|
-        move.str == expected_move.str && move.color == expected_move.color
-      end
-    end
-
     it "returns a Move object with the `str` and `color` attributes set" do
       allow(player).to receive(:gets).and_return(valid_move)
 
-      expected_move = Move.new(valid_move, color)
+      expected = ChessPiece.new(pawn, white)
 
-      validated_move = player.prompt_move
+      result = player.prompt_move
 
-      expect(validated_move).to eq_move(expected_move)
+      expect(result).to eq_piece(expected)
     end
   end # describe '#prompt_move'
 end
