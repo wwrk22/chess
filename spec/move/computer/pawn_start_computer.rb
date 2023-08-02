@@ -1,3 +1,4 @@
+require 'support/matchers/chess_piece'
 require './lib/board/board'
 require './lib/move/computer/pawn_start_computer'
 require './lib/piece/chess_piece'
@@ -40,6 +41,7 @@ RSpec.describe PawnStartComputer do
     end # context "when pawn is black"
   end # describe '#compute_capture'
 
+
   describe '#compute_capture' do
     subject(:computer) { described_class.new }
 
@@ -47,19 +49,19 @@ RSpec.describe PawnStartComputer do
       move = instance_double(Move)
       board = instance_double(Board)
       white_pawn = instance_double(ChessPiece)
+      expected_start = { file: 'b', rank: 2 }
 
       allow(white_pawn).to receive(:type).and_return(pawn)
       allow(white_pawn).to receive(:color).and_return(white)
 
       allow(move).to receive(:piece).and_return(white_pawn)
-      allow(move).to receive(:color).and_return(white)
       allow(move).to receive(:start_coordinate).and_return('b')
       allow(move).to receive(:target).and_return({ file: 'a', rank: 3 })
 
-      allow(board).to receive(:at).with('b', 2).and_return(white_pawn)
+      allow(board).to receive(:at).with(expected_start[:file], expected_start[:rank]).and_return(white_pawn)
 
       result = computer.compute_capture(move, board)
-      expect(result).to be_truthy
+      expect(result).to eq(expected_start)
     end
   end # describe '#compute_capture'
 end
