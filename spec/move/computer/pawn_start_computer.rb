@@ -64,4 +64,30 @@ RSpec.describe PawnStartComputer do
       expect(result).to eq(expected_start)
     end
   end # describe '#compute_capture'
+
+
+  describe '#calculate_limit' do
+    subject(:computer) { described_class.new }
+
+    context "when the target square rank is four and the pawn is white" do
+      it "returns two" do
+        result = computer.calculate_limit(white, 4)
+        expect(result).to eq(2)
+      end
+    end
+
+    context "when the target square rank is five and the pawn is black" do
+      it "returns two" do
+        result = computer.calculate_limit(black, 5)
+        expect(result).to eq(2)
+      end
+    end
+
+    context "when the target square rank cannot be a double move" do
+      it "returns one" do
+        result = computer.calculate_limit(white, 3)
+        expect(result).to eq(1)
+      end
+    end
+  end # describe '#calculate_limit'
 end

@@ -18,4 +18,11 @@ class PawnStartComputer < StartComputer
     start_square = compute_capture_start(*compute_args)
     start_square if check_start(start_square, move.piece, board)
   end
+
+  def calculate_limit(pawn_color, target_rank)
+    limit = 1
+    limit += 1 if (pawn_color == white && target_rank == 4) ||
+                  (pawn_color == black && target_rank == 5)
+    limit
+  end
 end
