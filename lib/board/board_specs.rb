@@ -20,4 +20,12 @@ module BoardSpecs
   def black_square
     BLACK_SQUARE
   end
+
+  def valid_file?(file)
+    FILES.include? file
+  end
+
+  def valid_rank?(rank)
+    RANKS.include? rank
+  end
 end

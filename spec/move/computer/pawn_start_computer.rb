@@ -64,4 +64,166 @@ RSpec.describe PawnStartComputer do
       expect(result).to eq(expected_start)
     end
   end # describe '#compute_capture'
+
+
+  describe '#calculate_limit' do
+    subject(:computer) { described_class.new }
+
+    context "when the target square rank is four and the pawn is white" do
+      it "returns two" do
+        result = computer.calculate_limit(white, 4)
+        expect(result).to eq(2)
+      end
+    end
+
+    context "when the target square rank is five and the pawn is black" do
+      it "returns two" do
+        result = computer.calculate_limit(black, 5)
+        expect(result).to eq(2)
+      end
+    end
+
+    context "when the target square rank cannot be a double move" do
+      it "returns one" do
+        result = computer.calculate_limit(white, 3)
+        expect(result).to eq(1)
+      end
+    end
+  end # describe '#calculate_limit'
+
+
+  describe '#compute_move' do
+    subject(:computer) { described_class.new }
+
+    let(:move) { instance_double(Move) }
+    let(:board) { instance_double(Board) }
+
+    context "when the pawn is white" do
+      let(:white_pawn) { ChessPiece.new(pawn, white) }
+
+      before do
+        allow(move).to receive(:piece).and_return(white_pawn)
+      end
+
+      context "when the move is a single" do
+        let(:target_square) { { file: 'a', rank: 3 } }
+
+        before do
+          allow(move).to receive(:target).and_return(target_square)
+        end
+
+        context "when the first square has the moving pawn" do
+          it "returns the square" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 1).and_return white_pawn
+     
+            expected = { file: 'a', rank: 2 }
+            result = computer.compute_move(move, board)
+            expect(result).to eq(expected)
+          end
+        end
+
+        context "when the first square does not have the moving pawn" do
+          it "returns nil" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 1).and_return nil
+     
+            result = computer.compute_move(move, board)
+            expect(result).to be_nil
+          end
+        end
+      end # context "when the move is a single"
+
+      context "when the move is a double" do
+        let(:target_square) { { file: 'a', rank: 4 } }
+
+        before do
+          allow(move).to receive(:target).and_return(target_square)
+        end
+
+        context "when the second square has the moving pawn" do
+          it "returns the square" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 1).and_return nil
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 2).and_return white_pawn
+     
+            expected = { file: 'a', rank: 2 }
+            result = computer.compute_move(move, board)
+            expect(result).to eq(expected)
+          end
+        end
+
+        context "when the second square does not have the moving pawn" do
+          it "returns nil" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 1).and_return nil
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] - 2).and_return nil
+     
+            result = computer.compute_move(move, board)
+            expect(result).to be_nil
+          end
+        end
+      end # context "when the move is a double"
+    end # context "when the pawn is white"
+
+    context "when the pawn is black" do
+      let(:black_pawn) { ChessPiece.new(pawn, black) }
+
+      before do
+        allow(move).to receive(:piece).and_return(black_pawn)
+      end
+
+      context "when the move is a single" do
+        let(:target_square) { { file: 'a', rank: 6 } }
+
+        before do
+          allow(move).to receive(:target).and_return(target_square)
+        end
+
+        context "when the first square has the moving pawn" do
+          it "returns the square" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 1).and_return black_pawn
+     
+            expected = { file: 'a', rank: 7 }
+            result = computer.compute_move(move, board)
+            expect(result).to eq(expected)
+          end
+        end
+
+        context "when the first square does not have the moving pawn" do
+          it "returns nil" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 1).and_return nil
+     
+            result = computer.compute_move(move, board)
+            expect(result).to be_nil
+          end
+        end
+      end # context "when the move is a single"
+
+      context "when the move is a double" do
+        let(:target_square) { { file: 'a', rank: 5 } }
+
+        before do
+          allow(move).to receive(:target).and_return(target_square)
+        end
+
+        context "when the second square has the moving pawn" do
+          it "returns the square" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 1).and_return nil
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 2).and_return black_pawn
+     
+            expected = { file: 'a', rank: 7 }
+            result = computer.compute_move(move, board)
+            expect(result).to eq(expected)
+          end
+        end
+
+        context "when the second square does not have the moving pawn" do
+          it "returns nil" do
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 1).and_return nil
+            allow(board).to receive(:at).with(target_square[:file], target_square[:rank] + 2).and_return nil
+     
+            result = computer.compute_move(move, board)
+            expect(result).to be_nil
+          end
+        end
+      end # context "when the move is a double"
+    end # context "when the pawn is black"
+  end # describe '#compute_move'
 end
