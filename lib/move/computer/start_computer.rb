@@ -20,6 +20,15 @@ class StartComputer
     check_each_square(curr_square, move, board, direction)
   end
 
+  def check_multiple_paths(move, board, directions)
+    result = directions.reduce([]) do |squares, direction|
+      squares << check_path(move, board, direction)
+    end
+
+    starting_squares = result.filter { |square| square }
+    return starting_squares[0] if starting_squares.length == 1
+  end
+
   ##
   # [Abstract]
   # A subclass representing a kind of StartComputer should calculate how many

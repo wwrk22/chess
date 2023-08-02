@@ -72,4 +72,62 @@ RSpec.describe StartComputer do
       end
     end
   end # describe '#check_path'
+
+
+  describe '#check_multiple_paths' do
+    subject(:computer) { described_class.new }
+
+    let(:move) { instance_double(Move) }
+    let(:board) { instance_double(Board) }
+
+    before do
+      allow(move).to receive(:target).and_return({ file: 'd', rank: 4 })
+      allow(move).to receive(:piece).and_return ChessPiece.new(rook, white)
+    end
+
+    context "when only one path returns a starting square" do
+      it "returns that one starting square" do
+        directions = [{ file: 0, rank: 1 }, { file: 1, rank: 0 },
+                      { file: 0, rank: -1 }, { file: -1, rank: 0 }]
+        expected = { file: 'a', rank: 4 }
+
+        directions.each_with_index do |direction, index|
+          return_value = (index == 0) ? { file: 'a', rank: 4 } : nil
+          allow(computer).to receive(:check_path).with(move, board, direction).and_return return_value
+        end
+
+        result = computer.check_multiple_paths(move, board, directions)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context "when two paths return a starting square" do
+      it "returns nil" do
+        directions = [{ file: 0, rank: 1 }, { file: 1, rank: 0 },
+                      { file: 0, rank: -1 }, { file: -1, rank: 0 }]
+
+        allow(computer).to receive(:check_path).with(move, board, directions[0]).and_return({ file: 'd', rank: 7 })
+        allow(computer).to receive(:check_path).with(move, board, directions[1]).and_return({ file: 'f', rank: 4 })
+        allow(computer).to receive(:check_path).with(move, board, directions[2]).and_return nil
+        allow(computer).to receive(:check_path).with(move, board, directions[3]).and_return nil
+
+        result = computer.check_multiple_paths(move, board, directions)
+        expect(result).to be_nil
+      end
+    end
+
+    context "when none of the paths return a starting square" do
+      it "returns nil" do
+        directions = [{ file: 0, rank: 1 }, { file: 1, rank: 0 },
+                      { file: 0, rank: -1 }, { file: -1, rank: 0 }]
+
+        directions.each_with_index do |direction, index|
+          allow(computer).to receive(:check_path).with(move, board, direction).and_return nil
+        end
+
+        result = computer.check_multiple_paths(move, board, directions)
+        expect(result).to be_nil
+      end
+    end
+  end # describe '#check_multiple_paths'
 end
