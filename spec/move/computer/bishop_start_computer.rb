@@ -55,4 +55,39 @@ RSpec.describe BishopStartComputer do
       end
     end
   end # describe '#compute_with_file'
+
+
+  describe '#compute_with_rank' do
+    subject(:computer) { described_class.new }
+
+    context "when two starting squares are possible" do
+      it "returns the two squares on the starting rank that the bishop can move from" do
+        target_square = { file: 'c', rank: 3 }
+        start_rank = 5
+        expected = [{ file: 'a', rank: start_rank }, { file: 'e', rank: start_rank }]
+
+        starting_squares = computer.compute_with_rank(target_square, start_rank)
+
+        result = expected.difference(starting_squares).none? &&
+                 starting_squares.difference(expected).none?
+
+        expect(result).to be_truthy
+      end
+    end
+
+    context "when only one starting square is possible" do
+      it "returns the one square on the starting rank that the bishop can move from" do
+        target_square = { file: 'a', rank: 1 }
+        start_rank = 2
+        expected = [{ file: 'b', rank: start_rank }]
+
+        starting_squares = computer.compute_with_rank(target_square, start_rank)
+
+        result = expected.difference(starting_squares).none? &&
+                 starting_squares.difference(expected).none?
+
+        expect(result).to be_truthy
+      end
+    end
+  end # describe '#compute_with_rank'
 end

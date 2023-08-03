@@ -36,7 +36,12 @@ class BishopStartComputer
     end
   end
 
-  def compute_with_rank(target_square, start_coordinate)
+  def compute_with_rank(target_square, start_rank)
+    starting_files = compute_start_files(target_square, start_rank)
+
+    starting_files.map do |file|
+      { file: file, rank: start_rank } if valid_file? file
+    end
   end
 
   
@@ -45,5 +50,11 @@ class BishopStartComputer
   def compute_start_ranks(target_square, start_file)
     rank_diff = (target_square[:file].ord - start_file.ord).abs
     [target_square[:rank] - rank_diff, target_square[:rank] + rank_diff]
+  end
+
+  def compute_start_files(target_square, start_rank)
+    file_diff = (target_square[:rank] - start_rank).abs
+    [(target_square[:file].ord - file_diff).chr,
+     (target_square[:file].ord + file_diff).chr]
   end
 end
