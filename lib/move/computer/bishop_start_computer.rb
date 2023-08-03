@@ -20,14 +20,17 @@ class BishopStartComputer
   # Compute the starting square of a bishop with the given starting coordinate.
   # Return the square if the bishop is on the square. Otherwise, return nil.
   def compute_with_start_coordinate(target_square, start_coordinate, board, moving_bishop)
-    # Find the two possible starting squares.
-    # Return the one square that has the moving bishop.
-    # Return nil if neither has the moving bishop.
-    #starting_square = foo()
+    starting_squares = (valid_file? start_coordinate) ?
+      compute_with_file(target_square, start_coordinate) :
+      compute_with_rank(target_square, start_coordinate)
 
-    #starting_square(proc {}) { |square| board.at(square[:file], square[:rank]).
+    starting_squares.filter! { |square| valid_start?(square, board) }
+    starting_squares[0] if starting_squares.size == 1
   end
 
+  ##
+  # Compute the one or two possible starting squares with the given starting
+  # file.
   def compute_with_file(target_square, start_file)
     starting_ranks = compute_start_ranks(target_square, start_file)
 
@@ -36,6 +39,9 @@ class BishopStartComputer
     end
   end
 
+  ##
+  # Compute the one or two possible starting squares with the given starting
+  # rank.
   def compute_with_rank(target_square, start_rank)
     starting_files = compute_start_files(target_square, start_rank)
 
@@ -47,11 +53,19 @@ class BishopStartComputer
   
   private
   
+  ##
+  # Compute the ranks of the two possible starting squares for a move to the
+  # given target square from the given starting file. The computed ranks are
+  # not always valid.
   def compute_start_ranks(target_square, start_file)
     rank_diff = (target_square[:file].ord - start_file.ord).abs
     [target_square[:rank] - rank_diff, target_square[:rank] + rank_diff]
   end
 
+  ##
+  # Compute the files of the two possible starting squares for a move to the
+  # given target square from the given starting rank. The computed files are
+  # not always valid.
   def compute_start_files(target_square, start_rank)
     file_diff = (target_square[:rank] - start_rank).abs
     [(target_square[:file].ord - file_diff).chr,

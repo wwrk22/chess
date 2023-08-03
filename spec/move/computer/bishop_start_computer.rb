@@ -90,4 +90,60 @@ RSpec.describe BishopStartComputer do
       end
     end
   end # describe '#compute_with_rank'
+
+
+  describe '#compute_with_start_coordinate' do
+    subject(:computer) { described_class.new }
+
+    context "when the move uses a starting file" do
+      let!(:target_square) { { file: 'f', rank: 4 } }
+      let!(:start_coordinate) { 'c' }
+      let!(:board) { instance_double(Board) }
+      let!(:moving_bishop) { ChessPiece.new(bishop, white) }
+      let!(:start_a) { { file: 'c', rank: 1 } }
+      let!(:start_b) { { file: 'c', rank: 7 } }
+      let!(:compute_args) { [target_square, start_coordinate, board, moving_bishop] }
+
+      context "when there are no valid starting squares" do
+        it "returns nil" do
+          allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
+          allow(computer).to receive(:valid_start?).with(start_b, board).and_return false
+
+          result = computer.compute_with_start_coordinate(*compute_args)
+          expect(result).to be_nil
+        end
+      end
+
+      context "when there is one valid starting square" do
+        it "returns the one square" do
+          allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
+          allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
+
+          result = computer.compute_with_start_coordinate(*compute_args)
+          expect(result).to eq(start_b)
+        end
+      end
+
+      context "when there are two valid starting squares" do
+        it "returns nil" do
+          allow(computer).to receive(:valid_start?).with(start_a, board).and_return true
+          allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
+
+          result = computer.compute_with_start_coordinate(*compute_args)
+          expect(result).to be_nil
+        end
+      end
+    end
+
+    context "when the move uses a starting rank" do
+      context "when there are no valid starting squares" do
+      end
+
+      context "when there is one valid starting square" do
+      end
+
+      context "when there are two valid starting squares" do
+      end
+    end
+  end # describe '#compute_with_start_coordinate'
 end
