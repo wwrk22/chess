@@ -53,4 +53,15 @@ class QueenStartComputer
       { file: start_file, rank: rank } if valid_rank? rank
     end
   end
+
+  ##
+  # Compute the possible starting squares of a move with the given starting
+  # rank.
+  def compute_starts_with_rank(target_square, start_rank)
+    starting_files = compute_start_files(target_square, start_rank)
+
+    starting_files.map do |file|
+      { file: file, rank: start_rank } if valid_file? file
+    end
+  end
 end
