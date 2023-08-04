@@ -77,4 +77,48 @@ RSpec.describe QueenStartComputer do
       expect(result).to eq(expected)
     end
   end # describe '#compute_starts_with_rank'
+
+
+  describe '#start_off_target_axes' do
+    subject(:computer) { described_class.new }
+
+    let!(:move) { instance_double(Move) }
+    let!(:board) { instance_double(Board) }
+
+    context "when exactly one possible starting square is valid" do
+      it "returns that square" do
+        valid_start = { file: 'a', rank: 1 }
+        invalid_start_a = { file: 'b', rank: 1 }
+        invalid_start_b = { file: 'c', rank: 1 }
+
+        allow(move).to receive(:target).and_return({ file: 'b', rank: 2 })
+        allow(move).to receive(:start_coordinate).and_return 1
+
+        allow(computer).to receive(:valid_start?).with(valid_start, move, board).and_return true
+        allow(computer).to receive(:valid_start?).with(invalid_start_a, move, board).and_return false
+        allow(computer).to receive(:valid_start?).with(invalid_start_b, move, board).and_return false
+
+        result = computer.start_off_target_axes(move, board)
+        expect(result).to eq(valid_start)
+      end
+    end
+
+    context "when more than one possible starting square is valid" do
+      it "returns that square" do
+        valid_start_a = { file: 'a', rank: 1 }
+        valid_start_b = { file: 'b', rank: 1 }
+        invalid_start = { file: 'c', rank: 1 }
+
+        allow(move).to receive(:target).and_return({ file: 'b', rank: 2 })
+        allow(move).to receive(:start_coordinate).and_return 1
+
+        allow(computer).to receive(:valid_start?).with(valid_start_a, move, board).and_return true
+        allow(computer).to receive(:valid_start?).with(valid_start_b, move, board).and_return true
+        allow(computer).to receive(:valid_start?).with(invalid_start, move, board).and_return false
+
+        result = computer.start_off_target_axes(move, board)
+        expect(result).to be_nil
+      end
+    end # context "when more than one possible starting square is valid"
+  end # describe '#start_off_target_axes'
 end
