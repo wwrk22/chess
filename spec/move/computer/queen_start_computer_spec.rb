@@ -53,4 +53,16 @@ RSpec.describe QueenStartComputer do
       expect(result).to eq(expected)
     end
   end # describe '#compute_start_ranks'
+
+  
+  describe '#compute_starts_with_file' do
+    subject(:computer) { described_class.new }
+
+    it "maps a computed set of ranks to only valid squares with those ranks" do
+      expected = [{ file: 'c', rank: 3 }, { file: 'c', rank: 4 }, { file: 'c', rank: 5 }]
+
+      result = computer.compute_starts_with_file({ file: 'd', rank: 4 }, 'c')
+      expect(result).to eq(expected)
+    end
+  end # describe '#compute_starts_with_file'
 end

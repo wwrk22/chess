@@ -42,4 +42,15 @@ class QueenStartComputer
       target_square[:file],
      (target_square[:file].ord + file_diff).chr]
   end
+
+  ##
+  # Compute the possible starting squares of a move with the given starting
+  # file.
+  def compute_starts_with_file(target_square, start_file)
+    starting_ranks = compute_start_ranks(target_square, start_file)
+
+    starting_ranks.map do |rank|
+      { file: start_file, rank: rank } if valid_rank? rank
+    end
+  end
 end
