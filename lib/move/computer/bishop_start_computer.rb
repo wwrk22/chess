@@ -8,21 +8,21 @@ class BishopStartComputer
   ##
   # Accept a Move object and a copy of the Board to return the starting square
   # of a bishop. If the starting square cannot be computed, return nil.
-  def compute_move(move, board, start_place = nil)
-    if start_place.nil?
+  def compute_move(move, board)
+    if move.start_coordinate.nil?
       return check_multiple_paths(move, board, BishopSpecs::DIRECTIONS)
     else
-      return compute_with_start_place(move.target, start_place)
+      return compute_with_start_coordinate(move, board)
     end
   end
 
   ##
   # Compute the starting square of a bishop with the given starting coordinate.
   # Return the square if the bishop is on the square. Otherwise, return nil.
-  def compute_with_start_coordinate(target_square, start_coordinate, board, moving_bishop)
-    starting_squares = (valid_file? start_coordinate) ?
-      compute_with_file(target_square, start_coordinate) :
-      compute_with_rank(target_square, start_coordinate)
+  def compute_with_start_coordinate(move, board)
+    starting_squares = (valid_file? move.start_coordinate) ?
+      compute_with_file(move.target, move.start_coordinate) :
+      compute_with_rank(move.target, move.start_coordinate)
 
     starting_squares.filter! { |square| valid_start?(square, board) }
     starting_squares[0] if starting_squares.size == 1

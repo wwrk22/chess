@@ -13,13 +13,25 @@ RSpec.describe BishopStartComputer do
   describe '#compute_move' do
     subject(:computer) { described_class.new }
 
-    it "returns the starting square if it exists" do
-      move = instance_double(Move)
-      board = instance_double(Board)
-      check_multiple_paths_args = [move, board, BishopSpecs::DIRECTIONS]
+    let!(:move) { instance_double(Move) }
+    let!(:board) { instance_double(Board) }
 
-      expect(computer).to receive(:check_multiple_paths).with(*check_multiple_paths_args)
-      computer.compute_move(move, board)
+    context "when the move has a start coordinate" do
+      it "sends compute_with_start_coordinate" do
+        allow(move).to receive(:start_coordinate).and_return 'a'
+
+        expect(computer).to receive(:compute_with_start_coordinate)
+        computer.compute_move(move, board)
+      end
+    end
+
+    context "when the move does not have a start coordinate" do
+      it "sends check_multiple_paths" do
+        allow(move).to receive(:start_coordinate).and_return nil
+
+        expect(computer).to receive(:check_multiple_paths)
+        computer.compute_move(move, board)
+      end
     end
   end # describe '#compute_move'
 
@@ -96,20 +108,23 @@ RSpec.describe BishopStartComputer do
     subject(:computer) { described_class.new }
 
     context "when the move uses a starting file" do
-      let!(:target_square) { { file: 'f', rank: 4 } }
-      let!(:start_coordinate) { 'c' }
       let!(:board) { instance_double(Board) }
+      let!(:move) { instance_double(Move) }
       let!(:moving_bishop) { ChessPiece.new(bishop, white) }
       let!(:start_a) { { file: 'c', rank: 1 } }
       let!(:start_b) { { file: 'c', rank: 7 } }
-      let!(:compute_args) { [target_square, start_coordinate, board, moving_bishop] }
+
+      before do
+        allow(move).to receive(:start_coordinate).and_return 'c'
+        allow(move).to receive(:target).and_return({ file: 'f', rank: 4 })
+      end
 
       context "when there are no valid starting squares" do
         it "returns nil" do
           allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
           allow(computer).to receive(:valid_start?).with(start_b, board).and_return false
 
-          result = computer.compute_with_start_coordinate(*compute_args)
+          result = computer.compute_with_start_coordinate(move, board)
           expect(result).to be_nil
         end
       end
@@ -119,7 +134,7 @@ RSpec.describe BishopStartComputer do
           allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
           allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
 
-          result = computer.compute_with_start_coordinate(*compute_args)
+          result = computer.compute_with_start_coordinate(move, board)
           expect(result).to eq(start_b)
         end
       end
@@ -129,7 +144,7 @@ RSpec.describe BishopStartComputer do
           allow(computer).to receive(:valid_start?).with(start_a, board).and_return true
           allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
 
-          result = computer.compute_with_start_coordinate(*compute_args)
+          result = computer.compute_with_start_coordinate(move, board)
           expect(result).to be_nil
         end
       end
