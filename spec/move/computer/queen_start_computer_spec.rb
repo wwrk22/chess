@@ -29,4 +29,28 @@ RSpec.describe QueenStartComputer do
       end
     end
   end # describe '#compute_move'
+
+
+  describe '#compute_start_ranks' do
+    subject(:computer) { described_class.new }
+
+    it "returns an array of three ranks computed with the distance between target and starting file" do
+      expected = [3, 4, 5]
+
+      result = computer.compute_start_ranks({ file: 'd', rank: 4 }, 'c')
+      expect(result).to eq(expected)
+    end
+  end # describe '#compute_start_ranks'
+
+
+  describe '#compute_start_files' do
+    subject(:computer) { described_class.new }
+
+    it "returns an array of three files computed with the distance between target and starting rank" do
+      expected = ['c', 'd', 'e']
+
+      result = computer.compute_start_files({ file: 'd', rank: 4 }, 3)
+      expect(result).to eq(expected)
+    end
+  end # describe '#compute_start_ranks'
 end
