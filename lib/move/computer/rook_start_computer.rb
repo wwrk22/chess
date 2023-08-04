@@ -42,7 +42,7 @@ class RookStartComputer < StartComputer
   end
 
   def compute_with_start_coordinate(move, board)
-    if on_target_axes(move.start_coordinate, move.target)
+    if on_target_axes?(move.start_coordinate, move.target)
       return start_on_target_axes(move, board)
     else
       return start_off_target_axes(move, board)
@@ -55,7 +55,7 @@ class RookStartComputer < StartComputer
   ##
   # Return true if the starting square coordinate is on the axes of the given
   # target square. Otherwise, return false.
-  def on_target_axes(start_coordinate, target_square)
+  def on_target_axes?(start_coordinate, target_square)
     start_coordinate == target_square[:file] ||
     start_coordinate == target_square[:rank]
   end

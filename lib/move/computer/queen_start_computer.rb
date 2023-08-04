@@ -16,6 +16,26 @@ class QueenStartComputer
     end
   end
 
+  def compute_with_start_coordinate(move, board)
+    if on_target_axes?(move.start_coordinate, move.target)
+      return start_on_target_axes(move, board)
+    else
+      return start_off_target_axes(move, board)
+    end
+  end
+
+  ##
+  # Compute the starting square of the queen with the given starting coordinate
+  # when it is the same as either the file or rank of the target square.
+  # Return the square if the queen is on the square. Otherwise, return nil.
+  def start_on_target_axes(move, board)
+    directions = valid_file?(move.start_coordinate) ?
+      [{ file: 0, rank: 1 }, { file: 0, rank: -1 }] :
+      [{ file: 1, rank: 0 }, { file: -1, rank: 0 }]
+
+    check_multiple_paths(move, board, directions)
+  end
+
   ##
   # Compute the starting square of a queen with the given starting coordinate.
   # Return the square if the queen is on the square. Otherwise, return nil.
@@ -72,5 +92,15 @@ class QueenStartComputer
     starting_files.map do |file|
       { file: file, rank: start_rank } if valid_file? file
     end
+  end
+
+  private
+
+  ##
+  # Return true if the starting square coordinate is on the axes of the given
+  # target square. Otherwise, return false.
+  def on_target_axes?(start_coordinate, target_square)
+    start_coordinate == target_square[:file] ||
+    start_coordinate == target_square[:rank]
   end
 end
