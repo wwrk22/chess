@@ -169,6 +169,15 @@ RSpec.describe StartComputer do
       end
 
       context "when the path to the target square is clear" do
+        it "returns false" do
+          allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return moving_piece
+
+          direction = { file: 0, rank: -1 }
+          allow(computer).to receive(:check_path).with(move, board, direction, start_square).and_return true
+
+          result = computer.valid_start? move, board, start_square
+          expect(result).to be_truthy
+        end
       end
     end # context "when the starting square has the moving piece"
   end # describe '#valid_start?'
