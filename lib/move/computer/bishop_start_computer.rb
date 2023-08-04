@@ -24,7 +24,7 @@ class BishopStartComputer
       compute_with_file(move.target, move.start_coordinate) :
       compute_with_rank(move.target, move.start_coordinate)
 
-    starting_squares.filter! { |square| valid_start?(square, board) }
+    starting_squares.filter! { |square| valid_start?(move, board, square) }
     starting_squares[0] if starting_squares.size == 1
   end
 

@@ -130,4 +130,55 @@ RSpec.describe StartComputer do
       end
     end
   end # describe '#check_multiple_paths'
+
+
+  describe '#valid_start?' do
+    subject(:computer) { described_class.new }
+
+    let!(:target_square) { { file: 'a', rank: 5 } }
+    let!(:start_square) { { file: 'a', rank: 1 } }
+    let!(:moving_piece) { ChessPiece.new(rook, white) }
+    let!(:board) { instance_double(Board) }
+    let!(:move) { instance_double(Move) }
+
+    before do
+      allow(move).to receive(:piece).and_return moving_piece
+      allow(move).to receive(:target).and_return target_square
+    end
+
+    context "when the starting square does not have the moving piece" do
+      it "returns false" do
+        allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return nil
+
+        result = computer.valid_start? move, board, start_square
+        expect(result).to be_falsey
+      end
+    end
+
+    context "when the starting square has the moving piece" do
+      context "when the path to the target square is not clear" do
+        it "returns false" do
+          allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return moving_piece
+
+          direction = { file: 0, rank: -1 }
+          allow(computer).to receive(:check_path).with(move, board, direction, start_square).and_return false
+
+          result = computer.valid_start? move, board, start_square
+          expect(result).to be_falsey
+        end
+      end
+
+      context "when the path to the target square is clear" do
+        it "returns false" do
+          allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return moving_piece
+
+          direction = { file: 0, rank: -1 }
+          allow(computer).to receive(:check_path).with(move, board, direction, start_square).and_return true
+
+          result = computer.valid_start? move, board, start_square
+          expect(result).to be_truthy
+        end
+      end
+    end # context "when the starting square has the moving piece"
+  end # describe '#valid_start?'
 end
