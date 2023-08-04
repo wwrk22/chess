@@ -8,13 +8,25 @@ RSpec.describe QueenStartComputer do
   describe '#compute_move' do
     subject(:computer) { described_class.new }
 
-    it "returns the starting square if it exists" do
-      move = instance_double(Move)
-      board = instance_double(Board)
-      check_multiple_paths_args = [move, board, QueenSpecs::DIRECTIONS]
+    let!(:move) { instance_double(Move) }
+    let!(:board) { instance_double(Board) }
 
-      expect(computer).to receive(:check_multiple_paths).with(*check_multiple_paths_args)
-      computer.compute_move(move, board)
+    context "when the move has a starting coordinate" do
+      it "sends compute_with_start_coordinate" do
+        allow(move).to receive(:start_coordinate).and_return 'a'
+
+        expect(computer).to receive(:compute_with_start_coordinate)
+        computer.compute_move(move, board)
+      end
+    end
+
+    context "when the move does not have a starting coordinate" do
+      it "sends check_multiple_paths" do
+        allow(move).to receive(:start_coordinate).and_return nil
+
+        expect(computer).to receive(:check_multiple_paths)
+        computer.compute_move(move, board)
+      end
     end
   end # describe '#compute_move'
 end
