@@ -11,18 +11,20 @@ class Board
   end
 
   ##
-  # Return the chess piece on the square designated by the given coordinates.
-  # An empty square returns nil, and a chess piece is returned as a ChessPiece
-  # object.
+  # Return the ChessPiece found on the given square. An empty square returns
+  # nil.
+  def at(square)
+    at(square[:file], square[:rank])
+  end
+
+  ##
+  # Return the ChessPiece found on the square designated by the given
+  # coordinates. An empty square returns nil.
   def at(file, rank)
     check_coordinates(file, rank)
 
     file_index = files.index(file)
     @ranks[rank][file_index]
-  end
-
-  def at(square)
-    at(square[:file], square[:rank])
   end
 
   def search(piece)
