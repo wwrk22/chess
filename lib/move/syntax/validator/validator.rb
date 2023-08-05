@@ -1,5 +1,5 @@
+require './lib/board/board_specs'
 require './lib/piece/piece_specs'
-require './lib/standard/chess_board'
 require_relative './pawn_validator'
 require_relative './rook_validator'
 require_relative './knight_validator'
@@ -10,6 +10,7 @@ require_relative './king_validator'
 
 class Validator
   include PieceSpecs
+  include BoardSpecs
 
   def initialize
     @validators = { pawn => PawnValidator.new, rook => RookValidator.new,
@@ -23,15 +24,13 @@ class Validator
   # Otherwise, return nil to indicate that the move has invalid syntax.
   def validate(move_str, color)
     piece_type = parse_piece(move_str)
-
-    if @validators.has_key? piece_type
-      return @validators[piece_type].validate(move_str, color)
-    end
+    return false if piece_type.nil?
+    return @validators[piece_type].validate(move_str, color)
   end
 
   def parse_piece(move_str)
-    return pawn if ChessBoard::FILES.include? move_str[0]
-    return move_str[0]
+    return pawn if valid_file? move_str[0]
+    return move_str[0] if valid_piece? move_str[0]
   end
 
 end # Validator

@@ -9,8 +9,11 @@ module PieceSpecs
   QUEEN = 'Q'
   KING = 'K'
 
+  PIECES = [PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING]
+
   private_constant :WHITE, :BLACK
   private_constant :PAWN, :ROOK, :KNIGHT, :BISHOP, :QUEEN, :KING
+  private_constant :PIECES
 
   def white; WHITE; end
   def black; BLACK; end
@@ -23,5 +26,9 @@ module PieceSpecs
 
   def valid_color?(color)
     color == WHITE || color == BLACK
+  end
+
+  def valid_piece?(piece)
+    PIECES.include? piece
   end
 end
