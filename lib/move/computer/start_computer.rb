@@ -1,14 +1,14 @@
 require './lib/board/board_specs'
+require './lib/piece/piece_specs'
 
 
 class StartComputer
   include BoardSpecs
+  include PieceSpecs
 
   def check_start(start_square, piece, board)
     target = board.at(start_square[:file], start_square[:rank])
-
-    (target.nil?) ?
-      false : target.type == piece.type && target.color == piece.color
+    target.eql? piece
   end
 
   ##
