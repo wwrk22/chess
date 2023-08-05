@@ -32,4 +32,9 @@ module BoardSpecs
   def valid_square?(square)
     valid_file?(square[:file]) && valid_rank?(square[:rank])
   end
+
+  def compute_sq(sq, dir)
+    { file: (sq[:file].ord + dir[:file].ord).chr,
+      rank: sq[:rank] + dir[:rank] }
+  end
 end

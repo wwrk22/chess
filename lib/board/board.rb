@@ -13,7 +13,7 @@ class Board
   ##
   # Return the ChessPiece found on the given square. An empty square returns
   # nil.
-  def at(square)
+  def at_sq(sq)
     at(square[:file], square[:rank])
   end
 
