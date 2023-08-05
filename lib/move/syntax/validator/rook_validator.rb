@@ -15,8 +15,7 @@ class RookValidator
   end
 
   def validate_capture(move_str, color)
-    match = RookMoves::CAPTURES.one? { |capture| move_str =~ capture }
-    match ? ChessPiece.new(rook, color) : nil
+    regex_match = RookMoves::CAPTURES.one? { |capture| move_str =~ capture }
+    ChessPiece.new(rook, color) if regex_match
   end
-
 end

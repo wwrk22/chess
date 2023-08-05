@@ -27,8 +27,6 @@ class Validator
     if @validators.has_key? piece_type
       return @validators[piece_type].validate(move_str, color)
     end
-
-    nil
   end
 
   def parse_piece(move_str)

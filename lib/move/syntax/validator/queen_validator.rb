@@ -11,6 +11,6 @@ class QueenValidator
   # Raise ColorUnknownError if color is unknown.
   def validate(move_str, color)
     raise ColorUnknownError.new(color) if valid_color?(color) == false
-    (move_str =~ QueenMoves::MOVE) ? ChessPiece.new(queen, color) : nil
+    ChessPiece.new(queen, color) if move_str =~ QueenMoves::MOVE
   end
 end

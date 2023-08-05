@@ -11,7 +11,7 @@ class KnightValidator
   # Raise ColorUnknownError if color is unknown.
   def validate(move_str, color)
     raise ColorUnknownError.new(color) if valid_color?(color) == false
-    KnightMoves::MOVES.one? { |pattern| move_str =~ pattern } ?
-      ChessPiece.new(knight, color) : nil
+    regex_match = KnightMoves::MOVES.one? { |pattern| move_str =~ pattern }
+    ChessPiece.new(knight, color) if regex_match
   end
 end
