@@ -44,23 +44,30 @@ RSpec.describe RookValidator do
         end
       end # context "when syntax is invalid"
     end # context "when move is not a capture"
+
+    context "when move is a capture" do
+      context "when the move has valid syntax" do
+        context "when starting file or rank is not specified" do
+          it "returns a ChessPiece representing the rook moving" do
+            result = validator.validate('Rxa5', white)
+            expect(result).to eq_piece(white_rook)
+          end
+        end
+
+        context "when starting file or rank is specified" do
+          it "returns a ChessPiece representing the rook moving" do
+            result = validator.validate('Rbxa5', white)
+            expect(result).to eq_piece(white_rook)
+          end
+        end
+      end # context "when the move has valid syntax"
+
+      context "when the move has invalid syntax" do
+        it "returns nil" do
+          result = validator.validate('Rxz5', white)
+          expect(result).to be_nil
+        end
+      end
+    end # context "when move is a capture"
   end # describe '#validate'
-
-
-  describe '#validate_capture' do
-    context "when the move has valid syntax" do
-      it "returns a ChessPiece representing the rook moving" do
-        result = validator.validate_capture('Rxa5', white)
-        expect(result).to eq_piece(white_rook)
-      end
-    end
-
-    context "when the move has invalid syntax" do
-      it "returns nil" do
-        result = validator.validate_capture('Rxz5', white)
-        expect(result).to be_nil
-      end
-    end
-  end # describe '#validate_capture'
-
 end
