@@ -21,6 +21,10 @@ class Board
     @ranks[rank][file_index]
   end
 
+  def at(square)
+    at(square[:file], square[:rank])
+  end
+
   def search(piece)
   end
 

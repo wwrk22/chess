@@ -28,4 +28,8 @@ module BoardSpecs
   def valid_rank?(rank)
     RANKS.include? rank
   end
+
+  def valid_square?(square)
+    valid_file?(square[:file]) && valid_rank?(square[:rank])
+  end
 end
