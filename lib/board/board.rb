@@ -27,6 +27,12 @@ class Board
     @ranks[rank][file_index]
   end
 
+  def set(sq, piece = nil)
+    rank_index = to_rank_index(sq[:rank])
+    file_index = to_file_index(sq[:file])
+    @ranks[rank_index][file_index] = piece
+  end
+
   def search(piece)
   end
 
