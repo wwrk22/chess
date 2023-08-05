@@ -5,6 +5,14 @@ module BoardSpecs
   BLACK_SQUARE = "\u2B1B"
   private_constant :FILES, :RANKS, :WHITE_SQUARE, :BLACK_SQUARE
 
+  def to_rank_index(rank)
+    rank - 1
+  end
+
+  def to_file_index(file)
+    file.ord - 97
+  end
+
   def files
     FILES
   end
