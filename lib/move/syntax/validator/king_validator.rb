@@ -10,9 +10,9 @@ class KingValidator
   # Return the move if move has valid syntax. Otherwise, return nil.
   # Raise ColorUnknownError if color is unknown.
   def validate(move_str, color)
-    raise ColorUnknownError.new(color) if valid_color?(color) == false
-    move_str =~ KingMoves::MOVE || move_str =~ KingMoves::CASTLE ?
-      ChessPiece.new(king, color) : nil
+    raise ColorUnknownError.new(color) if not valid_color?(color)
+    regex_match = move_str =~ /#{KingMoves::MOVE}|#{KingMoves::CASTLE}/
+    ChessPiece.new(king, color) if regex_match
   end
 
 end
