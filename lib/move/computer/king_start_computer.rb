@@ -1,0 +1,4 @@
+
+
+class KingStartComputer
+end
