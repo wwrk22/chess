@@ -17,7 +17,7 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "raises an InvalidSquare::FileError" do
-          expect{ board.at('z', 5) }.to raise_error(InvalidSquare::FileError)
+          expect{ board.at({ file: 'z', rank: 5 }) }.to raise_error(InvalidSquare::FileError)
         end
       end
 
@@ -25,7 +25,7 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "raises an InvalidSquare::RankError" do
-          expect{ board.at('a', 10) }.to raise_error(InvalidSquare::RankError)
+          expect{ board.at({ file: 'a', rank: 10 }) }.to raise_error(InvalidSquare::RankError)
         end
       end
 
@@ -33,7 +33,7 @@ RSpec.describe Board do
         subject(:board) { described_class.new }
 
         it "raises an InvalidSquare::CoordinateError" do
-          expect{ board.at('z', 10) }.to raise_error(InvalidSquare::CoordinatesError)
+          expect{ board.at({ file: 'z', rank: 10 }) }.to raise_error(InvalidSquare::CoordinatesError)
         end
       end
     end # context "when the square coordinates are out-of-range"
@@ -42,10 +42,7 @@ RSpec.describe Board do
       subject(:board) { described_class.new }
 
       it "returns whatever is on the square" do
-        file = 'a'
-        rank = 1
-
-        expect(board.at(file, rank)).to be_nil # nil indicates an empty square
+        expect(board.at({ file: 'a', rank: 1 })).to be_nil # nil indicates an empty square
       end
     end
   end # describe '#at'
