@@ -18,7 +18,7 @@ RSpec.describe StartComputer do
       start_sq = { file: 'a', rank: 1 }
       white_rook = instance_double(ChessPiece)
 
-      allow(board).to receive(:at).with(start_sq[:file], start_sq[:rank]).and_return white_rook
+      allow(board).to receive(:at).with(start_sq).and_return white_rook
 
       allow(white_rook).to receive(:type).and_return(rook)
       allow(white_rook).to receive(:color).and_return(white)
@@ -44,18 +44,18 @@ RSpec.describe StartComputer do
 
     context "when the piece is on the path and can get to the target square" do
       it "returns the square that the piece is on" do
-        allow(board).to receive(:at).with('a', 2).and_return nil
-        allow(board).to receive(:at).with('a', 1).and_return white_rook
+        expected = { file: 'a', rank: 1 }
+        allow(board).to receive(:at).with({ file: 'a', rank: 2 }).and_return nil
+        allow(board).to receive(:at).with(expected).and_return white_rook
 
         result = computer.check_path(move, board, direction)
-        expected = { file: 'a', rank: 1 }
         expect(result).to eq(expected)
       end
     end
 
     context "when the piece is on the path but cannot get to the target square" do
       it "returns nil" do
-        allow(board).to receive(:at).with('a', 2).and_return ChessPiece.new(pawn, white)
+        allow(board).to receive(:at).with({ file: 'a', rank: 2 }).and_return ChessPiece.new(pawn, white)
         
         result = computer.check_path(move, board, direction)
         expect(result).to be_nil
@@ -64,8 +64,8 @@ RSpec.describe StartComputer do
 
     context "when the piece is not on the path" do
       it "returns nil" do
-        allow(board).to receive(:at).with('a', 2).and_return nil
-        allow(board).to receive(:at).with('a', 1).and_return nil
+        allow(board).to receive(:at).with({ file: 'a', rank: 2 }).and_return nil
+        allow(board).to receive(:at).with({ file: 'a', rank: 1 }).and_return nil
         
         result = computer.check_path(move, board, direction)
         expect(result).to be_nil
@@ -148,7 +148,7 @@ RSpec.describe StartComputer do
 
     context "when the starting square does not have the moving piece" do
       it "returns false" do
-        allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return nil
+        allow(board).to receive(:at).with(start_square).and_return nil
 
         result = computer.valid_start? move, board, start_square
         expect(result).to be_falsey
@@ -158,7 +158,7 @@ RSpec.describe StartComputer do
     context "when the starting square has the moving piece" do
       context "when the path to the target square is not clear" do
         it "returns false" do
-          allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return moving_piece
+          allow(board).to receive(:at).with(start_square).and_return moving_piece
 
           direction = { file: 0, rank: -1 }
           allow(computer).to receive(:check_path).with(move, board, direction, start_square).and_return false
@@ -170,7 +170,7 @@ RSpec.describe StartComputer do
 
       context "when the path to the target square is clear" do
         it "returns false" do
-          allow(board).to receive(:at).with(start_square[:file], start_square[:rank]).and_return moving_piece
+          allow(board).to receive(:at).with(start_square).and_return moving_piece
 
           direction = { file: 0, rank: -1 }
           allow(computer).to receive(:check_path).with(move, board, direction, start_square).and_return true
