@@ -4,15 +4,15 @@ module MoveSyntax
     CHECKMATE = '#'
     CAPTURE = 'x'
 
-    def check_syntax
+    def check
       CHECK
     end
 
-    def checkmate_syntax
+    def checkmate
       CHECKMATE
     end
 
-    def capture_syntax
+    def capture
       CAPTURE
     end
   end

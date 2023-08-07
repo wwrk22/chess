@@ -1,5 +1,7 @@
 require './lib/move/interpreter/move_interpreter'
+require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
+require './lib/move/move'
 
 
 RSpec.configure do |cfg|
@@ -63,27 +65,61 @@ RSpec.describe MoveInterpreter do
     end # context "when move is not a capture"
   end # describe '#capture?'
 
-  describe '#parse_starting_square' do
+  describe '#parse_start_coordinate' do
     subject(:interpreter) { described_class.new }
       
     context "when move is for a pawn" do
-      it "returns the file or rank of the moving pawn" do
-        expect(interpreter.parse_starting_square('axb3')).to eq({ file: 'a' })
+      let!(:move) { instance_double(Move) }
+
+      before do
+        allow(move).to receive(:str).and_return 'axb3'
+        allow(move).to receive(:piece).and_return ChessPiece.new(pawn, white)
       end
-    end
+
+      context "when the move is a capture" do
+        it "returns the file or rank of the moving pawn" do
+          allow(move).to receive(:capture).and_return true
+
+          expect(interpreter.parse_start_coordinate(move)).to eq('a')
+        end
+      end
+
+      context "when the move is not a capture" do
+        it "returns nil" do
+          allow(move).to receive(:capture).and_return false
+
+          expect(interpreter.parse_start_coordinate(move)).to be_nil
+        end
+      end
+    end # context "when move is for a pawn"
 
     context "when move is for a piece other than pawn and king" do
-      context "when move is a capture" do
-        it "returns the file or rank of the capturing piece" do
-          expect(interpreter.parse_starting_square('Raxd4')).to eq({ file: 'a' })
-        end
+      let!(:move) { instance_double(Move) }
+
+      before do
+        allow(move).to receive(:piece).and_return ChessPiece.new(rook, black)
       end
 
-      context "when move is not a capture" do
-        it "returns the file or rank of the moving piece" do
-          expect(interpreter.parse_starting_square('Nba3')).to eq({ file: 'b' })
+      context "when the move includes a start coordinate" do
+        context "when move is a capture" do
+          it "returns the start coordinate" do
+            allow(move).to receive(:str).and_return 'Raxd4'
+
+            expect(interpreter.parse_start_coordinate(move)).to eq('a')
+          end
         end
-      end
-    end
+
+        context "when move is not a capture" do
+          it "returns the start coordinate" do
+            allow(move).to receive(:str).and_return 'R4a3'
+
+            expect(interpreter.parse_start_coordinate(move)).to eq(4)
+          end
+        end
+      end # context "when the move does not include a start coordinate"
+
+      context "when the move does not include a start coordinate " do
+      end # context "when the move does not include a start coordinate"
+    end # context "when move is for a piece other than pawn and king"
   end # describe '#parse_starting_square'
 end

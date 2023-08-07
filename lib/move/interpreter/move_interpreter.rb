@@ -7,36 +7,50 @@ require './lib/piece/piece_specs'
 class MoveInterpreter
   include BoardSpecs
   include MoveSyntax::General
+  include PieceSpecs
 
   # Parse the destination square of the move.
-  def parse_target(move)
-    target_file, target_rank = [move[-2], move[-1].to_i]
+  def parse_target(move_str)
+    target_file, target_rank = [move_str[-2], move_str[-1].to_i]
 
-    if move.end_with?(check_syntax) || move.end_with?(checkmate_syntax)
-      target_file, target_rank = [move[-3], move[-2].to_i]
+    if move_str.end_with?(check) || move_str.end_with?(checkmate)
+      target_file, target_rank = [move_str[-3], move_str[-2].to_i]
     end
 
     { file: target_file, rank: target_rank }
   end
 
   # Determine whether or not the move is a capture.
-  def capture?(move)
-    capture_mark = move[-3]
+  def capture?(move_str)
+    capture_mark = move_str.end_with?(check) || move_str.end_with?(checkmate) ?
+      move_str[-4] : move_str[-3]
 
-    if move.end_with?(check_syntax) || move.end_with?(checkmate_syntax)
-      capture_mark = move[-4]
-    end
-
-    capture_mark == capture_syntax
+    capture_mark == capture
   end
 
   # Parse then return the file or rank of the square of the moving piece.
-  def parse_starting_square(move)
+  def parse_start_coordinate(move)
     # Move is for pawn.
-    return { file: move[0] } if move =~ /^[a-h]x[a-h][1-8]$/
+    return pawn_start_coordinate(move) if move.piece.type == pawn
 
     # Move is for rook, knight, bishop, or queen.
-    files.include?(move[1]) ?
-      { file: move[1] } : { rank: move[1].to_i }
+    return non_pawn_start_coordinate(move)
+  end
+
+
+  private
+
+  def pawn_start_coordinate(move)
+    if move.capture
+      coordinate = move.str[0]
+      return valid_file?(coordinate) ? coordinate : coordinate.to_i
+    end
+  end
+
+  def non_pawn_start_coordinate(move)
+    if move.str =~ /^[RNBQ][a-h1-8]x?[a-h][1-8]$/
+      coordinate = move.str[1]
+      return valid_file?(coordinate) ? coordinate : coordinate.to_i
+    end
   end
 end
