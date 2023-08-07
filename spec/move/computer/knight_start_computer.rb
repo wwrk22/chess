@@ -41,8 +41,8 @@ RSpec.describe KnightStartComputer do
       starts = [empty_sq, expected_sq]
       board = instance_double(Board)
 
-      allow(board).to receive(:at_sq).with(starts[0]).and_return nil
-      allow(board).to receive(:at_sq).with(starts[1]).and_return white_knight
+      allow(board).to receive(:at).with(starts[0]).and_return nil
+      allow(board).to receive(:at).with(starts[1]).and_return white_knight
 
       result = computer.find_knight(white_knight, board, starts)
       expect(result).to eq(expected_sq)

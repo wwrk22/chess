@@ -14,7 +14,7 @@ class KnightStartComputer
   end
 
   def find_knight(knight, board, starts)
-    starts.filter! { |start| board.at_sq(start).eql? knight }
+    starts.filter! { |start| board.at(start).eql? knight }
     starts[0] if starts.size == 1
   end
 
