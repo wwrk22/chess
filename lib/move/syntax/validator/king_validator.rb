@@ -1,4 +1,4 @@
-require_relative '../move/king_moves'
+require_relative '../pattern/king'
 require './lib/error/color_unknown_error'
 require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
@@ -6,12 +6,11 @@ require './lib/piece/piece_specs'
 
 class KingValidator
   include PieceSpecs
+  include MoveSyntax::King
   
   # Return the move if move has valid syntax. Otherwise, return nil.
-  # Raise ColorUnknownError if color is unknown.
   def validate(move_str, color)
-    raise ColorUnknownError.new(color) if not valid_color?(color)
-    regex_match = move_str =~ /#{KingMoves::MOVE}|#{KingMoves::CASTLE}/
+    regex_match = move_str =~ /#{king_move_syntax}|#{king_castle_syntax}/
     ChessPiece.new(king, color) if regex_match
   end
 
