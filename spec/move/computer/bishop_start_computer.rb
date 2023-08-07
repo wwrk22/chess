@@ -121,8 +121,8 @@ RSpec.describe BishopStartComputer do
 
       context "when there are no valid starting squares" do
         it "returns nil" do
-          allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
-          allow(computer).to receive(:valid_start?).with(start_b, board).and_return false
+          allow(computer).to receive(:valid_start?).with(move, board, start_a).and_return false
+          allow(computer).to receive(:valid_start?).with(move, board, start_b).and_return false
 
           result = computer.compute_with_start_coordinate(move, board)
           expect(result).to be_nil
@@ -131,8 +131,8 @@ RSpec.describe BishopStartComputer do
 
       context "when there is one valid starting square" do
         it "returns the one square" do
-          allow(computer).to receive(:valid_start?).with(start_a, board).and_return false
-          allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
+          allow(computer).to receive(:valid_start?).with(move, board, start_a).and_return false
+          allow(computer).to receive(:valid_start?).with(move, board, start_b).and_return true
 
           result = computer.compute_with_start_coordinate(move, board)
           expect(result).to eq(start_b)
@@ -141,8 +141,8 @@ RSpec.describe BishopStartComputer do
 
       context "when there are two valid starting squares" do
         it "returns nil" do
-          allow(computer).to receive(:valid_start?).with(start_a, board).and_return true
-          allow(computer).to receive(:valid_start?).with(start_b, board).and_return true
+          allow(computer).to receive(:valid_start?).with(move, board, start_a).and_return true
+          allow(computer).to receive(:valid_start?).with(move, board, start_b).and_return true
 
           result = computer.compute_with_start_coordinate(move, board)
           expect(result).to be_nil
