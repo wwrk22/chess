@@ -1,15 +1,17 @@
 require './lib/standard/chess_board'
-require './lib/standard/standard'
+require './lib/move/syntax/pattern/general'
 require './lib/piece/piece_specs'
 
 
 # Any move interpreted is expected to have been validated by a validator class.
 class MoveInterpreter
+  include MoveSyntax::General
+
   # Parse the destination square of the move.
   def parse_target(move)
     target_file, target_rank = [move[-2], move[-1].to_i]
 
-    if move.end_with?(Standard::CH) || move.end_with?(Standard::CM)
+    if move.end_with?(check_syntax) || move.end_with?(checkmate_syntax)
       target_file, target_rank = [move[-3], move[-2].to_i]
     end
 
@@ -20,11 +22,11 @@ class MoveInterpreter
   def capture?(move)
     capture_mark = move[-3]
 
-    if move.end_with?(Standard::CH) || move.end_with?(Standard::CM)
+    if move.end_with?(check_syntax) || move.end_with?(checkmate_syntax)
       capture_mark = move[-4]
     end
 
-    capture_mark == Standard::CAPTURE
+    capture_mark == capture_syntax
   end
 
   # Parse then return the file or rank of the square of the moving piece.
