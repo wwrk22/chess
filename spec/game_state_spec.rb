@@ -18,8 +18,8 @@ RSpec.describe GameState do
       white_king = { type: king, color: white }
       black_king = { type: king, color: black }
 
-      allow(board).to receive(:search).with(white_king).and_return(1)
-      allow(board).to receive(:search).with(black_king).and_return(1)
+      allow(board).to receive(:search_king).with(white).and_return(1)
+      allow(board).to receive(:search_king).with(black).and_return(1)
 
       expect(game_state.search_kings(board)).to eq(king_count)
     end
