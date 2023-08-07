@@ -117,4 +117,26 @@ RSpec.describe Board do
       end
     end # context "when the piece is on file h"
   end # describe '#format_piece'
+
+
+  describe '#search_king' do
+    subject(:board) { described_class.new }
+
+    context "when the king is not on the board" do
+      it "returns false" do
+        result = board.search_king(white)
+        expect(result).to be_falsey
+      end
+    end
+
+    context "when the king is on the board" do
+      it "returns true" do
+        ranks = board.instance_variable_get(:@ranks)
+        ranks[0][0] = ChessPiece.new(king, white)
+
+        result = board.search_king(white)
+        expect(result).to be_truthy
+      end
+    end
+  end
 end

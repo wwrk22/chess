@@ -1,10 +1,12 @@
 require './lib/standard/chess_board'
 require './lib/error/invalid_square'
+require './lib/piece/piece_specs'
 require_relative './board_specs'
 
 
 class Board
   include BoardSpecs
+  include PieceSpecs
   
   def initialize
     @ranks = Array.new(8, Array.new(8, nil))
@@ -26,7 +28,12 @@ class Board
     @ranks[rank_index][file_index] = piece
   end
 
-  def search(piece)
+  def search_king(color)
+    @ranks.each do |rank|
+      return true if rank.one? { |sq| sq.eql? ChessPiece.new(king, color) }
+    end
+
+    false
   end
 
   ##
