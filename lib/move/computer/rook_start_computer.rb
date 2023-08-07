@@ -25,7 +25,7 @@ class RookStartComputer < StartComputer
       { file: move.start_coordinate, rank: move.target[:rank] } :
       { file: move.target[:file], rank: move.start_coordinate }
 
-    piece = board.at(start_square[:file], start_square[:rank])
+    piece = board.at(start_square)
     piece.eql?(move.piece) ? start_square : nil
   end
 

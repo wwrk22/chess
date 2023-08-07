@@ -62,7 +62,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square has the moving rook" do
         it "returns a square with that file and the same rank as the target square" do 
-          allow(board).to receive(:at).with(expected[:file], expected[:rank]).and_return moving_rook
+          allow(board).to receive(:at).with(expected).and_return moving_rook
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to eq(expected)
@@ -71,7 +71,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square does not have the moving rook" do
         it "returns nil" do
-          allow(board).to receive(:at).with(expected[:file], expected[:rank]).and_return nil
+          allow(board).to receive(:at).with(expected).and_return nil
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to be_nil
@@ -89,7 +89,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square has the moving rook" do
         it "returns a square with that rank and the same file as the target square" do
-          allow(board).to receive(:at).with(expected[:file], expected[:rank]).and_return moving_rook
+          allow(board).to receive(:at).with(expected).and_return moving_rook
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to eq(expected)
@@ -98,7 +98,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square does not have the moving rook" do
         it "returns nil" do
-          allow(board).to receive(:at).with(expected[:file], expected[:rank]).and_return nil
+          allow(board).to receive(:at).with(expected).and_return nil
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to be_nil
