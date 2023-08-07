@@ -1,10 +1,11 @@
-require './lib/standard/chess_board'
+require './lib/board/board_specs'
 require './lib/move/syntax/pattern/general'
 require './lib/piece/piece_specs'
 
 
 # Any move interpreted is expected to have been validated by a validator class.
 class MoveInterpreter
+  include BoardSpecs
   include MoveSyntax::General
 
   # Parse the destination square of the move.
@@ -35,7 +36,7 @@ class MoveInterpreter
     return { file: move[0] } if move =~ /^[a-h]x[a-h][1-8]$/
 
     # Move is for rook, knight, bishop, or queen.
-    ChessBoard::FILES.include?(move[1]) ?
+    files.include?(move[1]) ?
       { file: move[1] } : { rank: move[1].to_i }
   end
 end
