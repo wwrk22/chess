@@ -1,33 +1,21 @@
-require_relative '../move/pawn_moves'
+require_relative '../pattern/pawn'
 require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 
 
 class PawnValidator
   include PieceSpecs
+  include MoveSyntax::Pawn
 
   # Return the ChessPiece object representing the moving pawn if move has valid
   # syntax. Otherwise, return nil. Raise ColorUnknownError if color is unknown.
   def validate(move_str, color)
-    raise ColorUnknownError.new(color) if valid_color?(color) == false
+    raise ColorUnknownError.new(color) if not valid_color? color
 
-    return move_str.include?('x') ?
-      validate_capture(move_str, color) :
-      validate_non_capture(move_str, color)
-  end
+    pattern = (color == white) ?
+      wh_pawn_move_syntax : bl_pawn_move_syntax
 
-  # Validate a move that is a capture. Raise ColorUnknownError if color is
-  # unknown.
-  def validate_capture(move_str, color)
-    capture_patterns = (color == white) ? PawnMoves::WH_CAPTURES : PawnMoves::BL_CAPTURES
-    regex_match = capture_patterns.one? { |pattern| move_str =~ pattern }
-    ChessPiece.new(pawn, color) if regex_match
-  end
-
-  # Validate a move that is not a capture. Raise ColorUnknownError if color
-  # is unknown.
-  def validate_non_capture(move_str, color)
-    move_pattern = (color == white) ? PawnMoves::WH_MOVE : PawnMoves::BL_MOVE
-    ChessPiece.new(pawn, color) if move_str =~ move_pattern
+    match = move_str =~ pattern
+    ChessPiece.new(pawn, color) if match
   end
 end
