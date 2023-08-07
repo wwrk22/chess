@@ -21,10 +21,11 @@ class Board
   # Return the ChessPiece found on the square designated by the given
   # coordinates. An empty square returns nil.
   def at(file, rank)
-    check_coordinates(file, rank)
-
-    file_index = files.index(file)
-    @ranks[rank][file_index]
+    if valid_square?({ file: file, rank: rank })
+      return @ranks[rank][files.index(file)]
+    else
+      check_coordinates_error({ file: file, rank: rank })
+    end
   end
 
   def set(sq, piece = nil)
@@ -74,8 +75,8 @@ class Board
     end
   end
 
-  def check_coordinates(file, rank)
-    return if files.include?(file) && ranks.include?(rank)
+  def check_coordinates_error(square)
+    file, rank = [square[:file], square[:rank]]
     raise InvalidSquare::RankError.new(rank) if files.include?(file)
     raise InvalidSquare::FileError.new(file) if ranks.include?(rank)
     raise InvalidSquare::CoordinatesError.new(file, rank)
