@@ -11,8 +11,8 @@ class GameState
   def search_kings(board)
     wh_king = { type: king, color: white }
     bl_king = { type: king, color: black }
-    return { wh_king_found: board.search(wh_king),
-             bl_king_found: board.search(bl_king) }
+    return { wh_king_found: board.search_king(white),
+             bl_king_found: board.search_king(black) }
   end
 
   ##

@@ -7,7 +7,7 @@ class StartComputer
   include PieceSpecs
 
   def check_start(start_square, piece, board)
-    target = board.at(start_square[:file], start_square[:rank])
+    target = board.at(start_square)
     target.eql? piece
   end
 
@@ -30,7 +30,7 @@ class StartComputer
   end
 
   def valid_start?(move, board, start_square)
-    piece = board.at(start_square[:file], start_square[:rank])
+    piece = board.at(start_square)
 
     if piece.eql? move.piece
       file_step = start_square[:file].ord - move.target[:file].ord
@@ -61,7 +61,7 @@ class StartComputer
   def check_each_square(curr_square, move, board, direction, start_square)
     while valid_file?(curr_square[:file]) && valid_rank?(curr_square[:rank]) &&
           curr_square != start_square do
-      piece = board.at(curr_square[:file], curr_square[:rank])
+      piece = board.at(curr_square)
       return check_piece(piece, move.piece, curr_square) if piece
       curr_square = update_square(curr_square, direction)
     end
