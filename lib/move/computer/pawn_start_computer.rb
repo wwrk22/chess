@@ -26,28 +26,24 @@ class PawnStartComputer < StartComputer
   end
 
   def compute_move(move, board)
-    first_square = check_first(move, board)
+    rank_diff = (move.piece.color == white) ? -1 : 1
+
+    first_square = check_first(move, board, rank_diff)
     return first_square if first_square
 
-    second_square = check_second(move, board)
-    return second_square if second_square
+    check_second(move, board, rank_diff) if check_double(move, board, rank_diff)
   end
 
   private
 
-  def check_first(move, board)
-    rank_diff = (move.piece.color == white) ? -1 : 1
-    check_for_pawn(move, board, rank_diff)
+  def check_first(move, board, rank_diff)
     start = { file: move.target[:file], rank: move.target[:rank] + rank_diff }
-    check_start(start, move.piece, board)
+    start if check_start(start, move.piece, board)
   end
 
-  def check_second(move, board)
-    rank_diff = (move.piece.color == white) ? -1 : 1
-    if check_double(move, board, rank_diff)
-      start = { file: move.target[:file], rank: move.target[:rank] + 2 * rank_diff }
-      return check_start(start, move.piece, board)
-    end
+  def check_second(move, board, rank_diff)
+    start = { file: move.target[:file], rank: move.target[:rank] + 2 * rank_diff }
+    start if check_start(start, move.piece, board)
   end
 
   def check_double(move, board, rank_diff)
