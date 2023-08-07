@@ -32,8 +32,8 @@ RSpec.describe KingStartComputer do
         white_king = ChessPiece.new(king, white)
         board = instance_double(Board)
 
-        allow(board).to receive(:at_sq).with(start_sqs[0]).and_return nil
-        allow(board).to receive(:at_sq).with(start_sqs[1]).and_return nil
+        allow(board).to receive(:at).with(start_sqs[0]).and_return nil
+        allow(board).to receive(:at).with(start_sqs[1]).and_return nil
 
         result = computer.find_king(white_king, start_sqs, board)
 

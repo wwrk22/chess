@@ -21,7 +21,7 @@ class KingStartComputer
   # holds the king.
   def find_king(king, start_sqs, board)
     filtered = start_sqs.filter do |sq|
-      board.at_sq(sq).eql? king
+      board.at(sq).eql? king
     end
 
     (filtered.empty?) ? nil : filtered[0]

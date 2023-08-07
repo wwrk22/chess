@@ -27,7 +27,7 @@ RSpec.describe MovePerformer do
 
     context "when the target square is empty" do
       it "returns true" do
-        allow(board).to receive(:at_sq).with(move.target).and_return nil
+        allow(board).to receive(:at).with(move.target).and_return nil
         allow(board).to receive(:set)
 
         result = performer.do_move(move, board)
@@ -37,7 +37,7 @@ RSpec.describe MovePerformer do
 
     context "when the target square is not empty" do
       it "returns false" do
-        allow(board).to receive(:at_sq).with(move.target).and_return ChessPiece.new(pawn, black)
+        allow(board).to receive(:at).with(move.target).and_return ChessPiece.new(pawn, black)
         allow(board).to receive(:set)
 
         result = performer.do_move(move, board)
@@ -57,7 +57,7 @@ RSpec.describe MovePerformer do
 
     context "when the target square has an opponent piece" do
       it "sends do_move and returns the result" do
-        allow(board).to receive(:at_sq).with(move.target).and_return ChessPiece.new(pawn, black)
+        allow(board).to receive(:at).with(move.target).and_return ChessPiece.new(pawn, black)
 
         expect(computer).to receive(:do_move).with(move, board)
         computer.do_capture(move, board)
@@ -66,7 +66,7 @@ RSpec.describe MovePerformer do
 
     context "when the target square does not have an opponent piece" do
       it "does not send do_move, then returns false" do
-        allow(board).to receive(:at_sq).with(move.target).and_return nil
+        allow(board).to receive(:at).with(move.target).and_return nil
 
         expect(computer).not_to receive(:do_move)
         computer.do_capture(move, board)
