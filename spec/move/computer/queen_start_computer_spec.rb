@@ -94,9 +94,9 @@ RSpec.describe QueenStartComputer do
         allow(move).to receive(:target).and_return({ file: 'b', rank: 2 })
         allow(move).to receive(:start_coordinate).and_return 1
 
-        allow(computer).to receive(:valid_start?).with(valid_start, move, board).and_return true
-        allow(computer).to receive(:valid_start?).with(invalid_start_a, move, board).and_return false
-        allow(computer).to receive(:valid_start?).with(invalid_start_b, move, board).and_return false
+        allow(computer).to receive(:valid_start?).with(move, board, valid_start).and_return true
+        allow(computer).to receive(:valid_start?).with(move, board, invalid_start_a).and_return false
+        allow(computer).to receive(:valid_start?).with(move, board, invalid_start_b).and_return false
 
         result = computer.start_off_target_axes(move, board)
         expect(result).to eq(valid_start)
@@ -112,9 +112,9 @@ RSpec.describe QueenStartComputer do
         allow(move).to receive(:target).and_return({ file: 'b', rank: 2 })
         allow(move).to receive(:start_coordinate).and_return 1
 
-        allow(computer).to receive(:valid_start?).with(valid_start_a, move, board).and_return true
-        allow(computer).to receive(:valid_start?).with(valid_start_b, move, board).and_return true
-        allow(computer).to receive(:valid_start?).with(invalid_start, move, board).and_return false
+        allow(computer).to receive(:valid_start?).with(move, board, valid_start_a).and_return true
+        allow(computer).to receive(:valid_start?).with(move, board, valid_start_b).and_return true
+        allow(computer).to receive(:valid_start?).with(move, board, invalid_start).and_return false
 
         result = computer.start_off_target_axes(move, board)
         expect(result).to be_nil
