@@ -48,8 +48,13 @@ class StartComputer
   # [Abstract]
   # A subclass representing a kind of StartComputer should calculate how many
   # squares must be empty between the moving chess piece and the target square.
-  def calculate_limit; raise "SubclassResponsibility"; end
+  def compute_start; raise "SubclassResponsibility"; end
 
+  ##
+  # [Abstract]
+  # A subclass representing a kind of StartComputer should calculate how many
+  # squares must be empty between the moving chess piece and the target square.
+  def calculate_limit; raise "SubclassResponsibility"; end
 
   private
 
