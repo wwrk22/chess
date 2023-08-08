@@ -1,10 +1,12 @@
 require './lib/move/syntax/validator/pawn_validator'
 require './lib/piece/piece_specs'
 require './lib/error/color_unknown_error'
+require_relative './move_samples/pawn'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include MoveSamples::Pawn
 end
 
 RSpec.describe PawnValidator do
@@ -62,5 +64,63 @@ RSpec.describe PawnValidator do
         end
       end # context "when pawn is black"
     end # context "when the color is known"
+
+    context "when validating all possible moves" do
+      context "when all moves are non-captures" do
+        it "returns a ChessPiece for all valid moves" do
+          wh_result = wh_non_captures.none? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          bl_result = bl_non_captures.none? do |move|
+            validator.validate(move, black).nil?
+          end
+
+          expect(wh_result && bl_result).to eq(true)
+        end
+      end
+
+      context "when all moves are captures" do
+        it "returns a ChessPiece for all valid moves" do
+          wh_result = wh_captures.none? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          bl_result = bl_captures.none? do |move|
+            validator.validate(move, black).nil?
+          end
+
+          expect(wh_result && bl_result).to eq(true)
+        end
+      end
+
+      context "when all moves are illegal for white" do
+        it "returns nil for all moves" do
+          wh_result_1 = wh_illegal_moves.all? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          wh_result_2 = wh_illegal_captures.all? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          expect(wh_result_1 && wh_result_2).to eq(true)
+        end
+      end
+
+      context "when all moves are illegal for black" do
+        it "returns nil for all moves" do
+          bl_result_1 = bl_illegal_moves.all? do |move|
+            validator.validate(move, black).nil?
+          end
+
+          bl_result_2 = bl_illegal_captures.all? do |move|
+            validator.validate(move, black).nil?
+          end
+
+          expect(bl_result_1 && bl_result_2).to eq(true)
+        end
+      end
+    end # context "when validating all possible moves"
   end # describe '#validate'
 end
