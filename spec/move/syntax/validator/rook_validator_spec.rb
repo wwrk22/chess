@@ -2,10 +2,12 @@ require './lib/move/syntax/validator/rook_validator'
 require './lib/piece/piece_specs'
 require './lib/error/color_unknown_error'
 require './lib/piece/chess_piece'
+require_relative './move_samples/rook'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include MoveSamples::Rook
 end
 
 RSpec.describe RookValidator do
@@ -69,5 +71,43 @@ RSpec.describe RookValidator do
         end
       end
     end # context "when move is a capture"
+
+    context "when validating all possible moves" do
+      context "when all moves are non-captures" do
+        it "returns a ChessPiece for every move" do
+          result_1 = rook_moves.none? do |move|
+            validator.validate(move, white).nil? # color doesn't matter here
+          end
+
+          result_2 = rook_moves.none? do |move|
+            validator.validate(move + '+', white).nil?
+          end
+
+          result_3 = rook_moves.none? do |move|
+            validator.validate(move + '#', white).nil?
+          end
+
+          expect(result_1 && result_2 && result_3).to eq(true)
+        end
+      end # context "when all moves are non-captures"
+
+      context "when all moves are captures" do
+        it "returns a ChessPiece for every move" do
+          result_1 = rook_captures.none? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          result_2 = rook_captures.none? do |move|
+            validator.validate(move + '+', white).nil?
+          end
+
+          result_3 = rook_captures.none? do |move|
+            validator.validate(move + '#', white).nil?
+          end
+
+          expect(result_1 && result_2 && result_3).to eq(true)
+        end
+      end # context "when all moves are captures"
+    end
   end # describe '#validate'
 end
