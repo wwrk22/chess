@@ -2,10 +2,12 @@ require 'spec_helper'
 require './lib/move/syntax/validator/bishop_validator'
 require './lib/piece/piece_specs'
 require './spec/support/matchers/chess_piece'
+require_relative './move_samples/bishop'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include MoveSamples::Bishop
 end
 
 RSpec.describe BishopValidator do
@@ -119,5 +121,27 @@ RSpec.describe BishopValidator do
         end
       end # context "when starting file or rank is specified"
     end # context "when move is a capture"
+
+    context "when validating all possible moves" do
+      context "when moves are legal" do
+        it "returns a ChessPiece for every move" do
+          result = legal_bishop_moves.none? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          expect(result).to eq(true)
+        end
+      end
+
+      context "when moves are illegal" do
+        it "returns nil for every move" do
+          result = illegal_bishop_moves.all? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          expect(result).to eq(true)
+        end
+      end
+    end # context "when validating all possible moves"
   end # describe '#validate'
 end
