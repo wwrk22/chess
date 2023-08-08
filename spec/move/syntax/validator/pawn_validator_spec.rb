@@ -66,27 +66,13 @@ RSpec.describe PawnValidator do
     end # context "when the color is known"
 
     context "when validating all possible moves" do
-      context "when all moves are non-captures" do
+      context "when all moves are legal" do
         it "returns a ChessPiece for all valid moves" do
-          wh_result = wh_non_captures.none? do |move|
+          wh_result = legal_wh_pawn_moves.none? do |move|
             validator.validate(move, white).nil?
           end
 
-          bl_result = bl_non_captures.none? do |move|
-            validator.validate(move, black).nil?
-          end
-
-          expect(wh_result && bl_result).to eq(true)
-        end
-      end
-
-      context "when all moves are captures" do
-        it "returns a ChessPiece for all valid moves" do
-          wh_result = wh_captures.none? do |move|
-            validator.validate(move, white).nil?
-          end
-
-          bl_result = bl_captures.none? do |move|
+          bl_result = legal_bl_pawn_moves.none? do |move|
             validator.validate(move, black).nil?
           end
 
@@ -96,29 +82,21 @@ RSpec.describe PawnValidator do
 
       context "when all moves are illegal for white" do
         it "returns nil for all moves" do
-          wh_result_1 = wh_illegal_moves.all? do |move|
+          result = illegal_wh_pawn_moves.all? do |move|
             validator.validate(move, white).nil?
           end
 
-          wh_result_2 = wh_illegal_captures.all? do |move|
-            validator.validate(move, white).nil?
-          end
-
-          expect(wh_result_1 && wh_result_2).to eq(true)
+          expect(result).to eq(true)
         end
       end
 
       context "when all moves are illegal for black" do
         it "returns nil for all moves" do
-          bl_result_1 = bl_illegal_moves.all? do |move|
+          result = illegal_bl_pawn_moves.all? do |move|
             validator.validate(move, black).nil?
           end
 
-          bl_result_2 = bl_illegal_captures.all? do |move|
-            validator.validate(move, black).nil?
-          end
-
-          expect(bl_result_1 && bl_result_2).to eq(true)
+          expect(result).to eq(true)
         end
       end
     end # context "when validating all possible moves"
