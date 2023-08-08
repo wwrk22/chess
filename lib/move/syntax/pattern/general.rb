@@ -1,6 +1,6 @@
 module MoveSyntax
   module General
-    CHECK = '+'
+    CHECK = '\+'
     CHECKMATE = '#'
     CAPTURE = 'x'
 

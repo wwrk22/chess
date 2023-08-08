@@ -13,7 +13,7 @@ class MoveInterpreter
   def parse_target(move_str)
     target_file, target_rank = [move_str[-2], move_str[-1].to_i]
 
-    if move_str.end_with?(check) || move_str.end_with?(checkmate)
+    if move_str[-1] =~ /#{check}|#{checkmate}/
       target_file, target_rank = [move_str[-3], move_str[-2].to_i]
     end
 
@@ -22,19 +22,20 @@ class MoveInterpreter
 
   # Determine whether or not the move is a capture.
   def capture?(move_str)
-    capture_mark = move_str.end_with?(check) || move_str.end_with?(checkmate) ?
+    capture_mark = (move_str[-1] =~ /#{check}|#{checkmate}/) ?
       move_str[-4] : move_str[-3]
 
     capture_mark == capture
   end
 
   # Parse then return the file or rank of the square of the moving piece.
+  # A king move is not handled since there is no start coordinate for it.
   def parse_start_coordinate(move)
-    # Move is for pawn.
-    return pawn_start_coordinate(move) if move.piece.type == pawn
-
-    # Move is for rook, knight, bishop, or queen.
-    return non_pawn_start_coordinate(move)
+    if move.piece.type == pawn
+      return pawn_start_coordinate(move)
+    else # Not pawn and king
+      return non_pawn_start_coordinate(move)
+    end
   end
 
 
