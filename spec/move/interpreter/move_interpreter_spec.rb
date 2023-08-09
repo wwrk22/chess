@@ -1,12 +1,15 @@
+require './lib/board/board_specs'
 require './lib/move/interpreter/move_interpreter'
 require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 require './lib/move/move'
 require 'move_samples'
+require_relative 'test_moves'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include BoardSpecs
 end
 
 RSpec.describe MoveInterpreter do
@@ -138,8 +141,26 @@ RSpec.describe MoveInterpreter do
         end
       end # context "when the move does not include a start coordinate"
 
-      context "when the move does not include a start coordinate " do
-      end # context "when the move does not include a start coordinate"
+      context "when testing all move types except castling" do
+        it "returns the correct start coordinate" do
+          result = TestMoves::MOVES.map do |move_str|
+            move = Move.new(move_str, white)
+
+            move.capture = true if move_str.include? 'x'
+
+            # Piece type and color don't matter here.
+            if valid_file? move_str[0]
+              move.piece = ChessPiece.new(pawn, white)
+            else
+              move.piece = ChessPiece.new(rook, white)
+            end
+
+            interpreter.parse_start_coordinate(move)
+          end
+
+          expect(result).to eq TestMoves::START_COORDS
+        end
+      end # context "when testing all move types except castling"
     end # context "when move is for a piece other than pawn and king"
   end # describe '#parse_starting_square'
 end

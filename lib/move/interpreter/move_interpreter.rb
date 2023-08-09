@@ -51,7 +51,7 @@ class MoveInterpreter
   end
 
   def non_pawn_start_coordinate(move)
-    if move.str =~ /^[RNBQ][a-h1-8]x?[a-h][1-8]$/
+    if move.str =~ /^[RNBQ][a-h1-8]x?[a-h][1-8][+#]?$/
       coordinate = move.str[1]
       return valid_file?(coordinate) ? coordinate : coordinate.to_i
     end
