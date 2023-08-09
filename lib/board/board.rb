@@ -9,7 +9,7 @@ class Board
   include PieceSpecs
   
   def initialize
-    @ranks = Array.new(8, Array.new(8, nil))
+    @ranks = Array.new(8) { |_| Array.new(8, nil) }
   end
 
   ##
@@ -25,6 +25,7 @@ class Board
   def set(sq, piece = nil)
     rank_index = to_rank_index(sq[:rank])
     file_index = to_file_index(sq[:file])
+
     @ranks[rank_index][file_index] = piece
   end
 
