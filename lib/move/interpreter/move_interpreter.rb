@@ -22,6 +22,8 @@ class MoveInterpreter
 
   # Determine whether or not the move is a capture.
   def capture?(move_str)
+    return false if move_str.start_with? '0'
+
     capture_mark = (move_str[-1] =~ /#{check}|#{checkmate}/) ?
       move_str[-4] : move_str[-3]
 
