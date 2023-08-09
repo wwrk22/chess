@@ -92,9 +92,10 @@ RSpec.describe PawnStartComputer do
 
   describe '#compute_start' do
     context "when the move is a legal single" do
+      let!(:board) { Board.new }
+
       context "when pawn is white" do
         it "returns the square one below the target square" do
-          board = Board.new
           set_ranks(board, (2..7).to_a, pawn, white) 
 
           result = white_singles.all? do |move|
@@ -103,7 +104,19 @@ RSpec.describe PawnStartComputer do
 
           expect(result).to eq(true)
         end
+      end # context "when pawn is white"
+
+      context "when pawn is black" do
+        it "returns the square one above the target square" do
+          set_ranks(board, (2..7).to_a, pawn, black)
+
+          result = black_singles.all? do |move|
+            computer.compute_start(move[:move], board) == move[:exp_start]
+          end
+
+          expect(result).to eq(true)
+        end
       end
-    end
+    end # context "when the move is a legal single"
   end # describe '#compute_start'
 end

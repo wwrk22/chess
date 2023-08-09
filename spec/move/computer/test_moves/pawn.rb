@@ -20,8 +20,15 @@ module TestMoves
       end.flatten
     end
 
-    def black_singles
-      
+    def black_singles 
+      (1..6).to_a.map do |rank|
+        files.map do |file|
+          move = Move.new(file + rank.to_s, black)
+          move.target = { file: file, rank: rank }
+          move.piece = ChessPiece.new(pawn, black)
+          { move: move, exp_start: { file: file, rank: rank + 1 } }
+        end
+      end.flatten
     end
   end
 end
