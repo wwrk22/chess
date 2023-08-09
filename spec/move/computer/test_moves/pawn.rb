@@ -35,5 +35,16 @@ module TestMoves
         end
       end.flatten
     end
+
+    def captures(rank, color, step)
+      files.map do |file|
+        move = Move.new(file + rank.to_s, color, true)
+        move.target = { file: file, rank: rank }
+        move.piece = ChessPiece.new(pawn, color)
+        start_file = (file == 'h') ? 'g' : (file.ord + 1).chr
+        move.start_coordinate = start_file
+        { move: move, exp_start: { file: start_file, rank: rank + step } }
+      end
+    end
   end
 end

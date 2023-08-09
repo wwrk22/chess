@@ -1,8 +1,9 @@
 class Move
 
-  def initialize(str, color)
+  def initialize(str, color, capture = false)
     @str = str
     @color = color
+    @capture = capture
   end
 
   # The raw string format of the move given by player.
