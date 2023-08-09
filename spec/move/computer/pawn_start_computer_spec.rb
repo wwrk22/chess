@@ -159,10 +159,23 @@ RSpec.describe PawnStartComputer do
             expect(result).to eq(true)
           end
         end
+
+        context "when the move is en passant" do
+        end
       end # context "when the pawn is white"
 
       context "when the pawn is black" do
         context "when the move is not en passant" do
+          it "computes the correct start" do
+            set_ranks(board, [3], pawn, white)
+            set_ranks(board, [4], pawn, black)
+
+            result = captures(3, black, 1).all? do |move|
+              computer.compute_start(move[:move], board) == move[:exp_start]
+            end
+
+            expect(result).to eq(true)
+          end
         end
 
         context "when the move is en passant" do

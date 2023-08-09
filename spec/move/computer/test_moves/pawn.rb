@@ -43,6 +43,7 @@ module TestMoves
         move.piece = ChessPiece.new(pawn, color)
         start_file = (file == 'h') ? 'g' : (file.ord + 1).chr
         move.start_coordinate = start_file
+        move.str = move.start_coordinate + 'x' + file + rank.to_s
         { move: move, exp_start: { file: start_file, rank: rank + step } }
       end
     end
