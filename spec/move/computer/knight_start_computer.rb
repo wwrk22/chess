@@ -9,12 +9,12 @@ RSpec.configure do |cfg|
 end
 
 RSpec.describe KnightStartComputer do
-  describe '#compute_move' do
+  describe '#compute_start' do
 
     let!(:move) { instance_double(Move) }
     let!(:board) { instance_double(Board) }
 
-  end # describe '#compute_move'
+  end # describe '#compute_start'
 
 
   describe '#all_possible_starts' do

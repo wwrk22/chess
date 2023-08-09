@@ -8,7 +8,7 @@ class KnightStartComputer
   include BoardSpecs
   include KnightSpecs
   
-  def compute_move(move, board)
+  def compute_start(move, board)
     starts = all_possible_starts(move.target)
     find_knight(move.piece, board, starts)
   end

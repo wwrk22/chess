@@ -12,7 +12,7 @@ end
 
 RSpec.describe RookStartComputer do
 
-  describe '#compute_move' do
+  describe '#compute_start' do
     subject(:computer) { described_class.new }
 
     let!(:move) { instance_double(Move) }
@@ -24,7 +24,7 @@ RSpec.describe RookStartComputer do
 
         check_multiple_paths_args = [move, board, RookSpecs::DIRECTIONS]
         expect(computer).to receive(:check_multiple_paths).with(*check_multiple_paths_args)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
 
@@ -33,10 +33,10 @@ RSpec.describe RookStartComputer do
         allow(move).to receive(:start_coordinate).and_return 'a'
 
         expect(computer).to receive(:compute_with_start_coordinate).with(move, board)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
-  end # describe '#compute_move'
+  end # describe '#compute_start'
 
 
   describe '#start_off_target_axes' do

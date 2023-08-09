@@ -5,7 +5,7 @@ require './lib/board/board'
 
 
 RSpec.describe QueenStartComputer do
-  describe '#compute_move' do
+  describe '#compute_start' do
     subject(:computer) { described_class.new }
 
     let!(:move) { instance_double(Move) }
@@ -16,7 +16,7 @@ RSpec.describe QueenStartComputer do
         allow(move).to receive(:start_coordinate).and_return 'a'
 
         expect(computer).to receive(:compute_with_start_coordinate)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
 
@@ -25,10 +25,10 @@ RSpec.describe QueenStartComputer do
         allow(move).to receive(:start_coordinate).and_return nil
 
         expect(computer).to receive(:check_multiple_paths)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
-  end # describe '#compute_move'
+  end # describe '#compute_start'
 
 
   describe '#compute_start_ranks' do

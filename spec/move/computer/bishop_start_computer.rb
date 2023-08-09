@@ -10,7 +10,7 @@ RSpec.configure do |cfg|
 end
 
 RSpec.describe BishopStartComputer do
-  describe '#compute_move' do
+  describe '#compute_start' do
     subject(:computer) { described_class.new }
 
     let!(:move) { instance_double(Move) }
@@ -21,7 +21,7 @@ RSpec.describe BishopStartComputer do
         allow(move).to receive(:start_coordinate).and_return 'a'
 
         expect(computer).to receive(:compute_with_start_coordinate)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
 
@@ -30,10 +30,10 @@ RSpec.describe BishopStartComputer do
         allow(move).to receive(:start_coordinate).and_return nil
 
         expect(computer).to receive(:check_multiple_paths)
-        computer.compute_move(move, board)
+        computer.compute_start(move, board)
       end
     end
-  end # describe '#compute_move'
+  end # describe '#compute_start'
 
   
   describe '#compute_with_file' do
