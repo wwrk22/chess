@@ -10,14 +10,22 @@ module TestMoves
     include PieceSpecs
 
     def white_singles
-      singles((3..8).to_a, white, -1)
+      moves((3..8).to_a, white, -1)
     end
 
     def black_singles 
-      singles((6..1).to_a, black, 1)
+      moves((6..1).to_a, black, 1)
     end
 
-    def singles(ranks, color, step)
+    def white_doubles
+      moves([4], white, -2)
+    end
+
+    def black_doubles
+      moves([5], black, 2)
+    end
+
+    def moves(ranks, color, step)
       ranks.map do |rank|
         files.map do |file|
           move = Move.new(file + rank.to_s, color)
