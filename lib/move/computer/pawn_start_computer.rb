@@ -25,7 +25,20 @@ class PawnStartComputer < StartComputer
            2 : 1
   end
 
+  def compute_en_passant(move, board)
+    target_empty = board.at(move.target).nil?
+    opponent_pawn = board.at(move.ep_sq)
+    opponent_pawn_exists = (opponent_pawn.type == pawn) && (opponent_pawn.color != move.piece.color)
+
+    step = (move.piece.color == white) ? -1 : 1
+    start_sq = { file: move.start_coordinate, rank: move.target[:rank] + step }
+    if check_start(start_sq, move.piece, board) && opponent_pawn_exists && target_empty
+      return start_sq
+    end
+  end
+
   def compute_start(move, board)
+    return compute_en_passant(move, board) if move.ep
     return compute_capture(move, board) if move.capture
 
     rank_diff = (move.piece.color == white) ? -1 : 1
