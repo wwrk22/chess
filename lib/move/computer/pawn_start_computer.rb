@@ -25,7 +25,9 @@ class PawnStartComputer < StartComputer
            2 : 1
   end
 
-  def compute_move(move, board)
+  def compute_start(move, board)
+    return compute_capture(move, board) if move.capture
+
     rank_diff = (move.piece.color == white) ? -1 : 1
 
     first_square = check_first(move, board, rank_diff)
@@ -47,7 +49,8 @@ class PawnStartComputer < StartComputer
   end
 
   def check_double(move, board, rank_diff)
-    board.at(move.target[:file], move.target[:rank] + rank_diff).nil? &&
+    first_square = { file: move.target[:file], rank: move.target[:rank] + rank_diff }
+    board.at(first_square).nil? &&
     ((move.piece.color == white && move.target[:rank] == 4) ||
     (move.piece.color == black && move.target[:rank] == 5))
   end
