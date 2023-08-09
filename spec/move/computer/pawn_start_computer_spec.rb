@@ -1,4 +1,5 @@
 require 'support/matchers/chess_piece'
+require 'support/board/board_setter'
 require './lib/board/board'
 require './lib/move/computer/pawn_start_computer'
 require './lib/piece/chess_piece'
@@ -10,6 +11,7 @@ require_relative './test_moves/pawn'
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
   cfg.include TestMoves::Pawn
+  cfg.include BoardSetter
 end
 
 RSpec.describe PawnStartComputer do
@@ -93,14 +95,7 @@ RSpec.describe PawnStartComputer do
       context "when pawn is white" do
         it "returns the square one below the target square" do
           board = Board.new
-
-          (2..7).to_a.each do |rank|
-            files.each do |file|
-              square = { file: file, rank: rank }
-
-              board.set(square, ChessPiece.new(pawn, white))
-            end
-          end
+          set_ranks(board, (2..7).to_a, pawn, white) 
 
           result = white_singles.all? do |move|
             computer.compute_start(move[:move], board) == move[:exp_start]
