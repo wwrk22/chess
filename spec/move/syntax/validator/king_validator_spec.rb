@@ -1,10 +1,12 @@
 require 'support/matchers/chess_piece'
 require './lib/move/syntax/validator/king_validator'
 require './lib/piece/piece_specs'
+require_relative './move_samples/king'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include MoveSamples::King
 end
 
 RSpec.describe KingValidator do
@@ -81,5 +83,27 @@ RSpec.describe KingValidator do
         expect(validator.validate(move_str, black)).to eq_piece(black_king)
       end
     end
+
+    context "when validating all possible moves" do
+      context "when validating only legal moves" do
+        it "returns a ChessPiece for every move" do
+          result = legal_king_moves.none? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          expect(result).to eq(true)
+        end
+      end
+
+      context "when validating only illegal moves" do
+        it "returns nil for every move" do
+          result = illegal_king_moves.all? do |move|
+            validator.validate(move, white).nil?
+          end
+
+          expect(result).to eq(true)
+        end
+      end
+    end # context "when validating all possible moves"
   end # describe '#validate'
 end
