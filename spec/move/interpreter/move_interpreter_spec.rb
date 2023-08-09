@@ -2,6 +2,7 @@ require './lib/move/interpreter/move_interpreter'
 require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
 require './lib/move/move'
+require 'move_samples'
 
 
 RSpec.configure do |cfg|
@@ -25,6 +26,18 @@ RSpec.describe MoveInterpreter do
         move = 'Nba3'
         target = interpreter.parse_target(move)
         expect(target).to eq({ file: 'a', rank: 3 })
+      end
+    end
+
+    context "when parsing all possible move types" do
+      it "returns the correct target square" do
+        expected = { file: 'a', rank: 3 }
+
+        result = MoveSamples::MOVES.all? do |move|
+          interpreter.parse_target(move) == expected
+        end
+
+        expect(result).to eq(true)
       end
     end
   end # describe '#parse_target'
