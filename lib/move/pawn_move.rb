@@ -3,6 +3,9 @@ require_relative './move'
 
 class PawnMove < Move
   
+  def init(str, color, capture = false)
+    super(str, color, capture)
+  end
   # Indicate whether or not the capture is an en passant.
   attr_accessor :ep
 

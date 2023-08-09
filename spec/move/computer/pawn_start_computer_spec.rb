@@ -161,6 +161,23 @@ RSpec.describe PawnStartComputer do
         end
 
         context "when the move is en passant" do
+          it "computes the correct start" do
+            target_files = ['a', 'c', 'e', 'g']
+
+            target_files.each do |file|
+              board.set({ file: file, rank: 5 }, ChessPiece.new(pawn, black))
+            end
+
+            ['b', 'd', 'f', 'h'].each do |file|
+              board.set({ file: file, rank: 5 }, ChessPiece.new(pawn, white))
+            end
+
+            result = en_passants(target_files, white).all? do |move|
+              computer.compute_start(move[:move], board) == move[:exp_start]
+            end
+
+            expect(result).to eq(true)
+          end
         end
       end # context "when the pawn is white"
 
