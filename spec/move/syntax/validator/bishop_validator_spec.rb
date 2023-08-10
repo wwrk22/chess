@@ -8,7 +8,7 @@ require_relative './move_samples/bishop'
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include MoveSamples::Bishop
+  cfg.include TestMoves::Bishop
 end
 
 RSpec.describe BishopValidator do
@@ -125,7 +125,7 @@ RSpec.describe BishopValidator do
 
     context "when validating all possible moves" do
       context "when moves are legal" do
-        it "returns a ChessPiece for every move" do
+        it "returns a Bishop object for every move" do
           result = legal_bishop_moves.none? do |move|
             validator.validate(move, white).nil?
           end
