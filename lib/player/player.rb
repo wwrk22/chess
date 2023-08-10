@@ -1,6 +1,8 @@
 require './lib/error/color_unknown_error'
 require './lib/move/syntax/validator/validator'
 require './lib/piece/piece_specs'
+require './lib/move/move'
+require './lib/move/pawn_move'
 
 
 class Player
@@ -19,6 +21,9 @@ class Player
 
   def prompt_move
     move_str = gets.chomp
-    @validator.validate(move_str, @color)
+    piece = @validator.validate(move_str, @color)
+
+    return PawnMove.new(move_str, @color) if piece.type == pawn
+    return Move.new(move_str, @color)
   end
 end
