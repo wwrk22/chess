@@ -5,7 +5,7 @@ require_relative './move_samples/knight'
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include MoveSamples::Knight
+  cfg.include TestMoves::Knight
 end
 
 RSpec.describe KnightValidator do

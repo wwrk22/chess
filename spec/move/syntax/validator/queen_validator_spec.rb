@@ -5,7 +5,7 @@ require_relative './move_samples/queen'
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include MoveSamples::Queen
+  cfg.include TestMoves::Queen
 end
 
 RSpec.describe QueenValidator do

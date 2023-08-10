@@ -5,7 +5,7 @@ require_relative './move_samples/king'
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include MoveSamples::King
+  cfg.include TestMoves::King
 end
 
 RSpec.describe KingValidator do

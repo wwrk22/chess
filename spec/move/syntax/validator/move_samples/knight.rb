@@ -2,7 +2,7 @@ require './lib/board/board_specs'
 require './lib/piece/piece_specs'
 
 
-module MoveSamples
+module TestMoves
   module Knight
     include BoardSpecs
     include PieceSpecs
@@ -18,19 +18,19 @@ module MoveSamples
     end
 
     def legal_knight_moves
-      a = basic_moves
+      a = knight_basic_moves
       b = knight_moves_with_file(a, true, &coord_diff_check)
       c = knight_moves_with_rank(a, true, &coord_diff_check)
       a + b + c
     end # legal_knight_moves
 
     def illegal_knight_moves
-      a = knight_moves_with_file(basic_moves, false, &coord_diff_check)
-      b = knight_moves_with_rank(basic_moves, false, &coord_diff_check)
+      a = knight_moves_with_file(knight_basic_moves, false, &coord_diff_check)
+      b = knight_moves_with_rank(knight_basic_moves, false, &coord_diff_check)
       a + b
     end
 
-    def basic_moves
+    def knight_basic_moves
       files.map do |file|
         ranks.reduce([]) do |moves, rank|
           moves << knight + file + rank.to_s

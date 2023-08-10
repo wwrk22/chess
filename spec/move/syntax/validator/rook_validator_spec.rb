@@ -7,7 +7,7 @@ require_relative './move_samples/rook'
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include MoveSamples::Rook
+  cfg.include TestMoves::Rook
 end
 
 RSpec.describe RookValidator do
