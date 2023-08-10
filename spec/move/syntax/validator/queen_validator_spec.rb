@@ -1,6 +1,5 @@
 require 'support/matchers/chess_piece'
 require './lib/move/syntax/validator/queen_validator'
-require './lib/piece/piece_specs'
 require_relative './move_samples/queen'
 
 
@@ -13,8 +12,8 @@ RSpec.describe QueenValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
-    let(:white_queen) { ChessPiece.new(queen, white) }
-    let(:black_queen) { ChessPiece.new(queen, black) }
+    let(:white_queen) { Queen.new(white) }
+    let(:black_queen) { Queen.new(black) }
 
     context "when move is not a capture" do
       context "when starting file or rank is unspecified" do

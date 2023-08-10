@@ -1,6 +1,7 @@
 require 'spec_helper'
 require './lib/move/syntax/validator/bishop_validator'
 require './lib/piece/piece_specs'
+require './lib/piece/bishop'
 require './spec/support/matchers/chess_piece'
 require_relative './move_samples/bishop'
 
@@ -15,8 +16,8 @@ RSpec.describe BishopValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
-    let(:white_bishop) { ChessPiece.new(bishop, white) }
-    let(:black_bishop) { ChessPiece.new(bishop, black) }
+    let(:white_bishop) { Bishop.new(white) }
+    let(:black_bishop) { Bishop.new(black) }
 
     context "when move is not a capture" do    
       context "when starting file or rank is unspecified" do

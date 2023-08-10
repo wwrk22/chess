@@ -1,6 +1,5 @@
 require 'support/matchers/chess_piece'
 require './lib/move/syntax/validator/king_validator'
-require './lib/piece/piece_specs'
 require_relative './move_samples/king'
 
 
@@ -13,8 +12,8 @@ RSpec.describe KingValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
-    let(:white_king) { ChessPiece.new(king, white) }
-    let(:black_king) { ChessPiece.new(king, black) }
+    let(:white_king) { King.new(white) }
+    let(:black_king) { King.new(black) }
 
     context "when move is not a capture" do
       context "when target square has valid file and rank" do
