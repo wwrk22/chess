@@ -40,7 +40,7 @@ class Board
   ##
   # Output a visual representation of the board to $stdout.
   def to_s
-    @ranks.each_with_index.reduce("") do |board, (rank, rank_index)|
+    @ranks.each_with_index.reverse_each.reduce("") do |board, (rank, rank_index)|
       rank.each_with_index.reduce(board) do |line, (square, file_index)|
         board += format_square_or_piece(square, file_index, rank_index)
       end

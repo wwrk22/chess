@@ -1,5 +1,5 @@
 require_relative './chess_piece'
-require_relative './piece/piece_specs'
+require_relative './piece_specs'
 
 
 class Knight < ChessPiece
