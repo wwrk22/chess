@@ -9,7 +9,7 @@ class Board
   include PieceSpecs
   
   def initialize
-    @ranks = Array.new(8) { |_| Array.new(8, nil) }
+    clear
   end
 
   ##
@@ -62,6 +62,10 @@ class Board
   # formatted piece.
   def format_piece(piece, file_index, rank_index)
     file_index == 7 ? (piece.unicode + "\n") : piece.unicode + " "
+  end
+
+  def clear
+    @ranks = Array.new(8) { |_| Array.new(8, nil) }
   end
 
 
