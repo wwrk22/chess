@@ -10,9 +10,10 @@ class PawnValidator
   # Return the ChessPiece object representing the moving pawn if move has valid
   # syntax. Otherwise, return nil.
   def validate(move_str, color)
-    pattern = (color == white) ?
-      wh_pawn_move_syntax : bl_pawn_move_syntax
-
-    ChessPiece.new(pawn, color) if move_str =~ pattern
+    if color == white
+      return ChessPiece.new(pawn, color) if move_str =~ wh_pawn_move_syntax
+    else
+      return ChessPiece.new(pawn, color) if move_str =~ bl_pawn_move_syntax
+    end
   end
 end
