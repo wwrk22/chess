@@ -2,7 +2,7 @@ require_relative './chess_piece'
 require_relative './piece_specs'
 
 
-class Queen
+class Queen < ChessPiece
  include PieceSpecs
 
   UNICODE_WH = "\u2655"
