@@ -1,5 +1,4 @@
 require './lib/move/syntax/validator/knight_validator'
-require './lib/piece/piece_specs'
 require './lib/error/color_unknown_error'
 require_relative './move_samples/knight'
 
@@ -14,8 +13,8 @@ RSpec.describe KnightValidator do
   describe '#validate' do
     subject(:validator) { described_class.new }
 
-    let(:white_knight) { ChessPiece.new(knight, white) }
-    let(:black_knight) { ChessPiece.new(knight, black) }
+    let(:white_knight) { Knight.new(white) }
+    let(:black_knight) { Knight.new(black) }
 
     matcher :eq_piece do |other_piece|
       match do |piece|

@@ -1,7 +1,7 @@
 require './lib/move/syntax/validator/rook_validator'
 require './lib/piece/piece_specs'
+require './lib/piece/rook'
 require './lib/error/color_unknown_error'
-require './lib/piece/chess_piece'
 require_relative './move_samples/rook'
 
 
@@ -13,8 +13,8 @@ end
 RSpec.describe RookValidator do
   subject(:validator) { described_class.new }
 
-  let(:black_rook) { ChessPiece.new(rook, black) }
-  let(:white_rook) { ChessPiece.new(rook, white) }
+  let(:black_rook) { Rook.new(black) }
+  let(:white_rook) { Rook.new(white) }
 
   matcher :eq_piece do |other_piece|
     match do |piece|
