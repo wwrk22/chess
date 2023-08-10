@@ -2,15 +2,14 @@ require 'support/matchers/chess_piece'
 require 'support/board/board_setter'
 require './lib/board/board'
 require './lib/move/computer/pawn_start_computer'
-require './lib/piece/chess_piece'
 require './lib/piece/piece_specs'
-require './lib/move/move'
+require './lib/move/pawn_move'
 require_relative './test_moves/pawn'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
-  cfg.include TestMoves::Pawn
+  cfg.include TestPawnMoves
   cfg.include BoardSetter
 end
 
@@ -22,7 +21,7 @@ RSpec.describe PawnStartComputer do
       it "returns a square whose rank is one less than the target" do
         target_square = { file: 'a', rank: 3 }
         expected_start = { file: 'b', rank: 2 }
-        move = instance_double(Move)
+        move = instance_double(PawnMove)
         allow(move).to receive(:target).and_return(target_square)
 
         computed_start = computer.compute_capture_start(white, expected_start[:file], target_square)
@@ -34,7 +33,7 @@ RSpec.describe PawnStartComputer do
       it "returns a square whose rank is one more than the target" do
         target_square = { file: 'a', rank: 6 }
         expected_start = { file: 'b', rank: 7 }
-        move = instance_double(Move)
+        move = instance_double(PawnMove)
         allow(move).to receive(:target).and_return(target_square)
 
         computed_start = computer.compute_capture_start(black, expected_start[:file], target_square)
@@ -46,9 +45,9 @@ RSpec.describe PawnStartComputer do
 
   describe '#compute_capture' do
     it "returns a boolean to indicate whether the starting square could be determined" do
-      move = instance_double(Move)
+      move = instance_double(PawnMove)
       board = instance_double(Board)
-      white_pawn = instance_double(ChessPiece)
+      white_pawn = instance_double(Pawn)
       expected_start = { file: 'b', rank: 2 }
 
       allow(white_pawn).to receive(:type).and_return(pawn)
@@ -165,11 +164,11 @@ RSpec.describe PawnStartComputer do
             target_files = ['a', 'c', 'e', 'g']
 
             target_files.each do |file|
-              board.set({ file: file, rank: 5 }, ChessPiece.new(pawn, black))
+              board.set({ file: file, rank: 5 }, Pawn.new(black))
             end
 
             ['b', 'd', 'f', 'h'].each do |file|
-              board.set({ file: file, rank: 5 }, ChessPiece.new(pawn, white))
+              board.set({ file: file, rank: 5 }, Pawn.new(white))
             end
 
             result = en_passants(target_files, white).all? do |move|

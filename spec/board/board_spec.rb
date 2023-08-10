@@ -104,7 +104,7 @@ RSpec.describe Board do
     it "returns the unicode string of the given piece" do
       pawn = Pawn.new(white)
       formatted = board.format_piece(pawn, 0, 0)
-      expect(formatted).to eq(Pawn.unicode_wh)
+      expect(formatted).to eq(Pawn.unicode_wh + ' ')
     end
 
     context "when the piece is on file h" do
