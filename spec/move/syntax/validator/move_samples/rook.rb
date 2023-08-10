@@ -2,7 +2,7 @@ require './lib/board/board_specs'
 require './lib/piece/piece_specs'
 
 
-module MoveSamples
+module TestMoves
   module Rook
     include BoardSpecs
     include PieceSpecs
