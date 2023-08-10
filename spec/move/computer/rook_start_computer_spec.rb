@@ -1,13 +1,15 @@
 require './lib/move/computer/rook_start_computer'
-require './lib/piece/chess_piece'
+require './lib/piece/rook'
 require './lib/piece/rook_specs'
 require './lib/piece/piece_specs'
 require './lib/move/move'
 require './lib/board/board'
+require_relative './test_moves/rook'
 
 
 RSpec.configure do |cfg|
   cfg.include PieceSpecs
+  cfg.include TestRookMoves
 end
 
 RSpec.describe RookStartComputer do
@@ -36,6 +38,21 @@ RSpec.describe RookStartComputer do
         computer.compute_start(move, board)
       end
     end
+
+    context "when computing the start for all possible moves" do
+      it "returns the correct starting square for all" do
+        b = Board.new
+
+        result = legal_rook_moves.all? do |move|
+          b.clear
+          b.set(move[:exp_start], Rook.new(white))
+
+          computer.compute_start(move[:move], b) == move[:exp_start]
+        end
+
+        expect(result).to eq(true)
+      end
+    end # context "when computing the start for all possible moves"
   end # describe '#compute_start'
 
 
@@ -44,7 +61,7 @@ RSpec.describe RookStartComputer do
 
     let!(:move) { instance_double(Move) }
     let!(:board) { instance_double(Board) }
-    let!(:moving_rook) { ChessPiece.new(rook, white) }
+    let!(:moving_rook) { Rook.new(white) }
     let!(:target_square) { { file: 'd', rank: 4 } }
 
     before do
@@ -115,7 +132,7 @@ RSpec.describe RookStartComputer do
     let!(:move) { instance_double(Move) }
 
     before do
-      allow(move).to receive(:piece).and_return ChessPiece.new(rook, white)
+      allow(move).to receive(:piece).and_return Rook.new(white)
       allow(move).to receive(:target).and_return({ file: 'a', rank: 4 })
     end
 
