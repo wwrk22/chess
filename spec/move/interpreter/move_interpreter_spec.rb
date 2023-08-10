@@ -1,8 +1,11 @@
+require './lib/board/board'
 require './lib/board/board_specs'
 require './lib/move/interpreter/move_interpreter'
 require './lib/piece/chess_piece'
+require './lib/piece/pawn'
 require './lib/piece/piece_specs'
 require './lib/move/move'
+require './lib/move/pawn_move'
 require 'move_samples'
 require_relative 'test_moves'
 
@@ -13,9 +16,9 @@ RSpec.configure do |cfg|
 end
 
 RSpec.describe MoveInterpreter do
-  describe '#parse_target' do
-    subject(:interpreter) { described_class.new }
+  subject(:interpreter) { described_class.new }
       
+  describe '#parse_target' do
     context "when move is a check or checkmate" do
       it "returns true" do
         move = 'bxa3+'
@@ -46,8 +49,6 @@ RSpec.describe MoveInterpreter do
   end # describe '#parse_target'
 
   describe '#capture?' do
-    subject(:interpreter) { described_class.new }
-      
     context "when move is a capture" do
       context "when move is a check or checkmate" do
         it "returns true" do
@@ -89,8 +90,6 @@ RSpec.describe MoveInterpreter do
   end # describe '#capture?'
 
   describe '#parse_start_coordinate' do
-    subject(:interpreter) { described_class.new }
-      
     context "when move is for a pawn" do
       let!(:move) { instance_double(Move) }
 
@@ -163,4 +162,123 @@ RSpec.describe MoveInterpreter do
       end # context "when testing all move types except castling"
     end # context "when move is for a piece other than pawn and king"
   end # describe '#parse_starting_square'
+
+
+  describe '#determine_ep' do
+    context "when white is making an en passant move" do
+      # The en passant move that white is making.
+      let!(:move) { PawnMove.new('bxa6', white, true) }
+      # The pawn double move that black is making.
+      let!(:opp_last_move) { PawnMove.new('a5', black) }
+      let!(:board) { Board.new }
+
+      before do
+        move.target = { file: 'a', rank: 6 }
+        move.start_coordinate = 'b'
+        move.piece = Pawn.new(white)
+
+        opp_last_move.target = { file: 'a', rank: 5 }
+        opp_last_move.piece = Pawn.new(black)
+
+        board.set({ file: 'a', rank: 5 }, opp_last_move.piece)
+      end
+
+      context "when black's last move was a pawn double on the same file white is capturing" do
+        it "return true" do
+          # Black moved two squares which allows white to do an en passant.
+          opp_last_move.start = { file: 'a', rank: 7 }
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: true, ep_sq: { file: 'a', rank: 5 } }
+
+          expect(result).to eq(expected)
+        end
+      end
+
+      context "when black's last move was not a pawn double" do
+        it "returns false" do
+          opp_last_move.start = { file: 'a', rank: 7 }
+          opp_last_move.target = { file: 'a', rank: 6 }
+          
+          board.set({ file: 'a', rank: 5 })
+          board.set(opp_last_move.target, opp_last_move.piece)
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: false, ep_sq: nil }
+
+          expect(result).to eq(expected)
+        end
+      end
+
+      context "when black's last move was a pawn single to rank five of the same file" do
+        it "returns false" do
+          # Black moved one square which does not allow white to do an en passant.
+          opp_last_move.start = { file: 'a', rank: 6 }
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: false, ep_sq: nil }
+
+          expect(result).to eq(expected)
+        end
+      end
+    end # context "when white is making an en passant move"
+
+    context "when black is making an en passant move" do
+      # The en passant move that white is making.
+      let!(:move) { PawnMove.new('bxa3', black, true) }
+      # The pawn double move that black is making.
+      let!(:opp_last_move) { PawnMove.new('a4', white) }
+      let!(:board) { Board.new }
+
+      before do
+        move.target = { file: 'a', rank: 3 }
+        move.start_coordinate = 'b'
+        move.piece = Pawn.new(black)
+
+        opp_last_move.target = { file: 'a', rank: 4 }
+        opp_last_move.piece = Pawn.new(white)
+
+        board.set({ file: 'a', rank: 4 }, opp_last_move.piece)
+      end
+
+      context "when white's last move was a pawn double on the same file black is capturing" do
+        it "return true" do
+          # White moved two squares which allows black to do an en passant.
+          opp_last_move.start = { file: 'a', rank: 2 }
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: true, ep_sq: { file: 'a', rank: 4 } }
+
+          expect(result).to eq(expected)
+        end
+      end
+
+      context "when white's last move was not a pawn double" do
+        it "returns false" do
+          opp_last_move.start = { file: 'a', rank: 2 }
+          opp_last_move.target = { file: 'a', rank: 3 }
+
+          board.set({ file: 'a', rank: 4 })
+          board.set(opp_last_move.target, opp_last_move.piece)
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: false, ep_sq: nil }
+
+          expect(result).to eq(expected)
+        end
+      end
+
+      context "when white's last move was a pawn single to rank four of the same file" do
+        it "returns false" do
+          # White moved one square which does not allow black to do an en passant.
+          opp_last_move.start = { file: 'a', rank: 3 }
+
+          result = interpreter.determine_ep(move, opp_last_move, board)
+          expected = { ep: false, ep_sq: nil }
+
+          expect(result).to eq(expected)
+        end
+      end
+    end # context "when black is making an en passant move"
+  end # describe '#determine_ep'
 end

@@ -41,7 +41,32 @@ class MoveInterpreter
   end
 
 
+  def determine_ep(move, opp_last_move, board)
+    ep = maybe_ep?(move, board) && double?(opp_last_move, move.target[:file])
+    step = (move.piece.color == white) ? -1 : 1
+
+    ep_sq = { file: move.target[:file], rank: move.target[:rank] + step }
+    ep_sq = nil if not ep
+
+    { ep: ep, ep_sq: ep_sq }
+  end
+
+
   private
+
+  def maybe_ep?(move, board)
+    move.piece.type == pawn &&
+    move.capture && board.at(move.target).nil?
+    (move.piece.color == white && move.target[:rank] == 6) ||
+    (move.piece.color == black && move.target[:rank] == 3)
+  end
+
+  def double?(move, file)
+    pawn_move = move.piece.type == pawn
+    double_move = (move.target[:rank] - move.start[:rank]).abs == 2
+    same_file = move.target[:file] == file
+    pawn_move && double_move && same_file
+  end
 
   def pawn_start_coordinate(move)
     if move.capture
