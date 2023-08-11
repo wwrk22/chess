@@ -1,6 +1,5 @@
 require './lib/board/board_specs'
 require './lib/move/move'
-require './lib/move/pawn_move'
 require './lib/piece/chess_piece'
 require './lib/piece/pawn'
 
@@ -28,7 +27,7 @@ module TestPawnMoves
   def moves(ranks, color, step)
     ranks.map do |rank|
       files.map do |file|
-        move = PawnMove.new(file + rank.to_s, color)
+        move = Move.new(file + rank.to_s, color)
         move.target = { file: file, rank: rank }
         move.piece = Pawn.new(color)
         { move: move, exp_start: { file: file, rank: rank + step } }
@@ -38,7 +37,7 @@ module TestPawnMoves
 
   def captures(rank, color, step)
     files.map do |file|
-      move = PawnMove.new(file + rank.to_s, color, true)
+      move = Move.new(file + rank.to_s, color, true)
       move.target = { file: file, rank: rank }
       move.piece = Pawn.new(color)
       start_file = (file == 'h') ? 'g' : (file.ord + 1).chr
@@ -52,7 +51,7 @@ module TestPawnMoves
     step, rank = (color == white) ? [-1, 6] : [1, 3]
 
     files.map do |file|
-      move = PawnMove.new((file.ord + 1).chr + 'x'+ file + '6', color, true)
+      move = Move.new((file.ord + 1).chr + 'x'+ file + '6', color, true)
       move.ep = true
       move.ep_sq = { file: file, rank: rank + step }
       move.target = { file: file, rank: rank }
