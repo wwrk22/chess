@@ -25,4 +25,10 @@ class Move
 
   # Indicate whether or not the move is a capture.
   attr_accessor :capture
+
+  # Indicate whether or not the capture is an en passant.
+  attr_accessor :ep
+
+  # The square of the opponent's pawn during an en passant.
+  attr_accessor :ep_sq
 end

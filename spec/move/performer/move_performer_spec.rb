@@ -1,8 +1,11 @@
 require './lib/move/performer/move_performer'
 require './lib/move/move'
+
 require './lib/board/board'
-require './lib/piece/chess_piece'
+
 require './lib/piece/piece_specs'
+require './lib/piece/pawn'
+require './lib/piece/rook'
 
 
 RSpec.configure do |cfg|
@@ -10,67 +13,116 @@ RSpec.configure do |cfg|
 end
 
 RSpec.describe MovePerformer do  
-  let!(:move) { instance_double(Move) }
-  let!(:board) { instance_double(Board) }
-
-  before do
-    allow(move).to receive(:piece).and_return(ChessPiece.new(pawn, white))
-  end
+  subject(:performer) { described_class.new }
 
   describe '#do_move' do
-    subject(:performer) { described_class.new }
+    context "when move is not a capture" do
+      context "when the move can be made" do
+        it "returns true" do
+          move = Move.new('R1a5', white)
+          move.target = { file: 'a', rank: 5 }
+          move.start_coordinate = 1
+          move.start = { file: 'a', rank: 1 }
+          move.piece = Rook.new(white)
 
-    before do
-      allow(move).to receive(:target).and_return({ file: 'a', rank: 3 })
-      allow(move).to receive(:start).and_return({ file: 'a', rank: 2})
-    end
+          board = Board.new
+          board.set({ file: 'a', rank: 1 }, move.piece)
 
-    context "when the target square is empty" do
-      it "returns true" do
-        allow(board).to receive(:at).with(move.target).and_return nil
-        allow(board).to receive(:set)
+          result = performer.do_move(move, board)
+          expect(result).to eq(true)
+        end
+      end # context "when the move can be made"
 
-        result = performer.do_move(move, board)
-        expect(result).to be_truthy
-      end
-    end
+      context "when the move cannot be made" do
+        it "returns false" do
+          move = Move.new('Rad3', black)
+          move.target = { file: 'd', rank: 3 }
+          move.start_coordinate = 'a'
+          move.start = { file: 'a', rank: 3 }
+          move.piece = Rook.new(black)
 
-    context "when the target square is not empty" do
-      it "returns false" do
-        allow(board).to receive(:at).with(move.target).and_return ChessPiece.new(pawn, black)
-        allow(board).to receive(:set)
+          board = Board.new
+          board.set({ file: 'a', rank: 3 }, move.piece)
+          board.set({ file: 'd', rank: 3 }, Rook.new(white))
 
-        result = performer.do_move(move, board)
-        expect(result).to be_falsey
-      end
-    end
-  end # describe '#do_move'
+          result = performer.do_move(move, board)
+          expect(result).to eq(false)
+        end
+      end # context "when the move cannot be made"
+    end # context "when move is not a capture"
 
+    context "when move is a capture" do
+      context "when the move can be made" do
+        it "returns true" do
+          move = Move.new('R1a5', white, true)
+          move.target = { file: 'a', rank: 5 }
+          move.start_coordinate = 1
+          move.start = { file: 'a', rank: 1 }
+          move.piece = Rook.new(white)
 
-  describe '#do_capture' do
-    subject(:computer) { described_class.new }
+          board = Board.new
+          board.set({ file: 'a', rank: 1 }, move.piece)
+          board.set({ file: 'a', rank: 5 }, Rook.new(black))
 
-    before do
-      allow(move).to receive(:target).and_return({ file: 'b', rank: 3 })
-      allow(move).to receive(:start).and_return({ file: 'a', rank: 2 })
-    end
+          result = performer.do_move(move, board)
+          expect(result).to eq(true)
+        end
+      end # context "when the move can be made"
 
-    context "when the target square has an opponent piece" do
-      it "sends do_move and returns the result" do
-        allow(board).to receive(:at).with(move.target).and_return ChessPiece.new(pawn, black)
+      context "when the move cannot be made" do
+        it "returns true" do
+          move = Move.new('R8a3', black, true)
+          move.target = { file: 'a', rank: 3 }
+          move.start_coordinate = 8
+          move.start = { file: 'a', rank: 8 }
+          move.piece = Rook.new(black)
 
-        expect(computer).to receive(:do_move).with(move, board)
-        computer.do_capture(move, board)
-      end
-    end
+          board = Board.new
+          board.set({ file: 'a', rank: 8 }, move.piece)
 
-    context "when the target square does not have an opponent piece" do
-      it "does not send do_move, then returns false" do
-        allow(board).to receive(:at).with(move.target).and_return nil
+          result = performer.do_move(move, board)
+          expect(result).to eq(false)
+        end
+      end # context "when the move cannot be made"
 
-        expect(computer).not_to receive(:do_move)
-        computer.do_capture(move, board)
-      end
-    end
-  end # describe '#do_capture'
+      context "when the move is an en passant" do
+        context "when the move can be made" do
+          it "returns true" do
+            move = Move.new('bxa6', white, true)
+            move.ep = true
+            move.ep_sq = { file: 'a', rank: 5 }
+            move.target = { file: 'a', rank: 6 }
+            move.start_coordinate = 'b'
+            move.start = { file: 'b', rank: 5 }
+            move.piece = Pawn.new(white)
+
+            board = Board.new
+            board.set({ file: 'b', rank: 5 }, move.piece)
+            board.set({ file: 'a', rank: 5 }, Pawn.new(black))
+
+            result = performer.do_move(move, board)
+            expect(result).to eq(true)
+          end
+        end # context "when the move can be made"
+
+        context "when the move cannot be made" do
+          it "returns false" do
+            move = Move.new('bxa3', black, true)
+            move.ep = true
+            move.ep_sq = { file: 'a', rank: 4 }
+            move.target = { file: 'a', rank: 3 }
+            move.start_coordinate = 'b'
+            move.start = { file: 'b', rank: 4 }
+            move.piece = Pawn.new(black)
+
+            board = Board.new
+            board.set({ file: 'b', rank: 4 }, move.piece)
+
+            result = performer.do_move(move, board)
+            expect(result).to eq(false)
+          end
+        end # context "when the move cannot be made"
+      end # context "when the move is an en passant"
+    end # context "when move is a capture"
+  end
 end
