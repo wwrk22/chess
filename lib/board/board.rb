@@ -87,11 +87,3 @@ class Board
     raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 end
-
-
-require './lib/piece/pawn'
-
-board = Board.new
-board.set({ file: 'a', rank: 2 }, Pawn.new('WH'))
-board.set({ file: 'a', rank: 7 }, Pawn.new('BL'))
-puts board.to_s
