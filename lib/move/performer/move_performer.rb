@@ -10,34 +10,37 @@ class MovePerformer
 
     target = board.at(move.target)
 
-    if move.capture
-      if target && target.color != move.piece.color
-        board.set(move.target, move.piece)
-        board.set(move.start)
-        return true
-      end
-    else # not capture
-      if target.nil?
-        board.set(move.target, move.piece)
-        board.set(move.start)
-        return true
-      end
-    end
-
-    return false
+    return false if (not move.capture) && target
+    return false if move.capture && (not opponent_piece? target, move.piece.color)
+    update_board(move, board)
   end
 
   def do_ep_move(move, board)
-    target_square = board.at(move.target)
+    target = board.at(move.target)
     ep_pawn = board.at(move.ep_sq)
 
-    if target_square.nil? && ep_pawn && ep_pawn.type == pawn && ep_pawn.color != move.piece.color
-      board.set(move.target, move.piece)
-      board.set(move.start)
-      board.set(move.ep_sq)
-      return true
-    else
-      return false
-    end
+    return  ep_move?(target, ep_pawn, move.piece) ?
+      update_board(move, board) : false
+  end
+
+
+  private
+
+  def ep_move?(target, ep_pawn, moving_pawn)
+    target.nil? &&
+    ep_pawn &&
+    ep_pawn.type == pawn &&
+    ep_pawn.color != moving_pawn.color
+  end
+
+  def update_board(move, board)
+    board.set(move.target, move.piece)
+    board.set(move.start)
+    board.set(move.ep_sq) if move.ep
+    true
+  end
+
+  def opponent_piece?(piece, player_color)
+    piece && piece.color != player_color
   end
 end
