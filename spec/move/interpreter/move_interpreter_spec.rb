@@ -5,7 +5,6 @@ require './lib/piece/chess_piece'
 require './lib/piece/pawn'
 require './lib/piece/piece_specs'
 require './lib/move/move'
-require './lib/move/pawn_move'
 require 'move_samples'
 require_relative 'test_moves'
 
@@ -167,9 +166,9 @@ RSpec.describe MoveInterpreter do
   describe '#determine_ep' do
     context "when white is making an en passant move" do
       # The en passant move that white is making.
-      let!(:move) { PawnMove.new('bxa6', white, true) }
+      let!(:move) { Move.new('bxa6', white, true) }
       # The pawn double move that black is making.
-      let!(:opp_last_move) { PawnMove.new('a5', black) }
+      let!(:opp_last_move) { Move.new('a5', black) }
       let!(:board) { Board.new }
 
       before do
@@ -225,9 +224,9 @@ RSpec.describe MoveInterpreter do
 
     context "when black is making an en passant move" do
       # The en passant move that white is making.
-      let!(:move) { PawnMove.new('bxa3', black, true) }
+      let!(:move) { Move.new('bxa3', black, true) }
       # The pawn double move that black is making.
-      let!(:opp_last_move) { PawnMove.new('a4', white) }
+      let!(:opp_last_move) { Move.new('a4', white) }
       let!(:board) { Board.new }
 
       before do

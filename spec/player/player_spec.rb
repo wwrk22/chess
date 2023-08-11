@@ -24,12 +24,12 @@ RSpec.describe Player do
     end
 
     context "when the move is for a pawn" do
-      it "returns a PawnMove object with the `str` and `color` attributes set" do
+      it "returns a Move object with the `str` and `color` attributes set" do
         allow(player).to receive(:gets).and_return(valid_move)
 
         result = player.prompt_move
 
-        expect(result).to be_is_a(PawnMove)
+        expect(result).to be_is_a(Move)
       end
     end
 
