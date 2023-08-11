@@ -40,28 +40,11 @@ class Board
   ##
   # Output a visual representation of the board to $stdout.
   def to_s
-    @ranks.each_with_index.reverse_each.reduce("") do |board, (rank, rank_index)|
-      rank.each_with_index.reduce(board) do |line, (square, file_index)|
-        board += format_square_or_piece(square, file_index, rank_index)
-      end
+    @ranks.each_with_index.reverse_each.reduce("") do |board, (rank, rank_idx)|
+      board += blank_line(rank_idx)
+      board += piece_line(rank_idx, rank)
+      board += blank_line(rank_idx)
     end
-  end
-
-  ##
-  # Format the given square for printing. Return the unicode string of the
-  # formatted square.
-  def format_square(square, file_index, rank_index)
-    formatted = black_square
-    formatted = white_square if (file_index % 2) + (rank_index % 2) == 1
-    formatted += "\n" if file_index == 7
-    formatted
-  end
-
-  ##
-  # Format the given piece for printing. Return the unicode string of the
-  # formatted piece.
-  def format_piece(piece, file_index, rank_index)
-    file_index == 7 ? (piece.unicode + "\n") : piece.unicode + " "
   end
 
   def clear
@@ -71,12 +54,30 @@ class Board
 
   private
 
-  def format_square_or_piece(square, file_index, rank_index)
-    if square.nil?
-      return format_square(square, file_index, rank_index)
-    else
-      return format_piece(square, file_index, rank_index)
+  def piece_line(rank_idx, rank)
+    files.each_index.reduce("") do |line, file_idx|
+      sq = square(rank_idx, file_idx)
+      line += sq + mid_sq(rank, file_idx, sq) + sq
+      (file_idx == files.size - 1) ? (line += "\n") : line
     end
+  end
+
+  def mid_sq(rank, file_idx, sq)
+    piece = rank[file_idx]
+    (piece.nil?) ? sq : piece.unicode + ' '
+  end
+
+  def blank_line(rank_idx)
+    files.each_index.reduce("") do |line, file_idx|
+      sq = square(rank_idx, file_idx)
+      line += sq + sq + sq
+      (file_idx == files.size - 1) ? (line += "\n") : line
+    end
+  end
+
+  def square(rank_idx, file_idx)
+    sum = rank_idx + file_idx
+    (sum % 2 == 0) ? black_square : white_square
   end
 
   def check_coordinates_error(square)
@@ -86,3 +87,11 @@ class Board
     raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 end
+
+
+require './lib/piece/pawn'
+
+board = Board.new
+board.set({ file: 'a', rank: 2 }, Pawn.new('WH'))
+board.set({ file: 'a', rank: 7 }, Pawn.new('BL'))
+puts board.to_s
