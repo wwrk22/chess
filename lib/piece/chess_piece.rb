@@ -6,11 +6,13 @@ class ChessPiece
   include PieceSpecs
   
   attr_reader :type, :color
+  attr_accessor :made_first_move
 
   def initialize(type, color)
     raise ColorUnknownError.new(color) if color != white && color != black
     @color = color
     @type = type
+    @made_first_move = false
   end
 
   ##
