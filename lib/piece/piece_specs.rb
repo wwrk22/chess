@@ -11,10 +11,6 @@ module PieceSpecs
 
   PIECES = [PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING]
 
-  private_constant :WHITE, :BLACK
-  private_constant :PAWN, :ROOK, :KNIGHT, :BISHOP, :QUEEN, :KING
-  private_constant :PIECES
-
   def white; WHITE; end
   def black; BLACK; end
   def pawn; PAWN; end

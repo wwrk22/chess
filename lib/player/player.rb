@@ -21,6 +21,12 @@ class Player
   def prompt_move
     move_str = gets.chomp
     piece = @validator.validate(move_str, @color)
-    Move.new(move_str, @color)
+
+    if piece
+      capture = move_str.include?('x') ? true : false
+      move = Move.new(move_str, @color, capture)
+      move.piece = piece
+      return move
+    end
   end
 end

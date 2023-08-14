@@ -3,6 +3,7 @@ module BoardSpecs
   RANKS = (1..8).to_a
   WHITE_SQUARE = "\u2B1C"
   BLACK_SQUARE = "\u2B1B"
+
   private_constant :FILES, :RANKS, :WHITE_SQUARE, :BLACK_SQUARE
 
   def to_rank_index(rank)
