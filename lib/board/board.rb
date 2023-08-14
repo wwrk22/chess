@@ -1,7 +1,14 @@
 require './lib/standard/chess_board'
 require './lib/error/invalid_square'
-require './lib/piece/piece_specs'
 require_relative './board_specs'
+
+require './lib/piece/piece_specs'
+require './lib/piece/pawn'
+require './lib/piece/rook'
+require './lib/piece/knight'
+require './lib/piece/bishop'
+require './lib/piece/queen'
+require './lib/piece/king'
 
 
 class Board
@@ -51,8 +58,54 @@ class Board
     @ranks = Array.new(8) { |_| Array.new(8, nil) }
   end
 
+  def setup_for_game
+    setup_pawn
+    setup_rook
+    setup_knight
+    setup_bishop
+    setup_queen
+    setup_king
+  end
 
   private
+
+  def setup_rook
+    ['a', 'h'].each do |file|
+      set({ file: file, rank: 1 }, Rook.new(white))
+      set({ file: file, rank: 8 }, Rook.new(black))
+    end
+  end
+
+  def setup_knight
+    ['b', 'g'].each do |file|
+      set({ file: file, rank: 1 }, Knight.new(white))
+      set({ file: file, rank: 8 }, Knight.new(black))
+    end
+  end
+
+  def setup_bishop
+    ['c', 'f'].each do |file|
+      set({ file: file, rank: 1 }, Bishop.new(white))
+      set({ file: file, rank: 8 }, Bishop.new(black))
+    end
+  end
+
+  def setup_queen
+    set({ file: 'd', rank: 1 }, Queen.new(white))
+    set({ file: 'd', rank: 8 }, Queen.new(white))
+  end
+
+  def setup_king
+    set({ file: 'e', rank: 1 }, King.new(white))
+    set({ file: 'e', rank: 8 }, King.new(black))
+  end
+
+  def setup_pawn
+    files.each do |file|
+      set({ file: file, rank: 2 }, Pawn.new(white))
+      set({ file: file, rank: 7 }, Pawn.new(black))
+    end
+  end
 
   def piece_line(rank_idx, rank)
     files.each_index.reduce("") do |line, file_idx|
@@ -87,3 +140,7 @@ class Board
     raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 end
+
+b = Board.new
+b.setup_for_game
+puts b.to_s
