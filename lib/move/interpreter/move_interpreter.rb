@@ -55,6 +55,7 @@ class MoveInterpreter
   private
 
   def maybe_ep?(move, board)
+    return nil if move.nil?
     move.piece.type == pawn &&
     move.capture && board.at(move.target).nil?
     (move.piece.color == white && move.target[:rank] == 6) ||

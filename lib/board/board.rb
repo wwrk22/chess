@@ -140,7 +140,3 @@ class Board
     raise InvalidSquare::CoordinatesError.new(file, rank)
   end
 end
-
-b = Board.new
-b.setup_for_game
-puts b.to_s
