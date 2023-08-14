@@ -29,41 +29,21 @@ class Castler
   ##
   # For the given castling move, check if the right king and the rook have not
   # moved yet. Return true if so, or false otherwise.
-  def pieces_in_place?(castle, color, board)
-    if castle == '0-0'
-      if color == white
-        white_king = board.at({ file: 'e', rank: 1 })
-        white_rook = board.at({ file: 'h', rank: 1 })
+  def pieces_in_place?(castle, color, board) 
+    rank = (color == white) ? 1 : 8
+    rook_file = (castle == '0-0') ? 'h' : 'a'
 
-        white_king_in_place = (not white_king.nil?) && (not white_king.made_first_move)
-        white_rook_in_place = (not white_rook.nil?) && (not white_rook.made_first_move)
+    move_king = board.at({ file: 'e', rank: rank })
+    move_rook = board.at({ file: rook_file, rank: rank })
 
-        return white_king_in_place && white_rook_in_place
-      else
-        black_king = board.at({ file: 'e', rank: 8 })
-        black_rook = board.at({ file: 'h', rank: 8 })
-
-        black_king_in_place = (not black_king.nil?) && (not black_king.made_first_move)
-        black_rook_in_place = (not black_rook.nil?) && (not black_rook.made_first_move)
-
-        return black_king_in_place && black_rook_in_place
-      end
-    else
-      if color == white
-        white_king = board.at({ file: 'e', rank: 1 })
-        white_rook = board.at({ file: 'a', rank: 1 })
-
-        white_king_in_place = (not white_king.nil?) && (not white_king.made_first_move)
-        white_rook_in_place = (not white_rook.nil?) && (not white_rook.made_first_move)
-
-        return white_king_in_place && white_rook_in_place
-      else
-      end
-
-    end
+    return not_moved_yet?(move_king) && not_moved_yet?(move_rook)
   end
 
   private
+
+  def not_moved_yet?(piece)
+    (not piece.nil?) && (not piece.made_first_move)
+  end
 
   def determine_path(castle, color)
     return castle == '0-0' ?
