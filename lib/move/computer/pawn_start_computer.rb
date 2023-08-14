@@ -38,6 +38,7 @@ class PawnStartComputer < StartComputer
   end
 
   def compute_start(move, board)
+    return nil if bad_move? move
     return compute_en_passant(move, board) if move.ep
     return compute_capture(move, board) if move.capture
 
@@ -50,6 +51,10 @@ class PawnStartComputer < StartComputer
   end
 
   private
+
+  def bad_move?(move)
+    move.piece.nil? || move.target.nil?
+  end
 
   def check_first(move, board, rank_diff)
     start = { file: move.target[:file], rank: move.target[:rank] + rank_diff }
