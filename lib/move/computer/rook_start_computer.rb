@@ -10,6 +10,8 @@ class RookStartComputer < StartComputer
   # Accept a Move object and a copy of the Board to return the starting square
   # of a rook. If the starting square cannot be computed, return nil.
   def compute_start(move, board)
+    return nil if move.piece.nil? || move.target.nil?
+
     if move.start_coordinate.nil?
       return check_multiple_paths(move, board, RookSpecs::DIRECTIONS)
     else

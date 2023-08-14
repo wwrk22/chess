@@ -1,14 +1,17 @@
+require_relative 'start_computer'
 require './lib/standard/chess_board'
 require './lib/piece/queen_specs'
 
 
-class QueenStartComputer
+class QueenStartComputer < StartComputer
   include ChessBoard
  
   ##
   # Accept a Move object and a copy of the Board to return the starting square
   # of a queen. If the starting square cannot be computed, return nil.
   def compute_start(move, board)
+    return nil if move.piece.nil? || move.target.nil?
+
     if move.start_coordinate.nil?
       return check_multiple_paths(move, board, QueenSpecs::DIRECTIONS)
     else
