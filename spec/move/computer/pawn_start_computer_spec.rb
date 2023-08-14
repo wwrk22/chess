@@ -52,6 +52,7 @@ RSpec.describe PawnStartComputer do
       allow(white_pawn).to receive(:type).and_return(pawn)
       allow(white_pawn).to receive(:color).and_return(white)
 
+      allow(move).to receive(:color).and_return(white)
       allow(move).to receive(:piece).and_return(white_pawn)
       allow(move).to receive(:start_coordinate).and_return('b')
       allow(move).to receive(:target).and_return({ file: 'a', rank: 3 })

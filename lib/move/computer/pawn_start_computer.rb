@@ -14,7 +14,7 @@ class PawnStartComputer < StartComputer
   ##
   # Return the starting square of the moving pawn for a capturing move.
   def compute_capture(move, board)
-    compute_args = [move.piece.color, move.start_coordinate, move.target]
+    compute_args = [move.color, move.start_coordinate, move.target]
     start_square = compute_capture_start(*compute_args)
     start_square if check_start(start_square, move.piece, board)
   end
