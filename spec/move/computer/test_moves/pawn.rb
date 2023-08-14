@@ -39,6 +39,7 @@ module TestPawnMoves
     files.map do |file|
       move = Move.new(file + rank.to_s, color, true)
       move.target = { file: file, rank: rank }
+      move.color = color
       move.piece = Pawn.new(color)
       start_file = (file == 'h') ? 'g' : (file.ord + 1).chr
       move.start_coordinate = start_file

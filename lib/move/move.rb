@@ -9,6 +9,9 @@ class Move
   # The raw string format of the move given by player.
   attr_accessor :str
 
+  # Player's color.
+  attr_accessor :color
+
   # The exact chess piece being moved.
   attr_accessor :piece
 
