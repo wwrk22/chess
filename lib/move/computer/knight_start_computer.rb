@@ -9,6 +9,8 @@ class KnightStartComputer
   include KnightSpecs
   
   def compute_start(move, board)
+    return nil if move.piece.nil? || move.target.nil?
+
     starts = all_possible_starts(move.target)
     find_knight(move.piece, board, starts)
   end

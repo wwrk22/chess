@@ -28,6 +28,8 @@ class KingStartComputer
   end
 
   def compute_start(move, board)
+    return nil if move.piece.nil? || move.target.nil?
+
     start_sqs = all_possible_start_sqs(move.target)
     find_king(move.piece, start_sqs, board)
   end
