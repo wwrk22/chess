@@ -66,6 +66,10 @@ until gs.game_winner(board) do
     # Compute the starting square.
     wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
 
+    # DEBUG
+    puts "\nMove info: #{wh_move.inspect}"
+    puts
+
     # Perform the move.
     if wh_move.str == '0-0' || wh_move.str == '0-0-0'
       move_result = castler.do_castle(wh_move, 'WH', board)

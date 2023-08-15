@@ -27,8 +27,14 @@ class RookStartComputer < StartComputer
       { file: move.start_coordinate, rank: move.target[:rank] } :
       { file: move.target[:file], rank: move.start_coordinate }
 
-    piece = board.at(start_square)
-    piece.eql?(move.piece) ? start_square : nil
+    file_direction = start_square[:file].ord - move.target[:file].ord
+    rank_direction = start_square[:rank] - move.target[:rank]
+
+    file_direction = (file_direction > 0) ? 1 : (file_direction < 0 ? -1 : 0)
+    rank_direction = (rank_direction > 0) ? 1 : (rank_direction < 0 ? -1 : 0)
+
+    direction = { file: file_direction, rank: rank_direction }
+    check_path(move, board, direction, start_square)
   end
 
   ##
