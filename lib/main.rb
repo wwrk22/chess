@@ -39,7 +39,6 @@ bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
 board.setup_for_game
-board.set({ file: 'a', rank: 3 }, Pawn.new(PieceSpecs::WHITE))
 
 # Prompt move and check syntax.
 wh_move = nil
@@ -54,6 +53,8 @@ until gs.game_winner(board) do
   until wh_move && move_result do
     print "White, make a move: "
     wh_move = wh_player.prompt_move(board)
+
+    next if wh_move.nil?
 
     # Interpret move string.
     wh_move.target = interpreter.parse_target(wh_move.str)
@@ -76,10 +77,13 @@ until gs.game_winner(board) do
   # Black's move
   puts board.to_s
   bl_move = Move.new('', PieceSpecs::BLACK)
+  move_result = false
 
-  until bl_move && bl_move.start do
+  until bl_move && move_result do
     print "Black, make a move: "
     bl_move = bl_player.prompt_move(board)
+
+    next if wh_move.nil?
 
     # Interpret move string.
     bl_move.target = interpreter.parse_target(bl_move.str)
@@ -93,11 +97,11 @@ until gs.game_winner(board) do
 
     # Perform the move.
     if bl_move.str == '0-0' || bl_move.str == '0-0-0'
-      castler.do_castle(bl_move, 'BL', board)
+      move_result = castler.do_castle(bl_move, 'BL', board)
     else
-      mp.do_move(bl_move, board) if bl_move.start
+      move_result = mp.do_move(bl_move, board) if bl_move.start
     end
-    end
+  end
 end
 
 
