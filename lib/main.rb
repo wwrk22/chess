@@ -47,55 +47,58 @@ bl_move = nil
 until gs.game_winner(board) do
   # White's move
   puts board.to_s
-  wh_move = nil
+  wh_move = Move.new('', PieceSpecs::WHITE)
 
-  until wh_move do
+  until wh_move && wh_move.start do
     print "White, make a move: "
-    wh_move = wh_player.prompt_move
-  end
+    wh_move = wh_player.prompt_move(board)
 
-  # Interpret move string.
-  wh_move.target = interpreter.parse_target(wh_move.str)
-  wh_move.capture = interpreter.capture?(wh_move.str)
-  wh_move.start_coordinate = interpreter.parse_start_coordinate(wh_move)
-  ep_data = interpreter.determine_ep(wh_move, bl_move, board)
-  wh_move.ep, wh_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
+    # Interpret move string.
+    wh_move.target = interpreter.parse_target(wh_move.str)
+    wh_move.capture = interpreter.capture?(wh_move.str)
+    wh_move.start_coordinate = interpreter.parse_start_coordinate(wh_move)
+    ep_data = interpreter.determine_ep(wh_move, bl_move, board)
+    wh_move.ep, wh_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
 
-  # Compute the starting square.
-  wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
+    # Compute the starting square.
+    wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
 
-  # Perform the move.
-  if wh_move.str == '0-0' || wh_move.str == '0-0-0'
-    castler.do_castle(wh_move, 'WH', board)
-  else
-    mp.do_move(wh_move, board)
+    puts "wh_move:"
+    p wh_move
+
+    # Perform the move.
+    if wh_move.str == '0-0' || wh_move.str == '0-0-0'
+      castler.do_castle(wh_move, 'WH', board)
+    else
+      mp.do_move(wh_move, board) if wh_move.start
+    end
   end
 
   # Black's move
   puts board.to_s
-  bl_move = nil
+  bl_move = Move.new('', PieceSpecs::BLACK)
 
-  until bl_move do
+  until bl_move && bl_move.start do
     print "Black, make a move: "
-    bl_move = bl_player.prompt_move
-  end
+    bl_move = bl_player.prompt_move(board)
 
-  # Interpret move string.
-  bl_move.target = interpreter.parse_target(bl_move.str)
-  bl_move.capture = interpreter.capture?(bl_move.str)
-  bl_move.start_coordinate = interpreter.parse_start_coordinate(bl_move)
-  ep_data = interpreter.determine_ep(bl_move, wh_move, board)
-  bl_move.ep, bl_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
+    # Interpret move string.
+    bl_move.target = interpreter.parse_target(bl_move.str)
+    bl_move.capture = interpreter.capture?(bl_move.str)
+    bl_move.start_coordinate = interpreter.parse_start_coordinate(bl_move)
+    ep_data = interpreter.determine_ep(bl_move, wh_move, board)
+    bl_move.ep, bl_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
 
-  # Compute the starting square.
-  bl_move.start = start_computers[bl_move.piece.type].compute_start(bl_move, board)
+    # Compute the starting square.
+    bl_move.start = start_computers[bl_move.piece.type].compute_start(bl_move, board)
 
-  # Perform the move.
-  if bl_move.str == '0-0' || bl_move.str == '0-0-0'
-    castler.do_castle(bl_move, 'BL', board)
-  else
-    mp.do_move(bl_move, board)
-  end
+    # Perform the move.
+    if bl_move.str == '0-0' || bl_move.str == '0-0-0'
+      castler.do_castle(bl_move, 'BL', board)
+    else
+      mp.do_move(bl_move, board) if bl_move.start
+    end
+    end
 end
 
 

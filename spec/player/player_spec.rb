@@ -1,3 +1,4 @@
+require './lib/board/board'
 require 'support/matchers/chess_piece'
 require './lib/player/player'
 require './lib/piece/pawn'
@@ -11,8 +12,10 @@ end
 
 RSpec.describe Player do
   describe '#prompt_move' do
+    let!(:board) { Board.new }
     let!(:valid_move) { 'a3' }
     let!(:color) { white }
+
     subject(:player) { described_class.new('player', color) }
 
     it "validates the syntax of player input" do
@@ -20,14 +23,14 @@ RSpec.describe Player do
       validator = player.instance_variable_get(:@validator)
 
       expect(validator).to receive(:validate).with(valid_move, color).and_return Pawn.new(color)
-      player.prompt_move
+      player.prompt_move(board)
     end
 
     context "when the move is for a pawn" do
       it "returns a Move object with the `str` and `color` attributes set" do
         allow(player).to receive(:gets).and_return(valid_move)
 
-        result = player.prompt_move
+        result = player.prompt_move(board)
 
         expect(result).to be_is_a(Move)
       end
@@ -37,7 +40,7 @@ RSpec.describe Player do
       it "returns a Move object with the `str` and `color` attributes set" do
         allow(player).to receive(:gets).and_return('Ra5')
 
-        result = player.prompt_move
+        result = player.prompt_move(board)
 
         expect(result).to be_is_a(Move)
       end

@@ -1,7 +1,9 @@
+require './lib/board/board'
 require './lib/error/color_unknown_error'
 require './lib/move/syntax/validator/validator'
 require './lib/piece/piece_specs'
 require './lib/move/move'
+require './lib/move/interpreter/move_interpreter'
 
 
 class Player
@@ -16,9 +18,10 @@ class Player
     @name = name
     @color = color
     @validator = Validator.new
+    @interpreter = MoveInterpreter.new
   end
 
-  def prompt_move
+  def prompt_move(board)
     move_str = gets.chomp
     piece = @validator.validate(move_str, @color)
 
@@ -26,7 +29,15 @@ class Player
       capture = move_str.include?('x') ? true : false
       move = Move.new(move_str, @color, capture)
       move.piece = piece
-      return move
+      move.target = @interpreter.parse_target(move.str)
+
+      target = board.at(move.target)
+
+      if target && target.eql?(piece)
+        return nil
+      else
+        return move
+      end
     end
   end
 end
