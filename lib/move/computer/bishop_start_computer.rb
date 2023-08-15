@@ -1,10 +1,10 @@
 require_relative 'start_computer'
-require './lib/standard/chess_board'
+require './lib/board/board_specs'
 require './lib/piece/bishop_specs'
 
 
 class BishopStartComputer < StartComputer
-  include ChessBoard
+  include BoardSpecs
   
   ##
   # Accept a Move object and a copy of the Board to return the starting square
@@ -27,6 +27,10 @@ class BishopStartComputer < StartComputer
       compute_with_file(move.target, move.start_coordinate) :
       compute_with_rank(move.target, move.start_coordinate)
 
+    # DEBUG
+    puts "starting_squares: #{starting_squares}"
+    puts
+
     starting_squares.filter! { |square| valid_start?(move, board, square) }
     starting_squares[0] if starting_squares.size == 1
   end
@@ -37,8 +41,9 @@ class BishopStartComputer < StartComputer
   def compute_with_file(target_square, start_file)
     starting_ranks = compute_start_ranks(target_square, start_file)
 
-    starting_ranks.map do |rank|
-      { file: start_file, rank: rank } if valid_rank? rank
+    starting_ranks.reduce([]) do |valid_sqs, rank|
+      valid_sqs << { file: start_file, rank: rank } if valid_rank? rank
+      valid_sqs
     end
   end
 
@@ -48,8 +53,9 @@ class BishopStartComputer < StartComputer
   def compute_with_rank(target_square, start_rank)
     starting_files = compute_start_files(target_square, start_rank)
 
-    starting_files.map do |file|
-      { file: file, rank: start_rank } if valid_file? file
+    starting_files.reduce([]) do |valid_sqs, file|
+      valid_sqs << { file: file, rank: start_rank } if valid_file? file
+      valid_sqs
     end
   end
 
