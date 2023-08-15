@@ -83,7 +83,7 @@ until gs.game_winner(board) do
     print "Black, make a move: "
     bl_move = bl_player.prompt_move(board)
 
-    next if wh_move.nil?
+    next if bl_move.nil?
 
     # Interpret move string.
     bl_move.target = interpreter.parse_target(bl_move.str)
