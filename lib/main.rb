@@ -39,6 +39,7 @@ bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
 board.setup_for_game
+board.set({ file: 'a', rank: 3 }, Pawn.new(PieceSpecs::WHITE))
 
 # Prompt move and check syntax.
 wh_move = nil
@@ -48,8 +49,9 @@ until gs.game_winner(board) do
   # White's move
   puts board.to_s
   wh_move = Move.new('', PieceSpecs::WHITE)
+  move_result = false
 
-  until wh_move && wh_move.start do
+  until wh_move && move_result do
     print "White, make a move: "
     wh_move = wh_player.prompt_move(board)
 
@@ -63,14 +65,11 @@ until gs.game_winner(board) do
     # Compute the starting square.
     wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
 
-    puts "wh_move:"
-    p wh_move
-
     # Perform the move.
     if wh_move.str == '0-0' || wh_move.str == '0-0-0'
-      castler.do_castle(wh_move, 'WH', board)
+      move_result = castler.do_castle(wh_move, 'WH', board)
     else
-      mp.do_move(wh_move, board) if wh_move.start
+      move_result = mp.do_move(wh_move, board) if wh_move.start
     end
   end
 
