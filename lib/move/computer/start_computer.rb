@@ -17,6 +17,7 @@ class StartComputer
   # square.
   def check_path(move, board, direction, start_square = nil)
     curr_square = update_square(move.target, direction)
+
     check_each_square(curr_square, move, board, direction, start_square)
   end
 
@@ -59,15 +60,12 @@ class StartComputer
   private
 
   def check_each_square(curr_square, move, board, direction, start_square)
-    while valid_file?(curr_square[:file]) && valid_rank?(curr_square[:rank]) &&
-          curr_square != start_square do
+    while valid_file?(curr_square[:file]) && valid_rank?(curr_square[:rank]) do
       piece = board.at(curr_square)
+
       return check_piece(piece, move.piece, curr_square) if piece
       curr_square = update_square(curr_square, direction)
     end
-
-    piece = board.at(curr_square)
-    return check_piece(piece, move.piece, curr_square) if piece
   end
 
   def check_piece(piece, moving_piece, curr_square)
