@@ -38,10 +38,10 @@ class StartComputer
       file_step = (file_step > 0) ? (1) : ((file_step < 0) ? -1 : 0)
       rank_step = (rank_step > 0) ? (1) : ((rank_step < 0) ? -1 : 0)
       direction = { file: file_step, rank: rank_step }
-      return check_path(move, board, direction, start_square)
-    else
-      return nil
+      return true if check_path(move, board, direction, start_square)
     end
+
+    false
   end
 
   ##
@@ -65,6 +65,9 @@ class StartComputer
       return check_piece(piece, move.piece, curr_square) if piece
       curr_square = update_square(curr_square, direction)
     end
+
+    piece = board.at(curr_square)
+    return check_piece(piece, move.piece, curr_square) if piece
   end
 
   def check_piece(piece, moving_piece, curr_square)
