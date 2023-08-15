@@ -27,10 +27,6 @@ class BishopStartComputer < StartComputer
       compute_with_file(move.target, move.start_coordinate) :
       compute_with_rank(move.target, move.start_coordinate)
 
-    # DEBUG
-    puts "starting_squares: #{starting_squares}"
-    puts
-
     starting_squares.filter! { |square| valid_start?(move, board, square) }
     starting_squares[0] if starting_squares.size == 1
   end
