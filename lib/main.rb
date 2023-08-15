@@ -66,15 +66,25 @@ until gs.game_winner(board) do
     # Compute the starting square.
     wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
 
-    # DEBUG
-    puts "\nMove info: #{wh_move.inspect}"
-    puts
+    # Copy board
+    board_copy = board.board_copy
 
     # Perform the move.
+    white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
+
     if wh_move.str == '0-0' || wh_move.str == '0-0-0'
       move_result = castler.do_castle(wh_move, 'WH', board)
     else
       move_result = mp.do_move(wh_move, board) if wh_move.start
+    end
+
+    if white_checked
+      if gs.player_checked?(PieceSpecs::WHITE, board)
+        move_result = false
+        board.ranks = board_copy
+      end
+    else
+      next
     end
   end
 
@@ -99,11 +109,25 @@ until gs.game_winner(board) do
     # Compute the starting square.
     bl_move.start = start_computers[bl_move.piece.type].compute_start(bl_move, board)
 
+    # Copy board
+    board_copy = board.board_copy
+
     # Perform the move.
+    black_checked = gs.player_checked?(PieceSpecs::BLACK, board)
+
     if bl_move.str == '0-0' || bl_move.str == '0-0-0'
       move_result = castler.do_castle(bl_move, 'BL', board)
     else
       move_result = mp.do_move(bl_move, board) if bl_move.start
+    end
+
+    if black_checked
+      if gs.player_checked?(PieceSpecs::BLACK, board)
+        move_result = false
+        board.ranks = board_copy
+      end
+    else
+      next
     end
   end
 end

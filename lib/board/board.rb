@@ -14,6 +14,8 @@ require './lib/piece/king'
 class Board
   include BoardSpecs
   include PieceSpecs
+
+  attr_writer :ranks
   
   def initialize
     clear
@@ -67,6 +69,14 @@ class Board
     setup_king
   end
 
+  def board_copy
+    @ranks.map do |rank|
+      rank.map do |square|
+        square
+      end
+    end
+  end
+
   private
 
   def setup_rook
@@ -92,7 +102,7 @@ class Board
 
   def setup_queen
     set({ file: 'd', rank: 1 }, Queen.new(white))
-    set({ file: 'd', rank: 8 }, Queen.new(white))
+    set({ file: 'd', rank: 8 }, Queen.new(black))
   end
 
   def setup_king
