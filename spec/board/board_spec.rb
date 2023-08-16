@@ -3,6 +3,7 @@ require './lib/board/board_specs'
 require './lib/error/invalid_square'
 require './lib/piece/pawn'
 require './lib/piece/piece_specs'
+require './lib/piece/king'
 
 
 RSpec.configure do |cfg|
@@ -54,17 +55,17 @@ RSpec.describe Board do
     context "when the king is not on the board" do
       it "returns false" do
         result = board.search_king(white)
-        expect(result).to be_falsey
+        expect(result).to be_nil
       end
     end
 
     context "when the king is on the board" do
       it "returns true" do
         ranks = board.instance_variable_get(:@ranks)
-        ranks[0][0] = ChessPiece.new(king, white)
+        ranks[0][0] = King.new(white)
 
         result = board.search_king(white)
-        expect(result).to be_truthy
+        expect(result).to eq({ file: 'a', rank: 1 })
       end
     end
   end # describe '#search_king'

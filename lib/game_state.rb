@@ -10,15 +10,7 @@ require './lib/piece/queen_specs'
 class GameState
   include BoardSpecs
   include PieceSpecs
-
-  def game_winner(board)
-    wh_king_found = board.search_king(white)
-    bl_king_found = board.search_king(black)
-
-    return nil if (not wh_king_found) && (not bl_king_found)
-    return white if wh_king_found && (not bl_king_found)
-    return black if bl_king_found && (not wh_king_found)
-  end
+  include KingSpecs
 
   def player_checked?(color, board)
     king_to_check = King.new(color)
@@ -178,5 +170,26 @@ class GameState
     end
 
     false
+  end
+
+  def checkmate?(color, board)
+    king_square = board.search_king(color)
+
+    king_dirs.all? do |dir|
+      move_square = { file: (king_square[:file].ord + dir[:file]).chr,
+                      rank: king_square[:rank] + dir[:rank] }
+      result = true
+
+      if valid_square? move_square
+        board_copy = board.board_copy
+        board.set(king_square)
+        board.set(move_square, King.new(color))
+
+        result = player_checked?(color, board)
+        board.ranks = board_copy
+      end
+
+      result
+    end
   end
 end
