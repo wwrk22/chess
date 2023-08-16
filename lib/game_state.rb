@@ -45,13 +45,18 @@ class GameState
 
   def find_king_for_king(king_to_check, king_square, board)
     KingSpecs::DIRECTIONS.each.any? do |dir|
+      result = false
+
       curr_square = { file: (king_square[:file].ord + dir[:file]).chr, rank: king_square[:rank] + dir[:rank] }
-      return false if not valid_square?(curr_square)
+      if valid_square?(curr_square)
+        curr_square_piece = board.at(curr_square) 
 
-      curr_square_piece = board.at(curr_square) 
-      return false if curr_square_piece.nil?
+        if (not curr_square_piece.nil?) && curr_square_piece.eql?(king_to_check)
+          result = true
+        end
+      end
 
-      curr_square_piece.eql?(king_to_check)
+      result
     end
   end
 

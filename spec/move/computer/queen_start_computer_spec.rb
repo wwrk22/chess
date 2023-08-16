@@ -2,6 +2,7 @@ require './lib/move/computer/queen_start_computer'
 require './lib/piece/queen_specs'
 require './lib/move/move'
 require './lib/board/board'
+require './lib/piece/piece_specs'
 
 
 RSpec.describe QueenStartComputer do
@@ -10,6 +11,11 @@ RSpec.describe QueenStartComputer do
 
     let!(:move) { instance_double(Move) }
     let!(:board) { instance_double(Board) }
+
+    before do
+      allow(move).to receive(:piece).and_return Queen.new(PieceSpecs::WHITE)
+      allow(move).to receive(:target).and_return({ file: 'a', rank: 1 })
+    end
 
     context "when the move has a starting coordinate" do
       it "sends compute_with_start_coordinate" do
