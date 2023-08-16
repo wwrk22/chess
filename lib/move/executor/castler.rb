@@ -44,13 +44,17 @@ class Castler
     if a && b && (not c)
       rank = (color == white) ? 1 : 8
       move_king = board.at({ file: 'e', rank: rank })
-      move_rook = board.at({ file: 'h', rank: rank })
 
       if move.str == '0-0'
+        move_rook = board.at({ file: 'h', rank: rank })
         castle_kingside(rank, move_rook, move_king, board)
       else
+        move_rook = board.at({ file: 'a', rank: rank })
         castle_queenside(rank, move_rook, move_king, board)
       end
+
+      move_rook.made_first_move = true
+      move_king.made_first_move = true
 
       return true
     end
