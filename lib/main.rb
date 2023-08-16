@@ -38,7 +38,16 @@ wh_player = Player.new("Foo", PieceSpecs::WHITE)
 bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
-board.setup_for_game
+#board.setup_for_game
+board.set({ file: 'e', rank: 1 }, King.new(PieceSpecs::WHITE))
+board.set({ file: 'd', rank: 8 }, Queen.new(PieceSpecs::BLACK))
+board.set({ file: 'e', rank: 8 }, King.new(PieceSpecs::BLACK))
+board.set({ file: 'd', rank: 5 }, Queen.new(PieceSpecs::WHITE))
+board.set({ file: 'd', rank: 7 }, Pawn.new(PieceSpecs::BLACK))
+board.set({ file: 'f', rank: 7 }, Pawn.new(PieceSpecs::BLACK))
+board.set({ file: 'a', rank: 7 }, Pawn.new(PieceSpecs::BLACK))
+board.set({ file: 'f', rank: 8 }, Bishop.new(PieceSpecs::BLACK))
+
 
 # Prompt move and check syntax.
 wh_move = nil
@@ -78,9 +87,35 @@ loop do
       move_result = mp.do_move(wh_move, board) if wh_move.start
     end
 
-    if gs.player_checked?(PieceSpecs::WHITE, board) || gs.checkmate?(PieceSpecs::WHITE, board)
+    if (gs.player_checked?(PieceSpecs::WHITE, board) || gs.checkmate?(PieceSpecs::WHITE, board))
       move_result = false
       board.ranks = board_copy
+      next
+    end
+
+    if (gs.checkmate?(PieceSpecs::BLACK, board) && (not wh_move.str.end_with?('#'))) ||
+       ((not gs.checkmate?(PieceSpecs::BLACK, board)) && gs.player_checked?(PieceSpecs::BLACK, board) && (not wh_move.str.end_with?('+')))
+      move_result = false
+      board.ranks = board_copy
+      next
+    end
+
+    if wh_move.str.end_with? '+'
+      if not gs.player_checked?(PieceSpecs::BLACK, board)
+        move_result = false
+        board.ranks = board_copy
+        next
+      end
+    end
+
+    if wh_move.str.end_with? '#'
+      if gs.checkmate?(PieceSpecs::BLACK, board)
+        game_winner = PieceSpecs::WHITE
+        break
+      else
+        move_result = false
+        board.ranks = board_copy
+      end
     end
   end
 
@@ -121,9 +156,35 @@ loop do
       move_result = mp.do_move(bl_move, board) if bl_move.start
     end
 
-    if gs.player_checked?(PieceSpecs::BLACK, board) || gs.checkmate?(PieceSpecs::BLACK, board)
+    if (gs.player_checked?(PieceSpecs::BLACK, board) || gs.checkmate?(PieceSpecs::BLACK, board))
       move_result = false
       board.ranks = board_copy
+      next
+    end
+
+    if (gs.checkmate?(PieceSpecs::WHITE, board) && (not bl_move.str.end_with?('#'))) ||
+       ((not gs.checkmate?(PieceSpecs::WHITE, board)) && gs.player_checked?(PieceSpecs::WHITE, board) && (not bl_move.str.end_with?('+')))
+      move_result = false
+      board.ranks = board_copy
+      next
+    end
+
+    if bl_move.str.end_with? '+'
+      if not gs.player_checked?(PieceSpecs::WHITE, board)
+        move_result = false
+        board.ranks = board_copy
+        next
+      end
+    end
+
+    if bl_move.str.end_with? '#'
+      if gs.checkmate?(PieceSpecs::WHITE, board)
+        game_winner = PieceSpecs::BLACK
+        break
+      else
+        move_result = false
+        board.ranks = board_copy
+      end
     end
   end
 
