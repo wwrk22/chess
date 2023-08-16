@@ -159,4 +159,61 @@ RSpec.describe GameState do
       end
     end
   end # describe '#player_checked?'
+
+
+  describe '#checkmate?' do
+    context "when white is in a checkmate" do
+      context "when queen and pawn checkmate" do
+        it "returns true" do
+          board = Board.new
+          board.set({ file: 'e', rank: 1 }, King.new(white))
+          board.set({ file: 'c', rank: 2 }, Queen.new(black))
+          board.set({ file: 'g', rank: 2 }, Pawn.new(black))
+
+          result = gs.checkmate?(white, board)
+          expect(result).to eq(true)
+        end
+      end
+
+      context "when two knights and a pawn checkmate" do
+        it "returns true" do
+          board = Board.new
+          board.set({ file: 'e', rank: 1 }, King.new(white))
+          board.set({ file: 'c', rank: 3 }, Knight.new(black))
+          board.set({ file: 'g', rank: 3 }, Knight.new(black))
+          board.set({ file: 'e', rank: 3 }, Pawn.new(black))
+
+          result = gs.checkmate?(white, board)
+          expect(result).to eq(true)
+        end
+      end
+    end # context "when white is in a checkmate"
+
+    context "when black is in a checkmate" do
+      context "when queen and pawn checkmate" do
+        it "returns true" do
+          board = Board.new
+          board.set({ file: 'e', rank: 8 }, King.new(black))
+          board.set({ file: 'c', rank: 7 }, Queen.new(white))
+          board.set({ file: 'g', rank: 7 }, Pawn.new(white))
+
+          result = gs.checkmate?(black, board)
+          expect(result).to eq(true)
+        end
+      end
+
+      context "when two knights and a pawn checkmate" do
+        it "returns true" do
+          board = Board.new
+          board.set({ file: 'e', rank: 8 }, King.new(black))
+          board.set({ file: 'c', rank: 6 }, Knight.new(white))
+          board.set({ file: 'g', rank: 6 }, Knight.new(white))
+          board.set({ file: 'e', rank: 6 }, Pawn.new(white))
+
+          result = gs.checkmate?(black, board)
+          expect(result).to eq(true)
+        end
+      end
+    end # context "when black is in a checkmate"
+  end # describe '#checkmate?'
 end

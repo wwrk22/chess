@@ -39,14 +39,18 @@ bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
 #board.setup_for_game
-board.setup_rook
-board.setup_king
+board.set({ file: 'c', rank: 5 }, Queen.new(PieceSpecs::WHITE))
+board.set({ file: 'g', rank: 7 }, Pawn.new(PieceSpecs::WHITE))
+board.set({ file: 'd', rank: 8 }, King.new(PieceSpecs::BLACK))
+board.set({ file: 'e', rank: 1 }, King.new(PieceSpecs::WHITE))
 
 # Prompt move and check syntax.
 wh_move = nil
 bl_move = nil
 
-until gs.game_winner(board) do
+game_winner = nil
+
+loop do
   # White's move
   puts board.to_s
   wh_move = Move.new('', PieceSpecs::WHITE)
@@ -71,34 +75,28 @@ until gs.game_winner(board) do
       # Compute the starting square.
       wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
       
-      # DEBUG
-      puts "Start computed: #{wh_move.start}"
-      puts
-
       # Copy board
       board_copy = board.board_copy
 
       # Perform the move.
       white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
 
-      # DEBUG
-      puts "white_checked: #{white_checked}"
-      puts
-
       move_result = mp.do_move(wh_move, board) if wh_move.start
-
-      # DEBUG
-      puts "move_result: #{move_result}"
     end
 
     if white_checked
-      if gs.player_checked?(PieceSpecs::WHITE, board)
+      if gs.player_checked?(PieceSpecs::WHITE, board) || gs.checkmate?(PieceSpecs::WHITE, board)
         move_result = false
         board.ranks = board_copy
+        next
       end
-    else
-      next
     end
+  end
+
+  # Check for checkmate
+  if gs.checkmate?(PieceSpecs::BLACK, board)
+    game_winner = PieceSpecs::WHITE
+    break
   end
 
   # Black's move
@@ -134,15 +132,21 @@ until gs.game_winner(board) do
     end
 
     if black_checked
-      if gs.player_checked?(PieceSpecs::BLACK, board)
+      if gs.player_checked?(PieceSpecs::BLACK, board) || gs.checkmate?(PieceSpecs::BLACK, board)
         move_result = false
         board.ranks = board_copy
+        next
       end
-    else
-      next
     end
+  end
+
+  # Check for checkmate
+  if gs.checkmate?(PieceSpecs::WHITE, board)
+    game_winner = PieceSpecs::BLACK
+    break
   end
 end
 
 
-puts "#{gs.game_winner(board)} wins"
+puts board.to_s
+puts "#{game_winner} wins"

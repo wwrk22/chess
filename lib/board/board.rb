@@ -39,11 +39,15 @@ class Board
   end
 
   def search_king(color)
-    @ranks.each do |rank|
-      return true if rank.one? { |sq| sq.eql? ChessPiece.new(king, color) }
+    @ranks.each_with_index do |rank, rank_idx|
+      rank.each_with_index do |square, file_idx|
+        if square.eql? King.new(color)
+          return { file: (97 + file_idx).chr, rank: rank_idx + 1 }
+        end
+      end
     end
 
-    false
+    nil
   end
 
   ##
