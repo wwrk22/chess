@@ -75,17 +75,12 @@ loop do
       board_copy = board.board_copy
 
       # Perform the move.
-      white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
-
       move_result = mp.do_move(wh_move, board) if wh_move.start
     end
 
-    if white_checked
-      if gs.player_checked?(PieceSpecs::WHITE, board) || gs.checkmate?(PieceSpecs::WHITE, board)
-        move_result = false
-        board.ranks = board_copy
-        next
-      end
+    if gs.player_checked?(PieceSpecs::WHITE, board) || gs.checkmate?(PieceSpecs::WHITE, board)
+      move_result = false
+      board.ranks = board_copy
     end
   end
 
@@ -123,16 +118,12 @@ loop do
       board_copy = board.board_copy
 
       # Perform the move.
-      black_checked = gs.player_checked?(PieceSpecs::BLACK, board)
       move_result = mp.do_move(bl_move, board) if bl_move.start
     end
 
-    if black_checked
-      if gs.player_checked?(PieceSpecs::BLACK, board) || gs.checkmate?(PieceSpecs::BLACK, board)
-        move_result = false
-        board.ranks = board_copy
-        next
-      end
+    if gs.player_checked?(PieceSpecs::BLACK, board) || gs.checkmate?(PieceSpecs::BLACK, board)
+      move_result = false
+      board.ranks = board_copy
     end
   end
 
