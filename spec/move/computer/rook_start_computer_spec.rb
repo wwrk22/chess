@@ -20,6 +20,11 @@ RSpec.describe RookStartComputer do
     let!(:move) { instance_double(Move) }
     let!(:board) { instance_double(Board) }
 
+    before do
+      allow(move).to receive(:piece).and_return Rook.new(white)
+      allow(move).to receive(:target).and_return({ file: 'a', rank: 1 })
+    end
+
     context "when there is no start coordinate" do
       it "sends check_multiple_paths" do
         allow(move).to receive(:start_coordinate).and_return nil
@@ -60,7 +65,7 @@ RSpec.describe RookStartComputer do
     subject(:computer) { described_class.new }
 
     let!(:move) { instance_double(Move) }
-    let!(:board) { instance_double(Board) }
+    let!(:board) { Board.new }
     let!(:moving_rook) { Rook.new(white) }
     let!(:target_square) { { file: 'd', rank: 4 } }
 
@@ -79,7 +84,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square has the moving rook" do
         it "returns a square with that file and the same rank as the target square" do 
-          allow(board).to receive(:at).with(expected).and_return moving_rook
+          board.set(expected, moving_rook)
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to eq(expected)
@@ -88,8 +93,6 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square does not have the moving rook" do
         it "returns nil" do
-          allow(board).to receive(:at).with(expected).and_return nil
-
           result = computer.start_off_target_axes(move, board)
           expect(result).to be_nil
         end
@@ -106,7 +109,7 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square has the moving rook" do
         it "returns a square with that rank and the same file as the target square" do
-          allow(board).to receive(:at).with(expected).and_return moving_rook
+          board.set(expected, moving_rook)
 
           result = computer.start_off_target_axes(move, board)
           expect(result).to eq(expected)
@@ -115,8 +118,6 @@ RSpec.describe RookStartComputer do
 
       context "when the starting square does not have the moving rook" do
         it "returns nil" do
-          allow(board).to receive(:at).with(expected).and_return nil
-
           result = computer.start_off_target_axes(move, board)
           expect(result).to be_nil
         end
