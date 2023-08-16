@@ -38,7 +38,9 @@ wh_player = Player.new("Foo", PieceSpecs::WHITE)
 bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
-board.setup_for_game
+#board.setup_for_game
+board.setup_rook
+board.setup_king
 
 # Prompt move and check syntax.
 wh_move = nil
@@ -56,26 +58,37 @@ until gs.game_winner(board) do
 
     next if wh_move.nil?
 
-    # Interpret move string.
-    wh_move.target = interpreter.parse_target(wh_move.str)
-    wh_move.capture = interpreter.capture?(wh_move.str)
-    wh_move.start_coordinate = interpreter.parse_start_coordinate(wh_move)
-    ep_data = interpreter.determine_ep(wh_move, bl_move, board)
-    wh_move.ep, wh_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
-
-    # Compute the starting square.
-    wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
-
-    # Copy board
-    board_copy = board.board_copy
-
-    # Perform the move.
-    white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
-
     if wh_move.str == '0-0' || wh_move.str == '0-0-0'
       move_result = castler.do_castle(wh_move, 'WH', board)
     else
+      # Interpret move string.
+      wh_move.target = interpreter.parse_target(wh_move.str)
+      wh_move.capture = interpreter.capture?(wh_move.str)
+      wh_move.start_coordinate = interpreter.parse_start_coordinate(wh_move)
+      ep_data = interpreter.determine_ep(wh_move, bl_move, board)
+      wh_move.ep, wh_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
+
+      # Compute the starting square.
+      wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
+      
+      # DEBUG
+      puts "Start computed: #{wh_move.start}"
+      puts
+
+      # Copy board
+      board_copy = board.board_copy
+
+      # Perform the move.
+      white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
+
+      # DEBUG
+      puts "white_checked: #{white_checked}"
+      puts
+
       move_result = mp.do_move(wh_move, board) if wh_move.start
+
+      # DEBUG
+      puts "move_result: #{move_result}"
     end
 
     if white_checked
@@ -99,25 +112,24 @@ until gs.game_winner(board) do
 
     next if bl_move.nil?
 
-    # Interpret move string.
-    bl_move.target = interpreter.parse_target(bl_move.str)
-    bl_move.capture = interpreter.capture?(bl_move.str)
-    bl_move.start_coordinate = interpreter.parse_start_coordinate(bl_move)
-    ep_data = interpreter.determine_ep(bl_move, wh_move, board)
-    bl_move.ep, bl_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
-
-    # Compute the starting square.
-    bl_move.start = start_computers[bl_move.piece.type].compute_start(bl_move, board)
-
-    # Copy board
-    board_copy = board.board_copy
-
-    # Perform the move.
-    black_checked = gs.player_checked?(PieceSpecs::BLACK, board)
-
     if bl_move.str == '0-0' || bl_move.str == '0-0-0'
       move_result = castler.do_castle(bl_move, 'BL', board)
     else
+      # Interpret move string.
+      bl_move.target = interpreter.parse_target(bl_move.str)
+      bl_move.capture = interpreter.capture?(bl_move.str)
+      bl_move.start_coordinate = interpreter.parse_start_coordinate(bl_move)
+      ep_data = interpreter.determine_ep(bl_move, wh_move, board)
+      bl_move.ep, bl_move.ep_sq = [ep_data[:ep], ep_data[:ep_sq]]
+
+      # Compute the starting square.
+      bl_move.start = start_computers[bl_move.piece.type].compute_start(bl_move, board)
+
+      # Copy board
+      board_copy = board.board_copy
+
+      # Perform the move.
+      black_checked = gs.player_checked?(PieceSpecs::BLACK, board)
       move_result = mp.do_move(bl_move, board) if bl_move.start
     end
 
