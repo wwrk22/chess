@@ -56,7 +56,12 @@ class Board
     @ranks.each_with_index.reverse_each.reduce("") do |board, (rank, rank_idx)|
       board += blank_line(rank_idx)
       board += piece_line(rank_idx, rank)
-      board += blank_line(rank_idx)
+
+      if rank_idx == 0
+        board += blank_line(rank_idx, true)
+      else
+        board += blank_line(rank_idx)
+      end
     end
   end
 
@@ -120,7 +125,7 @@ class Board
   end
 
   def piece_line(rank_idx, rank)
-    files.each_index.reduce("") do |line, file_idx|
+    (rank_idx + 1).to_s + ' ' + files.each_index.reduce("") do |line, file_idx|
       sq = square(rank_idx, file_idx)
       line += sq + mid_sq(rank, file_idx, sq) + sq
       (file_idx == files.size - 1) ? (line += "\n") : line
@@ -132,12 +137,18 @@ class Board
     (piece.nil?) ? sq : piece.unicode + ' '
   end
 
-  def blank_line(rank_idx)
-    files.each_index.reduce("") do |line, file_idx|
+  def blank_line(rank_idx, last_line = false)
+    output = '  ' + files.each_index.reduce("") do |line, file_idx|
       sq = square(rank_idx, file_idx)
       line += sq + sq + sq
       (file_idx == files.size - 1) ? (line += "\n") : line
     end
+
+    if last_line
+      output += '    a     b     c     d     e     f     g     h'
+    end
+
+    output
   end
 
   def square(rank_idx, file_idx)
