@@ -185,12 +185,12 @@ class GameState
                       rank: king_square[:rank] + dir[:rank] }
       result = true
 
-      if valid_square? move_square
+      if valid_square?(move_square) && board.at(move_square).nil?
         board_copy = board.board_copy
         board.set(king_square)
         board.set(move_square, King.new(color))
 
-        result = player_checked?(color, board)
+        result = false if (not player_checked?(color, board))
         board.ranks = board_copy
       end
 
