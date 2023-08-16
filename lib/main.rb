@@ -71,24 +71,13 @@ until gs.game_winner(board) do
       # Compute the starting square.
       wh_move.start = start_computers[wh_move.piece.type].compute_start(wh_move, board)
       
-      # DEBUG
-      puts "Start computed: #{wh_move.start}"
-      puts
-
       # Copy board
       board_copy = board.board_copy
 
       # Perform the move.
       white_checked = gs.player_checked?(PieceSpecs::WHITE, board)
 
-      # DEBUG
-      puts "white_checked: #{white_checked}"
-      puts
-
       move_result = mp.do_move(wh_move, board) if wh_move.start
-
-      # DEBUG
-      puts "move_result: #{move_result}"
     end
 
     if white_checked
