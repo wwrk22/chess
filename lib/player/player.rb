@@ -23,6 +23,11 @@ class Player
 
   def prompt_move(board)
     move_str = gets.chomp
+
+    if move_str == '0-0' || move_str == '0-0-0'
+      return Move.new(move_str, @color)
+    end
+
     piece = @validator.validate(move_str, @color)
 
     if piece

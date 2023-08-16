@@ -77,8 +77,6 @@ class Board
     end
   end
 
-  private
-
   def setup_rook
     ['a', 'h'].each do |file|
       set({ file: file, rank: 1 }, Rook.new(white))
