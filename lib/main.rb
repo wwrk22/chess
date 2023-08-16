@@ -38,11 +38,7 @@ wh_player = Player.new("Foo", PieceSpecs::WHITE)
 bl_player = Player.new("Bar", PieceSpecs::BLACK)
 
 board = Board.new
-#board.setup_for_game
-board.set({ file: 'c', rank: 5 }, Queen.new(PieceSpecs::WHITE))
-board.set({ file: 'g', rank: 7 }, Pawn.new(PieceSpecs::WHITE))
-board.set({ file: 'd', rank: 8 }, King.new(PieceSpecs::BLACK))
-board.set({ file: 'e', rank: 1 }, King.new(PieceSpecs::WHITE))
+board.setup_for_game
 
 # Prompt move and check syntax.
 wh_move = nil
